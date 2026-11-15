@@ -488,6 +488,11 @@ const TABLE = `
 
 const PER_LEVEL = 20, LEVELS = 20;
 
+// Languages whose new audio is recorded and published. The others keep their earlier short
+// word list, single wordings and nine games until their clips exist. Add a language here
+// when its clips are committed.
+const READY = ['en'];
+
 // The usable words of one language as [WORD, picture], in level order.
 function build(lang) {
   const col = ORDER.indexOf(lang) + 1, seen = new Set(), out = [];
@@ -512,18 +517,20 @@ const EXTRA = {
   de: { wordLevel: (lv, n) => `Wortstufe ${lv} · ${n}/20`, newWordLevel: lv => `Neue Wortstufe: ${lv}!`, levelUp: 'Du hast alle Wörter geschafft und steigst eine Stufe auf!' },
 };
 
-function apply(LANGS) {
+// `all` is set by the recording script, which needs every language's full content.
+function apply(LANGS, all) {
   for (const lang of Object.keys(LANGS)) {
     const L = LANGS[lang], x = EXTRA[lang];
+    L.ui.wordLevel = x.wordLevel; L.ui.newWordLevel = x.newWordLevel;
+    if (!all && !READY.includes(lang)) continue;
     L.words = build(lang);
     delete L.finale;
-    L.ui.wordLevel = x.wordLevel; L.ui.newWordLevel = x.newWordLevel;
     L.g.levelUp = x.levelUp;
   }
   return LANGS;
 }
 
-const api = { apply, build, PER_LEVEL, LEVELS };
+const api = { apply, build, PER_LEVEL, LEVELS, READY };
 if (typeof module !== 'undefined' && module.exports) module.exports = api;
-else { apply(root.LA.LANGS); root.LA.WORDS = api; }
+else { apply(root.LA.LANGS); root.LA.WORDS = api; root.LA.READY = READY; }
 })(typeof window !== 'undefined' ? window : globalThis);

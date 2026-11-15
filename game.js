@@ -111,6 +111,7 @@ function vary(key, n){
 }
 function g(key){
   const v = T.g[key];
+  if (v === undefined) return null; // a phrase this language does not have yet
   if (Array.isArray(v)){ const i = vary(key, v.length); return {id:`${key}_${i}`, text:shown(v[i])}; }
   return {id:key, text:shown(v)};
 }
@@ -223,13 +224,14 @@ function applyLang(){
   $('#name').placeholder = T.ui.namePh;
   $('#privacyLink').href = 'privacy.html#' + S.lang;
   $('#langSeg').innerHTML = ['en','es','fr','pt','de','sv'].map(k => [k, LANGS[k]]).map(([k, L]) => `<button data-lang="${k}" aria-pressed="${k===S.lang}">${L.label || {sv:'Svenska', en:'English'}[k]}</button>`).join('');
-  $('#aboutList').innerHTML = GAME_META.map((gm,i)=>`<li>${gm.em} <b>${T.games[i][0]}</b> – ${T.games[i][1]}</li>`).join('');
+  $('#aboutList').innerHTML = GAME_META.map((gm,i)=> !T.games[i] ? '' : `<li>${gm.em} <b>${T.games[i][0]}</b> – ${T.games[i][1]}</li>`).join('');
   $$('.voices').forEach(box => box.innerHTML = VOICE_EM.map((em,i)=>`<button class="voice" data-voice="${i}"><span>${em}</span>${T.voices[i]}</button>`).join(''));
   refresh();
 }
 // The game cards; the word games also show their word level and how far it has come.
 function renderCards(){
   const cards = GAME_META.map((gm,i) => {
+    if (!T.games[i]) return ''; // a game this language does not have yet
     const pr = PROG_GAMES.includes(gm.id) ? prog(gm.id) : null;
     return `<button class="game" data-g="${gm.id}" style="background:var(${gm.c})"><span class="num">${i+1}</span><span class="em">${gm.em}</span>${T.games[i][0]}<small>${T.games[i][1]}</small>${pr ? `<small class="lv">${T.ui.wordLevel(pr.lv, pr.done.length)}</small>` : ''}</button>`;
   });
@@ -368,7 +370,7 @@ function prompt(){
     case 'ord':
       if (G.pos>0) return LV().say ? [perV('next',L)] : [];
       // The word is introduced either as one sentence ("Spell the word sun.") or as a question followed by the word.
-      return [...(it.isName ? [g('nameStart')] : vary('ordLead', 3)===0 ? [wordPart('word',it)] : [g('askOrd'), sayWord(it, LV().show)]), LV().say && perV('start',L)];
+      return [...(it.isName ? [g('nameStart')] : (!T.g.askOrd || vary('ordLead', 3)===0) ? [wordPart('word',it)] : [g('askOrd'), sayWord(it, LV().show)]), LV().say && perV('start',L)];
     // Word games: the voice reads the word aloud on the easier levels only.
     case 'bildord': return [g('askBildord'), LV().say && sayWord(it)];
     case 'lasord': return [g('askLasord'), LV().say && sayWord(it, true)];
@@ -486,7 +488,7 @@ function press(k){
     G.pos++;
     if (G.pos < it.w.length){ render(); say([g('short'), ...prompt()]); return; }
     G.lock = true; markWord(it); render(); burst(16, $('#card'));
-    say(it.isName ? [g('wroteName'), g('long')] : vary('ordDone', 2)===0 ? [wordPart('wrote',it), g('long')] : [sayWord(it, true), g('wroteMore')], () => advance(last)); return;
+    say(it.isName ? [g('wroteName'), g('long')] : (!T.g.wroteMore || vary('ordDone', 2)===0) ? [wordPart('wrote',it), g('long')] : [sayWord(it, true), g('wroteMore')], () => advance(last)); return;
   }
   if (G.id==='saknad'){
     G.pos++;
@@ -693,7 +695,7 @@ document.addEventListener('keydown', e => {
   if (e.ctrlKey || e.altKey || e.metaKey || e.repeat || dlg.open || boardDlg.open) return;
   if (screen==='start'){ if (e.key==='Enter'){ e.preventDefault(); begin(); } return; }
   if (e.key==='Escape'){ if (screen!=='home') goHome(); return; }
-  if (screen==='home'){ const n = e.key.length===1 ? '123456789'.indexOf(e.key) : -1; if (n>=0){ e.preventDefault(); startGame(GAME_META[n].id); } return; }
+  if (screen==='home'){ const n = e.key.length===1 ? '123456789'.indexOf(e.key) : -1; if (n>=0 && T.games[n]){ e.preventDefault(); startGame(GAME_META[n].id); } return; }
   if (screen==='win'){ if (e.key==='Enter' || e.key===' '){ e.preventDefault(); startGame(lastId); } return; }
   if (screen==='game'){
     if (e.key===' ' || e.key==='Enter'){ e.preventDefault(); repeat(); return; }

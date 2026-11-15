@@ -80,10 +80,13 @@ de: {
   rhymes: 'haus🏠,maus🐭;hund🐶,mund👄;katze🐱,tatze🐾;hose👖,rose🌹,dose🥫;schuh👞,kuh🐮;sonne☀️,tonne🗑️;hand✋,sand🏖️,band🎀;biene🐝,schiene🛤️;ziege🐐,fliege🪰;nase👃,hase🐰,vase🏺;tanne🌲,kanne🫖,pfanne🍳,wanne🛁;schwein🐷,bein🦵,stein🪨;brot🍞,boot⛵,rot🔴;eis🍦,reis🍚,kreis⭕;krone👑,zitrone🍋,melone🍈',
 }};
 
-function apply(LANGS) {
+// Only languages whose clips are recorded get the three games (see READY in words.js);
+// `all` is set by the recording script.
+function apply(LANGS, all) {
+  const ready = all ? Object.keys(LANGS) : (root.LA && root.LA.READY) || [];
   for (const lang of Object.keys(LANGS)) {
     const D = DATA[lang], L = LANGS[lang];
-    if (!D) continue;
+    if (!D || !ready.includes(lang)) continue;
     L.games = L.games.slice(0, 9).concat(D.games);
     Object.assign(L.g, D.g);
     // Rhyme words get a running number, used for their sound clips (rim_0, rim_1, ...).

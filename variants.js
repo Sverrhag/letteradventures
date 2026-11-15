@@ -214,12 +214,16 @@ de: {
   },
 }};
 
-function apply(LANGS) {
+// Only languages whose clips are recorded get the alternative wordings (see READY in words.js);
+// `all` is set by the recording script.
+function apply(LANGS, all) {
+  const ready = all ? Object.keys(LANGS) : (root.LA && root.LA.READY) || [];
   for (const lang of Object.keys(LANGS)) {
     if (!V[lang]) continue;
+    Object.assign(LANGS[lang].ui, MORE[lang].ui);
+    if (!ready.includes(lang)) continue;
     Object.assign(LANGS[lang].g, V[lang].g, MORE[lang].g);
     Object.assign(LANGS[lang].per, V[lang].per, MORE[lang].per);
-    Object.assign(LANGS[lang].ui, MORE[lang].ui);
   }
   return LANGS;
 }
