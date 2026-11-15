@@ -12,6 +12,9 @@ phrases.js             Swedish and English texts, words and spoken phrases
 phrases-more.js        Spanish, French, Portuguese and German
 audio/<lang>/v<1-5>/   Recorded voice clips, five voices per language
 icons/                 App icons
+fonts/                 Fredoka and Andika, served from this site
+licenses/              Licence texts for the fonts and the icon artwork
+privacy.html           Privacy notice, publisher and licences, in six languages
 manifest.webmanifest   Makes the game installable in full screen
 tools/                 The voice-recording script and the icon artwork (icon.html)
 CNAME                  Custom domain for GitHub Pages
@@ -44,3 +47,15 @@ chrome --headless=new --hide-scrollbars --window-size=512,512 --screenshot=icons
 ```
 
 Repeat with 192 and 180 for `icon-192.png` and `icon-180.png`.
+
+## Privacy rules for this code
+
+The game is for children aged 3 to 7, so it must not send anything to other servers.
+
+- No third-party requests: fonts, scripts, images and audio are all served from this site, and
+  the Content-Security-Policy in `index.html` blocks anything else. No analytics or counters.
+- What the child types (name, age) stays in the browser's local storage and never goes into a
+  URL, header or request body.
+- The letter clips are preloaded all at once (`preloadLetters` in `game.js`), so that the order
+  of audio requests cannot reveal the name a child is spelling.
+- Keep `privacy.html` in step with any change to what is stored or fetched.

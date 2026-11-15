@@ -11,11 +11,16 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Letter Adventures">
 <meta name="theme-color" content="#ffd9ec">
+<!-- The page talks to no other server: no referrer is sent and nothing may load from elsewhere. -->
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self' blob:; font-src 'self'; connect-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'none'">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
 <link rel="icon" type="image/png" href="icons/icon-192.png">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Fredoka:wght@400;600;700&display=swap">
 <style>
+/* Fonts are served from this site (licences in licenses/). */
+@font-face{font-family:"Fredoka"; src:url("fonts/Fredoka-latin.woff2") format("woff2"); font-weight:300 700; font-display:swap}
+@font-face{font-family:"Andika"; src:url("fonts/Andika-Bold.woff2") format("woff2"); font-weight:700; font-display:swap}
 /* Layout: one screen at a time, everything fits without scrolling on a tablet.
    Top: guide bubble. Middle: big letter. Bottom: progress + keyboard. */
 :root{
@@ -241,6 +246,7 @@ dialog .seg button{font-size:18px; padding:6px 14px}
       <p data-t="about"></p>
       <ul id="aboutList"></ul>
       <p class="tip" data-t="tip"></p>
+      <p class="tip"><a href="privacy.html" id="privacyLink" data-t="privacyLink"></a></p>
       <div id="install">
         <h2 data-t="installH"></h2>
         <p data-t="installIntro"></p>
@@ -316,6 +322,7 @@ dialog .seg button{font-size:18px; padding:6px 14px}
   <div class="opt"><label for="optSfx" data-t="setSfx"></label><input type="checkbox" id="optSfx"></div>
   <div class="opt"><label for="optKb" data-t="setKb"></label><input type="checkbox" id="optKb"></div>
   <div class="opt"><button class="pill" id="fullscreen" data-t="setFull"></button><button class="pill" id="reset" data-t="setReset"></button></div>
+  <div class="opt"><span></span><button class="pill" id="wipe" data-t="setWipe"></button></div>
   <div class="opt"><button class="pill" id="changeName" data-t="setChange"></button><button class="big" id="closeSettings" style="font-size:20px" data-t="setDone"></button></div>
 </dialog>
 

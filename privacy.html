@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Letter Adventures: privacy, publisher and licences</title>
+<meta name="description" content="How Letter Adventures handles privacy, who publishes it, and the licences of the fonts and artwork it uses.">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; base-uri 'self'; form-action 'none'">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<style>
+/* One section per language; the address decides which one shows (privacy.html#sv), English otherwise. */
+@font-face{font-family:"Fredoka"; src:url("fonts/Fredoka-latin.woff2") format("woff2"); font-weight:300 700; font-display:swap}
+:root{ --bg1:#ffd9ec; --bg2:#e9dcff; --bg3:#d2f0ff; --card:#ffffff; --ink:#48266b; --ink-soft:#7d5f9c; --accent:#d92d7f; --line:rgba(110,60,160,.18) }
+@media (prefers-color-scheme: dark){ :root{ --bg1:#2b1650; --bg2:#1f1546; --bg3:#12224a; --card:#3a2866; --ink:#fdeeff; --ink-soft:#cdb6ea; --accent:#ff9cc8; --line:rgba(255,255,255,.18); color-scheme:dark } }
+*{box-sizing:border-box}
+body{margin:0; min-height:100vh; background:linear-gradient(160deg,var(--bg1),var(--bg2) 50%,var(--bg3)) fixed; color:var(--ink);
+  font-family:"Fredoka","Trebuchet MS","Segoe UI",sans-serif; font-size:18px; line-height:1.55;
+  padding:20px max(16px,env(safe-area-inset-right,0px)) 40px max(16px,env(safe-area-inset-left,0px))}
+main{max-width:720px; margin:0 auto; background:var(--card); border-radius:26px; padding:22px 26px 28px; box-shadow:0 6px 0 var(--line)}
+nav{max-width:720px; margin:0 auto 14px; display:flex; flex-wrap:wrap; gap:8px; align-items:center}
+nav a{background:var(--card); border-radius:999px; padding:6px 14px; text-decoration:none; color:var(--ink); font-weight:600; box-shadow:0 3px 0 var(--line)}
+nav a.back{background:var(--accent); color:#fff; margin-right:auto}
+a{color:var(--accent)}
+a:focus-visible{outline:4px solid #69bcff; outline-offset:3px}
+h1{font-size:clamp(26px,5vw,36px); line-height:1.15; margin:0 0 6px; color:var(--accent); text-wrap:balance}
+h2{font-size:21px; margin:22px 0 4px}
+p{margin:0 0 10px}
+.lead{font-weight:600}
+.small{color:var(--ink-soft); font-size:15px}
+section{display:none}
+section:target{display:block}
+main:not(:has(section:target)) #en{display:block}
+</style>
+</head>
+<body>
+<nav aria-label="Language">
+  <a class="back" href="./">← Letter Adventures</a>
+  <a href="#en" lang="en">English</a><a href="#es" lang="es">Español</a><a href="#fr" lang="fr">Français</a><a href="#pt" lang="pt">Português</a><a href="#de" lang="de">Deutsch</a><a href="#sv" lang="sv">Svenska</a>
+</nav>
+<main>
+
+<section id="en" lang="en">
+  <h1>Privacy, publisher and licences</h1>
+  <p class="lead">Written for parents and other grown-ups. In short: Letter Adventures collects nothing about your child.</p>
+  <h2>Who publishes the game</h2>
+  <p>Letter Adventures is published by Sverrhag Consulting AB, Sweden, which is the data controller. Contact: through <a href="https://sverrhag.com/">sverrhag.com</a>.</p>
+  <h2>What is saved on the device</h2>
+  <p>The game saves the name or nickname typed on the start screen, the chosen age, language and settings, the stars, stickers and the alphabet top list in the browser’s local storage, so that your child can carry on where they stopped. This stays on the device. It is never sent to us or to anyone else.</p>
+  <p>There are no accounts, no cookies, no advertising, no statistics and no tracking.</p>
+  <h2>What the web host receives</h2>
+  <p>The site is hosted on GitHub Pages (GitHub, Inc., USA). Like every web server it receives the device’s IP address and browser type when pages, pictures and sound clips are fetched, and GitHub states that it logs IP addresses for security purposes. We have no access to those logs. Our legal basis is our legitimate interest in making the game available (Article 6(1)(f) GDPR). According to GitHub’s privacy statement, the data may be processed in the United States under the EU–US Data Privacy Framework and standard contractual clauses.</p>
+  <p>The game contacts no other servers.</p>
+  <h2>Deleting what is saved</h2>
+  <p>Open the settings (the cog) and choose “Delete everything saved”. Clearing the site’s data in the browser does the same.</p>
+  <h2>Your rights</h2>
+  <p>Under the GDPR you may ask what personal data we hold about you, have it corrected or erased, and object to its use. Because nothing is sent to us, we normally hold nothing. You may complain to the Swedish Authority for Privacy Protection (IMY), <a href="https://www.imy.se/">imy.se</a>, or to the authority in your own country.</p>
+  <h2>Voices, fonts and artwork</h2>
+  <p>The voices are computer-generated with Google Cloud Text-to-Speech. Typefaces: Fredoka and Andika, under the SIL Open Font License 1.1 (<a href="licenses/OFL-Fredoka.txt">Fredoka</a>, <a href="licenses/OFL-Andika.txt">Andika</a>). App icon: the unicorn from Microsoft Fluent Emoji, under the <a href="licenses/MIT-FluentEmoji.txt">MIT License</a>.</p>
+  <p class="small">Last updated 15 November 2026.</p>
+</section>
+
+<section id="sv" lang="sv">
+  <h1>Integritet, utgivare och licenser</h1>
+  <p class="lead">Skrivet för föräldrar och andra vuxna. Kort sagt: Letter Adventures samlar inte in något om ditt barn.</p>
+  <h2>Vem som ger ut spelet</h2>
+  <p>Letter Adventures ges ut av Sverrhag Consulting AB, Sverige, som är personuppgiftsansvarig. Kontakt: via <a href="https://sverrhag.com/">sverrhag.com</a>.</p>
+  <h2>Vad som sparas på enheten</h2>
+  <p>Spelet sparar namnet eller smeknamnet som skrivs in på startskärmen, vald ålder, språk och inställningar, stjärnor, klistermärken och topplistan för alfabetet i webbläsarens lokala lagring, så att barnet kan fortsätta där det slutade. Detta stannar på enheten. Det skickas aldrig till oss eller till någon annan.</p>
+  <p>Det finns inga konton, inga kakor, ingen reklam, ingen statistik och ingen spårning.</p>
+  <h2>Vad webbhotellet tar emot</h2>
+  <p>Sajten ligger på GitHub Pages (GitHub, Inc., USA). Som alla webbservrar tar den emot enhetens IP-adress och typ av webbläsare när sidor, bilder och ljudklipp hämtas, och GitHub uppger att IP-adresser loggas av säkerhetsskäl. Vi har ingen tillgång till de loggarna. Vår rättsliga grund är vårt berättigade intresse av att göra spelet tillgängligt (artikel 6.1 f i GDPR). Enligt GitHubs integritetspolicy kan uppgifterna behandlas i USA med stöd av EU–US Data Privacy Framework och standardavtalsklausuler.</p>
+  <p>Spelet kontaktar inga andra servrar.</p>
+  <h2>Radera det som sparats</h2>
+  <p>Öppna inställningarna (kugghjulet) och välj ”Radera allt som sparats”. Att rensa sajtens data i webbläsaren gör samma sak.</p>
+  <h2>Dina rättigheter</h2>
+  <p>Enligt GDPR kan du begära besked om vilka personuppgifter vi har om dig, få dem rättade eller raderade och invända mot behandlingen. Eftersom inget skickas till oss har vi normalt ingenting. Du kan klaga hos Integritetsskyddsmyndigheten (IMY), <a href="https://www.imy.se/">imy.se</a>.</p>
+  <h2>Röster, typsnitt och bilder</h2>
+  <p>Rösterna är datorgenererade med Google Cloud Text-to-Speech. Typsnitt: Fredoka och Andika, under SIL Open Font License 1.1 (<a href="licenses/OFL-Fredoka.txt">Fredoka</a>, <a href="licenses/OFL-Andika.txt">Andika</a>). Appikon: enhörningen från Microsoft Fluent Emoji, under <a href="licenses/MIT-FluentEmoji.txt">MIT-licensen</a>.</p>
+  <p class="small">Senast uppdaterad 15 november 2026.</p>
+</section>
+
+<section id="es" lang="es">
+  <h1>Privacidad, editor y licencias</h1>
+  <p class="lead">Escrito para padres, madres y otros adultos. En resumen: Letter Adventures no recoge ningún dato sobre su hijo o hija.</p>
+  <h2>Quién publica el juego</h2>
+  <p>Letter Adventures lo publica Sverrhag Consulting AB, Suecia, que es el responsable del tratamiento. Contacto: a través de <a href="https://sverrhag.com/">sverrhag.com</a>.</p>
+  <h2>Qué se guarda en el dispositivo</h2>
+  <p>El juego guarda el nombre o apodo escrito en la pantalla de inicio, la edad elegida, el idioma y los ajustes, las estrellas, las pegatinas y la lista de mejores tiempos del abecedario en el almacenamiento local del navegador, para que el niño pueda continuar donde lo dejó. Esto se queda en el dispositivo. Nunca se envía a nosotros ni a nadie más.</p>
+  <p>No hay cuentas, ni cookies, ni publicidad, ni estadísticas, ni seguimiento.</p>
+  <h2>Qué recibe el alojamiento web</h2>
+  <p>El sitio está alojado en GitHub Pages (GitHub, Inc., EE. UU.). Como cualquier servidor web, recibe la dirección IP del dispositivo y el tipo de navegador cuando se descargan las páginas, las imágenes y los sonidos, y GitHub indica que registra las direcciones IP por motivos de seguridad. No tenemos acceso a esos registros. Nuestra base jurídica es el interés legítimo en ofrecer el juego (artículo 6.1.f del RGPD). Según la declaración de privacidad de GitHub, los datos pueden tratarse en Estados Unidos al amparo del Marco de Privacidad de Datos UE-EE. UU. y de cláusulas contractuales tipo.</p>
+  <p>El juego no se conecta a ningún otro servidor.</p>
+  <h2>Borrar lo guardado</h2>
+  <p>Abra los ajustes (la rueda dentada) y elija «Borrar todo lo guardado». Borrar los datos del sitio en el navegador tiene el mismo efecto.</p>
+  <h2>Sus derechos</h2>
+  <p>El RGPD le permite preguntar qué datos personales tenemos sobre usted, pedir que se corrijan o se supriman y oponerse a su uso. Como no se nos envía nada, normalmente no tenemos ninguno. Puede reclamar ante la autoridad sueca de protección de datos (IMY), <a href="https://www.imy.se/">imy.se</a>, o ante la autoridad de su país.</p>
+  <h2>Voces, tipografías e ilustraciones</h2>
+  <p>Las voces están generadas por ordenador con Google Cloud Text-to-Speech. Tipografías: Fredoka y Andika, con la licencia SIL Open Font License 1.1 (<a href="licenses/OFL-Fredoka.txt">Fredoka</a>, <a href="licenses/OFL-Andika.txt">Andika</a>). Icono de la aplicación: el unicornio de Microsoft Fluent Emoji, con la <a href="licenses/MIT-FluentEmoji.txt">licencia MIT</a>.</p>
+  <p class="small">Última actualización: 15 de noviembre de 2026.</p>
+</section>
+
+<section id="fr" lang="fr">
+  <h1>Confidentialité, éditeur et licences</h1>
+  <p class="lead">Rédigé pour les parents et les autres adultes. En bref : Letter Adventures ne recueille aucune information sur votre enfant.</p>
+  <h2>Qui édite le jeu</h2>
+  <p>Letter Adventures est édité par Sverrhag Consulting AB, Suède, qui est le responsable du traitement. Contact : via <a href="https://sverrhag.com/">sverrhag.com</a>.</p>
+  <h2>Ce qui est enregistré sur l’appareil</h2>
+  <p>Le jeu enregistre le prénom ou le surnom saisi sur l’écran de départ, l’âge choisi, la langue et les réglages, les étoiles, les autocollants et le classement de l’alphabet dans le stockage local du navigateur, pour que l’enfant puisse reprendre là où il s’est arrêté. Ces informations restent sur l’appareil. Elles ne sont jamais envoyées, ni à nous ni à personne d’autre.</p>
+  <p>Il n’y a ni compte, ni cookie, ni publicité, ni statistiques, ni suivi.</p>
+  <h2>Ce que reçoit l’hébergeur</h2>
+  <p>Le site est hébergé sur GitHub Pages (GitHub, Inc., États-Unis). Comme tout serveur web, il reçoit l’adresse IP de l’appareil et le type de navigateur lorsque les pages, les images et les sons sont téléchargés, et GitHub indique enregistrer les adresses IP pour des raisons de sécurité. Nous n’avons pas accès à ces journaux. Notre base juridique est notre intérêt légitime à rendre le jeu accessible (article 6, paragraphe 1, point f, du RGPD). Selon la déclaration de confidentialité de GitHub, les données peuvent être traitées aux États-Unis dans le cadre du Data Privacy Framework UE–États-Unis et de clauses contractuelles types.</p>
+  <p>Le jeu ne contacte aucun autre serveur.</p>
+  <h2>Effacer ce qui est enregistré</h2>
+  <p>Ouvrez les paramètres (la roue dentée) et choisissez « Effacer tout ce qui est enregistré ». Effacer les données du site dans le navigateur a le même effet.</p>
+  <h2>Vos droits</h2>
+  <p>Le RGPD vous permet de demander quelles données personnelles nous détenons à votre sujet, de les faire rectifier ou effacer et de vous opposer à leur utilisation. Comme rien ne nous est envoyé, nous n’en détenons normalement aucune. Vous pouvez introduire une réclamation auprès de l’autorité suédoise de protection des données (IMY), <a href="https://www.imy.se/">imy.se</a>, ou auprès de l’autorité de votre pays.</p>
+  <h2>Voix, polices et illustrations</h2>
+  <p>Les voix sont générées par ordinateur avec Google Cloud Text-to-Speech. Polices : Fredoka et Andika, sous licence SIL Open Font License 1.1 (<a href="licenses/OFL-Fredoka.txt">Fredoka</a>, <a href="licenses/OFL-Andika.txt">Andika</a>). Icône de l’application : la licorne de Microsoft Fluent Emoji, sous <a href="licenses/MIT-FluentEmoji.txt">licence MIT</a>.</p>
+  <p class="small">Dernière mise à jour : 15 novembre 2026.</p>
+</section>
+
+<section id="pt" lang="pt-BR">
+  <h1>Privacidade, responsável e licenças</h1>
+  <p class="lead">Escrito para pais, mães e outros adultos. Em resumo: o Letter Adventures não coleta nenhuma informação sobre a criança.</p>
+  <h2>Quem publica o jogo</h2>
+  <p>O Letter Adventures é publicado pela Sverrhag Consulting AB, Suécia, que é a controladora dos dados. Contato: pelo site <a href="https://sverrhag.com/">sverrhag.com</a>.</p>
+  <h2>O que fica salvo no aparelho</h2>
+  <p>O jogo salva o nome ou apelido digitado na tela inicial, a idade escolhida, o idioma e as configurações, as estrelas, os adesivos e a lista de melhores tempos do alfabeto no armazenamento local do navegador, para que a criança possa continuar de onde parou. Isso fica no aparelho. Nunca é enviado para nós nem para mais ninguém.</p>
+  <p>Não há contas, cookies, anúncios, estatísticas nem rastreamento.</p>
+  <h2>O que a hospedagem recebe</h2>
+  <p>O site fica hospedado no GitHub Pages (GitHub, Inc., EUA). Como todo servidor web, ele recebe o endereço IP do aparelho e o tipo de navegador quando as páginas, as imagens e os sons são baixados, e o GitHub informa que registra endereços IP por motivos de segurança. Não temos acesso a esses registros. Nossa base legal é o legítimo interesse em disponibilizar o jogo (artigo 6.º, n.º 1, alínea f, do RGPD europeu; artigo 7, IX, da LGPD). Segundo a declaração de privacidade do GitHub, os dados podem ser tratados nos Estados Unidos.</p>
+  <p>O jogo não se conecta a nenhum outro servidor.</p>
+  <h2>Apagar o que foi salvo</h2>
+  <p>Abra as configurações (a engrenagem) e escolha “Apagar tudo o que foi salvo”. Limpar os dados do site no navegador tem o mesmo efeito.</p>
+  <h2>Seus direitos</h2>
+  <p>Você pode perguntar quais dados pessoais temos sobre você, pedir a correção ou a eliminação deles e se opor ao uso. Como nada é enviado para nós, normalmente não temos nenhum. Você pode reclamar à autoridade sueca de proteção de dados (IMY), <a href="https://www.imy.se/">imy.se</a>, ou à autoridade do seu país.</p>
+  <h2>Vozes, fontes e ilustrações</h2>
+  <p>As vozes são geradas por computador com o Google Cloud Text-to-Speech. Fontes: Fredoka e Andika, sob a SIL Open Font License 1.1 (<a href="licenses/OFL-Fredoka.txt">Fredoka</a>, <a href="licenses/OFL-Andika.txt">Andika</a>). Ícone do aplicativo: o unicórnio do Microsoft Fluent Emoji, sob a <a href="licenses/MIT-FluentEmoji.txt">licença MIT</a>.</p>
+  <p class="small">Última atualização: 15 de novembro de 2026.</p>
+</section>
+
+<section id="de" lang="de">
+  <h1>Datenschutz, Herausgeber und Lizenzen</h1>
+  <p class="lead">Geschrieben für Eltern und andere Erwachsene. Kurz gesagt: Letter Adventures erhebt keine Daten über Ihr Kind.</p>
+  <h2>Wer das Spiel herausgibt</h2>
+  <p>Letter Adventures wird von der Sverrhag Consulting AB, Schweden, herausgegeben; sie ist die Verantwortliche im Sinne der DSGVO. Kontakt: über <a href="https://sverrhag.com/">sverrhag.com</a>.</p>
+  <h2>Was auf dem Gerät gespeichert wird</h2>
+  <p>Das Spiel speichert den auf dem Startbildschirm eingegebenen Vornamen oder Spitznamen, das gewählte Alter, die Sprache und die Einstellungen, die Sterne, die Sticker und die Bestenliste des Alphabets im lokalen Speicher des Browsers, damit das Kind dort weiterspielen kann, wo es aufgehört hat. Das bleibt auf dem Gerät. Es wird niemals an uns oder an Dritte gesendet.</p>
+  <p>Es gibt keine Konten, keine Cookies, keine Werbung, keine Statistik und kein Tracking.</p>
+  <h2>Was der Webhoster erhält</h2>
+  <p>Die Website liegt bei GitHub Pages (GitHub, Inc., USA). Wie jeder Webserver erhält der Dienst die IP-Adresse des Geräts und den Browsertyp, wenn Seiten, Bilder und Tonclips abgerufen werden; GitHub gibt an, IP-Adressen aus Sicherheitsgründen zu protokollieren. Auf diese Protokolle haben wir keinen Zugriff. Rechtsgrundlage ist unser berechtigtes Interesse, das Spiel bereitzustellen (Art. 6 Abs. 1 Buchst. f DSGVO). Laut der Datenschutzerklärung von GitHub können die Daten in den USA auf Grundlage des EU-US Data Privacy Framework und von Standardvertragsklauseln verarbeitet werden.</p>
+  <p>Das Spiel nimmt zu keinen anderen Servern Kontakt auf.</p>
+  <h2>Gespeichertes löschen</h2>
+  <p>Öffnen Sie die Einstellungen (das Zahnrad) und wählen Sie „Alles Gespeicherte löschen“. Das Löschen der Websitedaten im Browser hat dieselbe Wirkung.</p>
+  <h2>Ihre Rechte</h2>
+  <p>Nach der DSGVO können Sie Auskunft darüber verlangen, welche personenbezogenen Daten wir über Sie haben, deren Berichtigung oder Löschung verlangen und der Verarbeitung widersprechen. Da nichts an uns gesendet wird, haben wir in der Regel keine. Sie können sich bei der schwedischen Datenschutzbehörde (IMY), <a href="https://www.imy.se/">imy.se</a>, oder bei der Behörde Ihres Landes beschweren.</p>
+  <h2>Stimmen, Schriften und Grafik</h2>
+  <p>Die Stimmen sind computergeneriert, mit Google Cloud Text-to-Speech. Schriften: Fredoka und Andika unter der SIL Open Font License 1.1 (<a href="licenses/OFL-Fredoka.txt">Fredoka</a>, <a href="licenses/OFL-Andika.txt">Andika</a>). App-Symbol: das Einhorn aus Microsoft Fluent Emoji unter der <a href="licenses/MIT-FluentEmoji.txt">MIT-Lizenz</a>.</p>
+  <p class="small">Zuletzt aktualisiert am 15. November 2026.</p>
+</section>
+
+</main>
+</body>
+</html>

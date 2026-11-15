@@ -28,6 +28,7 @@ const S = {name:'', lang:'en', letterCase:'upper', voice:true, voiceChar:0, spee
 try { Object.assign(S, JSON.parse(localStorage.getItem(KEY)) || {}); } catch {}
 if (!LANGS[S.lang]) S.lang = 'en';
 if (!VOICE_EM[S.voiceChar]) S.voiceChar = 0;
+delete S.counted; // left over from the play counter that has been removed
 
 /* ---------- difficulty: level 1 (age 3) to level 5 (age 7) ----------
    rounds   letters per round in the find, listen and match games
@@ -84,13 +85,6 @@ function startClock(){
   }, 250);
 }
 
-/* ---------- anonymous play counters (abacus.jasoncameron.dev) ---------- */
-const STATS = 'https://abacus.jasoncameron.dev', NS = 'sverrhag-letter-adventure';
-const live = location.protocol === 'https:' && !/^(localhost|127\.)/.test(location.hostname);
-// Counters: players, lang-sv, lang-en, game-alfabet, game-hitta, game-lyssna,
-// game-para, game-ord. They are only written here; the site's statistics page reads them.
-const hit = key => { if (live) fetch(`${STATS}/hit/${NS}/${key}`).catch(() => {}); };
-
 /* ---------- installing as an app ---------- */
 // Opened from its home-screen icon the game runs without browser bars; then the instructions are not needed.
 const isInstalled = () => matchMedia('(display-mode: fullscreen), (display-mode: standalone)').matches || navigator.standalone === true;
@@ -115,7 +109,25 @@ const wordPart = (key, it) => ({id:`${key}_${it.wi}`, text:T.perWord[key](key===
 /* ---------- voice: recorded clips ---------- */
 const player = new Audio();
 let tok = 0;
-const clipUrl = id => `audio/${S.lang}/v${S.voiceChar+1}/${id}.mp3`;
+// The clips that name a letter are fetched all at once, in a fixed order, and kept in memory.
+// Fetched one by one while a child spells their name, their order would show the name to the web host.
+let clipCache = {}, cacheKey = '';
+async function preloadLetters(){
+  const key = `${S.lang}/v${S.voiceChar+1}`;
+  if (cacheKey === key) return;
+  Object.values(clipCache).forEach(u => URL.revokeObjectURL(u));
+  cacheKey = key; const mine = clipCache = {};
+  const ids = [];
+  [...T.alpha].forEach((_, i) => Object.keys(T.per).forEach(k => ids.push(`${k}_${i}`)));
+  let next = 0;
+  await Promise.all(Array.from({length: 6}, async () => {
+    while (next < ids.length && cacheKey === key){
+      const id = ids[next++];
+      try { const r = await fetch(`audio/${key}/${id}.mp3`); if (r.ok) mine[id] = URL.createObjectURL(await r.blob()); } catch {}
+    }
+  }));
+}
+const clipUrl = id => clipCache[id] || `audio/${S.lang}/v${S.voiceChar+1}/${id}.mp3`;
 function say(parts, then){
   parts = [].concat(parts).filter(Boolean);
   const text = parts.map(p => p.text).join(' ');
@@ -188,6 +200,7 @@ function applyLang(){
   $('#installSteps').innerHTML = T.ui.installSteps.map(([who, how]) => `<li><b>${who}:</b> ${how}</li>`).join('');
   $$('[data-ta]').forEach(e => e.setAttribute('aria-label', T.ui[e.dataset.ta]));
   $('#name').placeholder = T.ui.namePh;
+  $('#privacyLink').href = 'privacy.html#' + S.lang;
   $('#langSeg').innerHTML = ['en','es','fr','pt','de','sv'].map(k => [k, LANGS[k]]).map(([k, L]) => `<button data-lang="${k}" aria-pressed="${k===S.lang}">${L.label || {sv:'Svenska', en:'English'}[k]}</button>`).join('');
   const cards = GAME_META.map((gm,i)=>`<button class="game" data-g="${gm.id}" style="background:var(${gm.c})"><span class="num">${i+1}</span><span class="em">${gm.em}</span>${T.games[i][0]}<small>${T.games[i][1]}</small></button>`);
   $('#games').innerHTML = cards.slice(0, LETTER_GAMES).join('');
@@ -216,13 +229,12 @@ function refresh(){
   buildKb();
 }
 function goHome(first){
-  G = null; stopClock(); show('home'); refresh();
+  G = null; stopClock(); show('home'); refresh(); preloadLetters();
   say(g(first ? 'greet' : 'homeAgain'));
 }
 function begin(){
   S.name = $('#name').value.trim().replace(/\s+/g,' ').slice(0,16); save();
   try { ac = ac || new (window.AudioContext||window.webkitAudioContext)(); ac.resume?.(); } catch {}
-  if (!S.counted){ S.counted = true; save(); hit('players'); hit('lang-' + S.lang); }
   goHome(true);
 }
 
@@ -272,7 +284,6 @@ function startGame(id){
       return it;
     });
   } else G.items = shuffle(ALPHA).slice(0, LV().rounds).map(L=>({L,c:pickCase()}));
-  hit('game-' + id);
   show('game'); buildKb(); render();
   say([g('intro'+cap(id)), ...prompt()]);
 }
@@ -484,7 +495,7 @@ document.addEventListener('click', e => {
   const ag = e.target.closest('[data-age]');
   if (ag){ S.age = +ag.dataset.age; S.level = S.age - 2; save(); refresh(); return; }
   const v = e.target.closest('[data-voice]');
-  if (v){ S.voiceChar = +v.dataset.voice; save(); refresh(); say({id:'hello', text:T.hello[S.voiceChar]}); }
+  if (v){ S.voiceChar = +v.dataset.voice; save(); refresh(); if (screen!=='start') preloadLetters(); say({id:'hello', text:T.hello[S.voiceChar]}); }
 });
 $('#optVoice').onchange = e => { S.voice = e.target.checked; if (!S.voice) player.pause(); save(); };
 $('#optSfx').onchange = e => { S.sfx = e.target.checked; save(); };
@@ -492,6 +503,13 @@ $('#optKb').onchange = e => { S.kb = e.target.checked; save(); buildKb(); };
 $('#optRate').onchange = e => { S.speed = +e.target.value; save(); };
 $('#fullscreen').onclick = () => { (document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen())?.catch?.(()=>{}); };
 let armed = false;
+// Removes everything the game has saved on this device: name, age, settings, stars, stickers and top lists.
+let wipeArmed = false;
+$('#wipe').onclick = e => {
+  if (!wipeArmed){ wipeArmed = true; e.target.textContent = T.ui.setWipeArm; setTimeout(() => { if (wipeArmed){ wipeArmed = false; e.target.textContent = T.ui.setWipe; } }, 4000); return; }
+  try { localStorage.removeItem(KEY); } catch {}
+  location.reload();
+};
 $('#reset').onclick = e => {
   if (!armed){ armed = true; e.target.textContent = T.ui.setResetArm; setTimeout(()=>{ if (armed){ armed=false; e.target.textContent=T.ui.setReset; } }, 4000); return; }
   S.stars = 0; S.stickers = []; save(); refresh(); armed = false; e.target.textContent = T.ui.setResetDone;
