@@ -135,10 +135,10 @@ dialog .voice[aria-pressed="true"]{background:var(--card)}
 /* --- home --- */
 .top{display:flex; gap:12px; align-items:center; flex:none}
 #home h1{font-size:clamp(28px,6vh,56px); flex:1; min-width:0; overflow-wrap:anywhere}
-.games{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px; flex:1; min-height:120px; max-height:210px}
+.games{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px; flex:none; grid-auto-rows:minmax(clamp(110px,22vh,200px),auto)}
 .sec{margin:0; flex:none; font-weight:700; font-size:17px; color:var(--ink-soft); letter-spacing:.04em; text-transform:uppercase}
-.choice.word{font-size:clamp(26px,7vh,60px); width:auto; padding:.2em .7em}
-#card.wordcard{font-size:clamp(44px,12vh,110px); padding:.15em .5em}
+.choice.word{font-size:min(clamp(26px,7vh,60px),8vw); width:auto; max-width:100%; padding:.2em .7em}
+#card.compact.wordcard{font-size:min(clamp(44px,12vh,110px),calc(72vw / var(--n,5) / .8)); padding:.15em .5em}
 .slot.given{opacity:1; color:var(--ink)}
 .game{border-radius:30px; padding:12px 10px; color:var(--on-color); font-weight:700; font-size:clamp(19px,2.9vh,26px); box-shadow:0 7px 0 var(--line); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; position:relative; line-height:1.1}
 .game .em{font-size:clamp(44px,9vh,80px); line-height:1.1}
@@ -156,8 +156,8 @@ dialog .voice[aria-pressed="true"]{background:var(--card)}
 /* --- game --- */
 .stage{flex:1; min-height:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2vh}
 #card{background:var(--card); border-radius:40px; box-shadow:0 10px 0 var(--line), 0 18px 40px var(--shadow); padding:.02em .32em .08em; min-width:1.7em; text-align:center;
-  font-family:var(--f-abc); font-weight:700; font-size:clamp(84px,27vh,250px); line-height:1.15; color:var(--pink-deep); white-space:nowrap}
-#card.compact{font-size:clamp(60px,15vh,130px)}
+  font-family:var(--f-abc); font-weight:700; font-size:min(clamp(84px,27vh,250px),36vw); line-height:1.15; max-width:100%; color:var(--pink-deep); white-space:nowrap}
+#card.compact{font-size:min(clamp(60px,15vh,130px),30vw)}
 #card.yay{animation:yay .5s}
 #card.no{animation:no .4s}
 @keyframes yay{40%{transform:scale(1.14) rotate(3deg)}}
@@ -169,7 +169,7 @@ dialog .voice[aria-pressed="true"]{background:var(--card)}
 .slot.now{outline:.07em solid var(--pink); opacity:1; animation:pulse 1s infinite}
 @keyframes pulse{50%{transform:scale(1.09)}}
 #choices{display:flex; gap:2.2vw; flex-wrap:wrap; justify-content:center}
-.choice{font-family:var(--f-abc); font-weight:700; font-size:clamp(50px,15vh,130px); line-height:1.2; width:1.55em; border-radius:.26em; color:var(--on-color); box-shadow:0 8px 0 var(--line)}
+.choice{font-family:var(--f-abc); font-weight:700; font-size:min(clamp(50px,15vh,130px),19vw); line-height:1.2; width:1.55em; border-radius:.26em; color:var(--on-color); box-shadow:0 8px 0 var(--line)}
 .choice.hint,.key.hint{animation:pulse .7s infinite; outline:5px solid var(--pink); position:relative; z-index:1}
 
 #progress{display:flex; flex-wrap:wrap; gap:6px; justify-content:center; flex:none; padding-top:20px}
@@ -202,7 +202,14 @@ dialog h2{margin:0 0 12px; font-size:26px}
 dialog .seg{box-shadow:none; background:var(--empty)}
 dialog .seg button{font-size:18px; padding:6px 14px}
 
-@media (max-width:560px){ .cloud{display:none} .stars{font-size:18px; padding:6px 10px} .round{width:48px; height:48px; font-size:23px} .games{max-height:none} .bubble .who{display:none} }
+@media (max-width:560px){ .cloud{display:none} .stars{font-size:18px; padding:6px 10px} .round{width:48px; height:48px; font-size:23px} .bubble .who{display:none}
+  .games{grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px}
+  .game{padding:10px 6px}
+  #game .top{flex-wrap:wrap} #game .top .bubble{order:9; flex-basis:100%}
+  #home .top:first-child{flex-wrap:wrap} #home h1{flex-basis:100%}
+  .seg button{font-size:18px; padding:7px 12px; min-width:0}
+  .voice{min-width:0; flex:1 1 28%}
+  #choices{gap:10px} }
 @media (prefers-reduced-motion: reduce){ .cloud,.walker,.hero,.bubble .who{animation:none} }
 </style>
 </head>

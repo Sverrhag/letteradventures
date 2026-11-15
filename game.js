@@ -339,7 +339,7 @@ function render(){
     ch.innerHTML = it.opts.map((o,i)=>`<button class="choice word" data-k="${o.wi}" style="background:var(${COLORS[(i*2+G.i)%6]})">${disp(o.w,it.c)}</button>`).join('');
   }
   if (id==='lasord'){
-    card.classList.add('compact','wordcard'); card.textContent = disp(it.w,it.c);
+    card.classList.add('compact','wordcard'); card.style.setProperty('--n', it.w.length); card.textContent = disp(it.w,it.c);
     ch.hidden = false;
     ch.innerHTML = it.opts.map((o,i)=>`<button class="choice" data-k="${o.wi}" style="background:var(${COLORS[(i*2+G.i)%6]})">${o.e}</button>`).join('');
   }
