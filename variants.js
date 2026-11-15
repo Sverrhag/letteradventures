@@ -106,7 +106,8 @@ de: {
 // cases are practised, and the label of the button that reloads the game.
 const MORE = {
 sv: {
-  ui: { setReload: '🔄 Hämta senaste versionen', playersLabel: 'Vem spelar?', setRemove: n => `Ta bort spelaren ${n}`, setRemoveArm: 'Tryck igen för att ta bort' },
+  ui: { setReload: '🔄 Hämta senaste versionen', playersLabel: 'Vem spelar?', setRemove: n => `Ta bort spelaren ${n}`, setRemoveArm: 'Tryck igen för att ta bort',
+        lookLabel: 'Välj utseende', looks: ['Äventyr', 'Regnbåge', 'Rymden', 'Djungel', 'Havet'], tagline: 'Lär dig bokstäver och ord med dina djurvänner' },
   g: {
     introAlfabet: ['Nu skriver vi hela alfabetet!', 'Dags för alfabetet, från början till slut!', 'Alfabetet väntar. Nu kör vi!'],
     introHitta: ['Nu letar vi bokstäver på tangentbordet!', 'Dags att leta bokstäver!', 'Kan du hitta bokstäverna? Nu kör vi!'],
@@ -124,7 +125,8 @@ sv: {
   },
 },
 en: {
-  ui: { setReload: '🔄 Get the latest version', playersLabel: 'Who is playing?', setRemove: n => `Remove the player ${n}`, setRemoveArm: 'Tap again to remove' },
+  ui: { setReload: '🔄 Get the latest version', playersLabel: 'Who is playing?', setRemove: n => `Remove the player ${n}`, setRemoveArm: 'Tap again to remove',
+        lookLabel: 'Choose a look', looks: ['Adventure', 'Rainbow', 'Space', 'Jungle', 'Ocean'], tagline: 'Learn letters and words with your animal friends' },
   g: {
     introAlfabet: ['Let’s type the whole alphabet!', 'Time for the alphabet, from start to finish!', 'The alphabet is waiting. Here we go!'],
     introHitta: ['Let’s find letters on the keyboard!', 'Time to look for letters!', 'Can you find the letters? Here we go!'],
@@ -142,7 +144,8 @@ en: {
   },
 },
 es: {
-  ui: { setReload: '🔄 Cargar la última versión', playersLabel: '¿Quién juega?', setRemove: n => `Quitar al jugador ${n}`, setRemoveArm: 'Pulsa otra vez para quitar' },
+  ui: { setReload: '🔄 Cargar la última versión', playersLabel: '¿Quién juega?', setRemove: n => `Quitar al jugador ${n}`, setRemoveArm: 'Pulsa otra vez para quitar',
+        lookLabel: 'Elige un estilo', looks: ['Aventura', 'Arcoíris', 'Espacio', 'Selva', 'Océano'], tagline: 'Aprende letras y palabras con tus amigos animales' },
   g: {
     introAlfabet: ['¡Vamos a escribir todo el abecedario!', '¡Toca el abecedario, de principio a fin!', 'El abecedario nos espera. ¡Vamos!'],
     introHitta: ['¡Vamos a buscar letras en el teclado!', '¡Hora de buscar letras!', '¿Encuentras las letras? ¡Vamos!'],
@@ -160,7 +163,8 @@ es: {
   },
 },
 fr: {
-  ui: { setReload: '🔄 Charger la dernière version', playersLabel: 'Qui joue ?', setRemove: n => `Supprimer le joueur ${n}`, setRemoveArm: 'Appuyez encore pour supprimer' },
+  ui: { setReload: '🔄 Charger la dernière version', playersLabel: 'Qui joue ?', setRemove: n => `Supprimer le joueur ${n}`, setRemoveArm: 'Appuyez encore pour supprimer',
+        lookLabel: 'Choisis un décor', looks: ['Aventure', 'Arc-en-ciel', 'Espace', 'Jungle', 'Océan'], tagline: 'Apprends les lettres et les mots avec tes amis les animaux' },
   g: {
     introAlfabet: ['On écrit tout l’alphabet !', 'C’est l’heure de l’alphabet, du début à la fin !', 'L’alphabet nous attend. C’est parti !'],
     introHitta: ['On cherche des lettres sur le clavier !', 'C’est l’heure de chercher des lettres !', 'Tu trouves les lettres ? C’est parti !'],
@@ -178,7 +182,8 @@ fr: {
   },
 },
 pt: {
-  ui: { setReload: '🔄 Carregar a versão mais recente', playersLabel: 'Quem vai jogar?', setRemove: n => `Remover o jogador ${n}`, setRemoveArm: 'Toque de novo para remover' },
+  ui: { setReload: '🔄 Carregar a versão mais recente', playersLabel: 'Quem vai jogar?', setRemove: n => `Remover o jogador ${n}`, setRemoveArm: 'Toque de novo para remover',
+        lookLabel: 'Escolha um visual', looks: ['Aventura', 'Arco-íris', 'Espaço', 'Selva', 'Oceano'], tagline: 'Aprenda letras e palavras com seus amigos animais' },
   g: {
     introAlfabet: ['Vamos escrever o alfabeto inteiro!', 'Hora do alfabeto, do começo ao fim!', 'O alfabeto está esperando. Vamos lá!'],
     introHitta: ['Vamos procurar letras no teclado!', 'Hora de procurar letras!', 'Você encontra as letras? Vamos lá!'],
@@ -196,7 +201,8 @@ pt: {
   },
 },
 de: {
-  ui: { setReload: '🔄 Neueste Version laden', playersLabel: 'Wer spielt?', setRemove: n => `Spieler ${n} entfernen`, setRemoveArm: 'Zum Entfernen noch mal tippen' },
+  ui: { setReload: '🔄 Neueste Version laden', playersLabel: 'Wer spielt?', setRemove: n => `Spieler ${n} entfernen`, setRemoveArm: 'Zum Entfernen noch mal tippen',
+        lookLabel: 'Wähle ein Aussehen', looks: ['Abenteuer', 'Regenbogen', 'Weltraum', 'Dschungel', 'Ozean'], tagline: 'Lerne Buchstaben und Wörter mit deinen Tierfreunden' },
   g: {
     introAlfabet: ['Jetzt schreiben wir das ganze Alphabet!', 'Zeit für das Alphabet, von Anfang bis Ende!', 'Das Alphabet wartet. Los geht’s!'],
     introHitta: ['Jetzt suchen wir Buchstaben auf der Tastatur!', 'Zeit, Buchstaben zu suchen!', 'Findest du die Buchstaben? Los geht’s!'],

@@ -26,12 +26,26 @@ const ORD_WORDS   = [0, 2, 3, 4, 5, 6];    // words per round in the spelling ga
 const PROG_GAMES = ['ord', ...WORD_GAMES, 'memory']; // games with their own word level
 const PER_LEVEL = 20, MAX_WORD_LEVEL = 20;
 const VOICE_EM = ['🦄','🐞','🦉','🐻','🦊'];
-const STICKERS = [...'🦄🐞🌈⭐🌸🦋🍓🧁👑💖🐱🐶🍭🎀🌟🐰🍉🎈🐥🌻'];
+const STICKERS = [...'🦄🐞🌈⭐🌸🦋🍓🧁👑💖🐱🐶🍭🎀🌟🐰🍉🎈🐥🌻🚀🦖⚽🚗🐯🐙🤖🏆🚂🦈🐉🪐🦁🐬🎸🛹🚁🦕🐢🎯'];
+
+// Looks: colours (set in index.html), a mascot, background decorations and the confetti of each.
+const LOOKS = [
+  {id:'adventure', em:'🏕️', hero:'🦊', marker:'🦊', walker:'🦔', decor:['⛰️','🌳','☀️','🎈','🌲'], fx:['⭐','🎈','🦊','🌟','✨','🍃','🏆']},
+  {id:'rainbow',   em:'🦄', hero:'🦄', marker:'🐞', walker:'🐞', decor:[],                     fx:['⭐','💖','🦄','🐞','🌸','✨','🌈']},
+  {id:'space',     em:'🚀', hero:'🚀', marker:'🚀', walker:'🛸', decor:['🪐','⭐','🌙','☄️','✨'], fx:['⭐','🚀','🪐','👽','✨','🌟','☄️']},
+  {id:'jungle',    em:'🦖', hero:'🦖', marker:'🦕', walker:'🐒', decor:['🌴','🌿','🦜','🌴','🍃'], fx:['⭐','🦖','🌴','🦜','✨','🍃','🐒']},
+  {id:'ocean',     em:'🐙', hero:'🐙', marker:'🐠', walker:'🐢', decor:['🐚','🪸','🐬','🫧','🐳'], fx:['⭐','🐠','🐙','🫧','✨','🐬','🐚']},
+];
+// Where the five background decorations sit: [left %, top %, size in vmin].
+const DECOR_SPOTS = [[3,62,24],[76,58,28],[10,10,13],[80,8,15],[44,78,17]];
+// The pictures that fill the progress row, per game.
+const PIPS = {hitta:['🎯','🔎'], lyssna:['👂','🎧','🔔'], para:['🧩','🔗'], ord:['✏️','📝','📖'], bildord:['🖼️','📷'], lasord:['📖','📚'],
+  forsta:['🔤','🎧'], saknad:['🧩','🔎'], fanga:['☔','💧'], memory:['🃏','🧠'], rimma:['🎵','🎶','🥁']};
 const cap = s => s[0].toUpperCase() + s.slice(1);
 
 /* ---------- state ---------- */
 const KEY = 'letter-adventure-v1';
-const S = {name:'', lang:'en', letterCase:'upper', voice:true, voiceChar:0, speed:1, sfx:true, kb:true, stars:0, stickers:[], age:null, level:2, boards:{}, prog:{}, profiles:{}};
+const S = {name:'', lang:'en', letterCase:'upper', voice:true, voiceChar:0, speed:1, sfx:true, kb:true, stars:0, stickers:[], age:null, level:2, look:'adventure', boards:{}, prog:{}, profiles:{}};
 try { Object.assign(S, JSON.parse(localStorage.getItem(KEY)) || {}); } catch {}
 if (!LANGS[S.lang]) S.lang = 'en';
 if (!VOICE_EM[S.voiceChar]) S.voiceChar = 0;
@@ -57,12 +71,21 @@ if (!LEVELS[S.level]) S.level = 2;
 const LV = () => LEVELS[S.level];
 const save = () => { try { stashPlayer(); localStorage.setItem(KEY, JSON.stringify(S)); } catch {} };
 
+/* ---------- looks ---------- */
+const look = () => LOOKS.find(l => l.id === S.look) || LOOKS[0];
+function applyLook(){
+  const l = look(), root = document.documentElement;
+  root.dataset.look = l.id; root.style.setProperty('--marker', `"${l.marker}"`);
+  $('#hero').textContent = l.hero; $('#walker').textContent = l.walker;
+  $('#decor').innerHTML = l.decor.map((em, i) => `<span style="left:${DECOR_SPOTS[i][0]}%; top:${DECOR_SPOTS[i][1]}%; font-size:${DECOR_SPOTS[i][2]}vmin">${em}</span>`).join('');
+}
+
 /* ---------- players ----------
    Each name has its own stars, stickers, word levels, age, difficulty, letter case and voice.
    The fields of the player who is playing live directly in S; the others wait in S.profiles.
    Language, sound settings and the alphabet top list are shared by everyone on the device. */
-const PLAYER_FIELDS = ['name','age','level','letterCase','voiceChar','stars','stickers','prog'];
-const NEW_PLAYER = () => ({age:null, level:2, letterCase:'upper', stars:0, stickers:[], prog:{}});
+const PLAYER_FIELDS = ['name','age','level','letterCase','voiceChar','look','stars','stickers','prog'];
+const NEW_PLAYER = () => ({age:null, level:2, letterCase:'upper', look:'adventure', stars:0, stickers:[], prog:{}});
 const playerKey = n => (n || '').trim().toLocaleLowerCase();
 const cleanName = v => v.trim().replace(/\s+/g,' ').slice(0,16);
 const copy = o => JSON.parse(JSON.stringify(o));
@@ -224,7 +247,7 @@ function burst(n, el){
   const r = el ? el.getBoundingClientRect() : {left:innerWidth/2, top:innerHeight/2, width:0, height:0};
   const x = r.left + r.width/2, y = r.top + r.height/2;
   for (let i=0;i<n;i++){
-    const s = document.createElement('span'); s.textContent = pick(['⭐','💖','🦄','🐞','🌸','✨','🌈']);
+    const s = document.createElement('span'); s.textContent = pick(look().fx);
     s.style.left = x+'px'; s.style.top = y+'px'; $('#fx').append(s);
     const a = Math.random()*Math.PI*2, d = 140 + Math.random()*260;
     s.animate([{transform:'translate(-50%,-50%) scale(.3)', opacity:1},
@@ -235,7 +258,7 @@ function burst(n, el){
 function rain(n){
   if (reduced) n = Math.ceil(n/5);
   for (let i=0;i<n;i++){
-    const s = document.createElement('span'); s.textContent = pick(['⭐','💖','🦄','🐞','🌸','🎀','🌈','🎈']);
+    const s = document.createElement('span'); s.textContent = pick(look().fx);
     s.style.left = Math.random()*100+'%'; s.style.top = '-50px'; $('#fx').append(s);
     s.animate([{transform:'translateY(0) rotate(0)'},{transform:`translateY(${innerHeight+120}px) rotate(${Math.random()*720-360}deg)`}],
               {duration:2200+Math.random()*2600, delay:Math.random()*1800, easing:'linear'}).onfinish = () => s.remove();
@@ -259,7 +282,7 @@ function applyLang(){
   $('#privacyLink').href = 'privacy.html#' + S.lang;
   $('#langSeg').innerHTML = ['en','es','fr','pt','de','sv'].map(k => [k, LANGS[k]]).map(([k, L]) => `<button data-lang="${k}" aria-pressed="${k===S.lang}">${L.label || {sv:'Svenska', en:'English'}[k]}</button>`).join('');
   $('#aboutList').innerHTML = GAME_META.map((gm,i)=> !T.games[i] ? '' : `<li>${gm.em} <b>${T.games[i][0]}</b> – ${T.games[i][1]}</li>`).join('');
-  $$('.voices').forEach(box => box.innerHTML = VOICE_EM.map((em,i)=>`<button class="voice" data-voice="${i}"><span>${em}</span>${T.voices[i]}</button>`).join(''));
+  $$('.voices:not(#looks):not(#players)').forEach(box => box.innerHTML = VOICE_EM.map((em,i)=>`<button class="voice" data-voice="${i}"><span>${em}</span>${T.voices[i]}</button>`).join(''));
   refresh();
 }
 // The game cards; the word games also show their word level and how far it has come.
@@ -285,6 +308,8 @@ function refresh(){
   $$('[data-voice]').forEach(b => b.setAttribute('aria-pressed', +b.dataset.voice===S.voiceChar));
   $$('[data-level]').forEach(b => b.setAttribute('aria-pressed', +b.dataset.level===S.level));
   $$('[data-age]').forEach(b => b.setAttribute('aria-pressed', +b.dataset.age===S.age));
+  $('#looks').innerHTML = LOOKS.map((l,i) => `<button class="voice" data-look="${l.id}" aria-pressed="${l.id===look().id}"><span>${l.em}</span>${T.ui.looks[i]}</button>`).join('');
+  applyLook();
   $('#levelChip').textContent = T.ui.levelChip(S.level);
   $$('.who').forEach(e => e.textContent = VOICE_EM[S.voiceChar]);
   const st = $('#stickers');
@@ -473,7 +498,7 @@ function render(){
   card.classList.toggle('tap', card.textContent==='👂');
   const p = $('#progress');
   if (id==='alfabet') p.innerHTML = ALPHA.map((L,i)=>`<span class="dot ${i<G.i?'done':i===G.i?'now':''}" ${i<G.i?`style="background:var(${COLORS[i%6]})"`:''}>${hide && i>=G.i ? '' : disp(L,S.letterCase==='lower'?'lower':'upper')}</span>`).join('');
-  else p.innerHTML = G.items.map((_,i)=>`<span class="pip ${i<G.i?'done':''}">${i<G.i?(i%2?'🦄':'🐞'):''}</span>`).join('');
+  else p.innerHTML = pipsHtml(G.items.length, G.i);
   // On the easiest level the right key is lit from the start in the typing games.
   if (LV().hintAt===0 && ['alfabet','hitta','ord','saknad'].includes(id)) hint();
 }
@@ -570,7 +595,8 @@ function clearStage(){
   $('#memory').innerHTML = ''; $('#memory').hidden = true;
   $('#card').hidden = false;
 }
-const pipsHtml = (total, done) => Array.from({length: total}, (_, i) => `<span class="pip ${i<done?'done':''}">${i<done?(i%2?'🦄':'🐞'):''}</span>`).join('');
+const pipIcon = i => { const set = PIPS[G && G.id] || ['⭐']; return set[i % set.length]; };
+const pipsHtml = (total, done) => Array.from({length: total}, (_, i) => `<span class="pip ${i<done?'done':''}">${i<done?pipIcon(i):''}</span>`).join('');
 
 /* ---------- rhyme ---------- */
 // A rhyme word as a spoken part: "hus?" when it is the question, "Hus." otherwise.
@@ -594,7 +620,7 @@ function startMemory(){
   G.items = words; G.mem = {cards, open: [], found: 0};
   const box = $('#memory');
   box.style.setProperty('--cols', cards.length<=6 ? 3 : cards.length<=16 ? 4 : 5);
-  box.innerHTML = cards.map((cd,i) => `<button class="mcard" data-m="${i}"><span class="back">🦄</span><span class="front">${cd.pic ? `<span class="pic">${cd.x.e}</span>` : `${S.level<=2 ? `<span class="pic small">${cd.x.e}</span>` : ''}<span class="mw" style="--n:${cd.x.w.length}">${disp(cd.x.w, cd.x.c)}</span>`}</span></button>`).join('');
+  box.innerHTML = cards.map((cd,i) => `<button class="mcard" data-m="${i}"><span class="back">${look().em}</span><span class="front">${cd.pic ? `<span class="pic">${cd.x.e}</span>` : `${S.level<=2 ? `<span class="pic small">${cd.x.e}</span>` : ''}<span class="mw" style="--n:${cd.x.w.length}">${disp(cd.x.w, cd.x.c)}</span>`}</span></button>`).join('');
   $('#card').hidden = true; $('#choices').hidden = true; box.hidden = false;
   show('game'); buildKb();
   $('#progress').innerHTML = pipsHtml(words.length, 0);
@@ -715,6 +741,8 @@ document.addEventListener('click', e => {
   if (c){ S.letterCase = c.dataset.case; save(); refresh(); if (!dlg.open) say(g('case'+cap(S.letterCase))); return; }
   const lv = e.target.closest('[data-level]');
   if (lv){ S.level = +lv.dataset.level; save(); refresh(); say({id:`level_${S.level-1}`, text:T.g.level[S.level-1]}); return; }
+  const lk = e.target.closest('#looks [data-look]');
+  if (lk){ syncName(); S.look = lk.dataset.look; save(); refresh(); return; }
   const ag = e.target.closest('[data-age]');
   if (ag){ syncName(); S.age = +ag.dataset.age; S.level = S.age - 2; save(); refresh(); return; }
   const v = e.target.closest('[data-voice]');
