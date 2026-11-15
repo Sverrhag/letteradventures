@@ -97,9 +97,16 @@ addEventListener('beforeinstallprompt', e => { e.preventDefault(); installPrompt
 addEventListener('appinstalled', () => { installPrompt = null; $('#installBtn').hidden = true; });
 
 /* ---------- phrases: {id, text} parts ---------- */
+// Picks one of n alternatives, never the one picked last time for the same key.
+const lastPick = {};
+function vary(key, n){
+  let i = Math.floor(Math.random()*n);
+  if (n > 1 && i === lastPick[key]) i = (i + 1 + Math.floor(Math.random()*(n-1))) % n;
+  return lastPick[key] = i;
+}
 function g(key){
   const v = T.g[key];
-  if (Array.isArray(v)){ const i = Math.floor(Math.random()*v.length); return {id:`${key}_${i}`, text:shown(v[i])}; }
+  if (Array.isArray(v)){ const i = vary(key, v.length); return {id:`${key}_${i}`, text:shown(v[i])}; }
   return {id:key, text:shown(v)};
 }
 // The caption must not give away what the screen hides: the letter in the listening
@@ -108,6 +115,11 @@ const secret = () => G && !G.revealed && (G.id==='lyssna' || (!LV().show && G.id
 // The plain letter for an accented one (É -> E), unless the language counts it as a letter of its own (Å, Ñ).
 const base = ch => !ch || ALPHA.includes(ch) ? ch : ch.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 const per = (key, L, open) => { L = base(L); return {id:`${key}_${ALPHA.indexOf(L)}`, text:T.per[key](!open && secret() ? '?' : L)}; };
+// A per-letter sentence in one of its wordings ("find", "find2", "find3"), varied from time to time.
+function perV(key, L, open){
+  const keys = [key, key+'2', key+'3'].filter(k => T.per[k]);
+  return per(keys[vary('per:'+key, keys.length)], L, open);
+}
 const wordPart = (key, it) => ({id:`${key}_${it.wi}`, text:T.perWord[key](key==='word' && secret() ? '…' : it.w.toLowerCase())});
 
 /* ---------- voice: recorded clips ---------- */
@@ -337,14 +349,15 @@ function prompt(){
   switch (G.id){
     case 'alfabet':
       if (!LV().say) return []; // from level 3 the voice no longer says which letter comes next
-      if (G.i===0) return [per('start',L)];
+      if (G.i===0) return [perV('start',L)];
       if (G.i===ALPHA.length-1) return [g('alphaLast')];
-      return [per('next',L)];
-    case 'hitta': case 'lyssna': return [per(findKey(it.c), L)];
-    case 'para': return [per(it.c==='upper' ? 'pairU' : 'pairL', L)];
+      return [perV('next',L)];
+    case 'hitta': case 'lyssna': return [perV(findKey(it.c), L)];
+    case 'para': return [perV(it.c==='upper' ? 'pairU' : 'pairL', L)];
     case 'ord':
-      if (G.pos>0) return LV().say ? [per('next',L)] : [];
-      return [it.isName ? g('nameStart') : wordPart('word',it), LV().say && per('start',L)];
+      if (G.pos>0) return LV().say ? [perV('next',L)] : [];
+      // The word is introduced either as one sentence ("Spell the word sun.") or as a question followed by the word.
+      return [...(it.isName ? [g('nameStart')] : vary('ordLead', 3)===0 ? [wordPart('word',it)] : [g('askOrd'), sayWord(it, LV().show)]), LV().say && perV('start',L)];
     // Word games: the voice reads the word aloud on the easier levels only.
     case 'bildord': return [g('askBildord'), LV().say && sayWord(it)];
     case 'lasord': return [g('askLasord'), LV().say && sayWord(it, true)];
@@ -449,7 +462,7 @@ function press(k){
     G.pos++;
     if (G.pos < it.w.length){ render(); say([g('short'), ...prompt()]); return; }
     G.lock = true; markWord(it); render(); burst(16, $('#card'));
-    say([it.isName ? g('wroteName') : wordPart('wrote',it), g('long')], () => advance(last)); return;
+    say(it.isName ? [g('wroteName'), g('long')] : vary('ordDone', 2)===0 ? [wordPart('wrote',it), g('long')] : [sayWord(it, true), g('wroteMore')], () => advance(last)); return;
   }
   if (G.id==='saknad'){
     G.pos++;
