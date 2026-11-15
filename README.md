@@ -13,7 +13,7 @@ phrases-more.js        Spanish, French, Portuguese and German
 audio/<lang>/v<1-5>/   Recorded voice clips, five voices per language
 icons/                 App icons
 manifest.webmanifest   Makes the game installable in full screen
-tools/                 Scripts that record the voice clips and draw the icons
+tools/                 The voice-recording script and the icon artwork (icon.html)
 CNAME                  Custom domain for GitHub Pages
 ```
 
@@ -34,3 +34,13 @@ never be committed.
 
 Pushing to `main` publishes the site to GitHub Pages through
 `.github/workflows/deploy.yml`.
+
+## Changing the app icon
+
+The icon is `tools/icon.html` rendered to PNG in three sizes with headless Chrome:
+
+```
+chrome --headless=new --hide-scrollbars --window-size=512,512 --screenshot=icons/icon-512.png tools/icon.html
+```
+
+Repeat with 192 and 180 for `icon-192.png` and `icon-180.png`.

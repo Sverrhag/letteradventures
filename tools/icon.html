@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<!-- The app icon: the unicorn on the game's pastel sky.
+     Rendered to PNG with a headless browser, see README.md.
+     The unicorn stays inside the middle 80 %, so the icon also works when a
+     phone crops it to a circle or rounded square (a "maskable" icon). -->
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  html, body { margin: 0; width: 100vw; height: 100vh; overflow: hidden; }
+  body {
+    display: grid; place-items: center;
+    background: linear-gradient(160deg, #ffd9ec, #e9dcff 50%, #d2f0ff);
+    font-family: "Segoe UI Emoji", "Noto Color Emoji", "Apple Color Emoji", sans-serif;
+  }
+  .rainbow {
+    position: fixed; left: 50%; top: 58%; width: 96vmin; height: 96vmin; transform: translate(-50%, -50%);
+    border-radius: 50%; opacity: .55;
+    background: radial-gradient(circle closest-side, transparent 0 70%, #b893ff 70% 75%, #69bcff 75% 80%, #6ad895 80% 85%, #ffd84a 85% 90%, #ffa552 90% 95%, #ff7a93 95% 100%);
+  }
+  .unicorn { position: relative; font-size: 58vmin; line-height: 1; }
+</style>
+</head>
+<body>
+<div class="rainbow"></div>
+<div class="unicorn">🦄</div>
+</body>
+</html>
