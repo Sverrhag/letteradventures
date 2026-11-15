@@ -62,3 +62,11 @@ The game is for children aged 3 to 7, so it must not send anything to other serv
 - The letter clips are preloaded all at once (`preloadLetters` in `game.js`), so that the order
   of audio requests cannot reveal the name a child is spelling.
 - Keep `privacy.html` in step with any change to what is stored or fetched.
+
+## The player's name, spoken
+
+Common first names are recorded once per voice with `node tools/generate-names.mjs --lang <lang>`,
+from the list in `tools/names/<lang>.txt`. The clips are published as packs per first letter
+(`audio/<lang>/v<n>/names/<letter>.bin` + `.json`). The game downloads the whole pack for the
+first letter and cuts the name out on the device, so the host only learns the first letter –
+keep it that way, and keep `privacy.html` in step. A name that is not in the list is not said.

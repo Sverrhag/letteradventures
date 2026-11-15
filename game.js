@@ -169,8 +169,9 @@ function vary(key, n){
 function g(key){
   const v = T.g[key];
   if (v === undefined) return null; // a phrase this language does not have yet
-  if (Array.isArray(v)){ const i = vary(key, v.length); return {id:`${key}_${i}`, text:shown(v[i])}; }
-  return {id:key, text:shown(v)};
+  const named = raw => /\{[^}]*n\}[^\p{L}]*$/u.test(raw); // the phrase has a place for the player's name
+  if (Array.isArray(v)){ const i = vary(key, v.length); return {id:`${key}_${i}`, text:shown(v[i]), named:named(v[i])}; }
+  return {id:key, text:shown(v), named:named(v)};
 }
 // The caption must not give away what the screen hides: the letter in the listening
 // game, and on the levels without visible letters, until the answer has been revealed.
@@ -187,6 +188,30 @@ const wordPart = (key, it) => ({id:`${key}_${it.wi}`, text:T.perWord[key](key===
 
 /* ---------- voice: recorded clips ---------- */
 const player = new Audio();
+
+/* ---------- the player's name, spoken ----------
+   Common names are recorded once per voice and packed by first letter. The game downloads the
+   whole pack for the first letter and cuts the name out here, so the web host only ever sees
+   the first letter. A name that is not in the pack is simply not said. */
+let nameUrl = null, nameFor = '';
+const plainText = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+async function loadNameClip(){
+  const k = playerKey(S.name), want = `${S.lang}/v${S.voiceChar+1}/${k}`;
+  if (nameFor === want) return;
+  nameFor = want;
+  if (nameUrl){ URL.revokeObjectURL(nameUrl); nameUrl = null; }
+  if (!k) return;
+  const first = plainText(k)[0], pack = `audio/${S.lang}/v${S.voiceChar+1}/names/${/^[a-z]$/.test(first) ? first : '0'}`;
+  try {
+    const index = await (await fetch(pack + '.json')).json();
+    const hit = index[k] || index[plainText(k)];
+    if (!hit) return;
+    const bytes = await (await fetch(pack + '.bin')).arrayBuffer();
+    if (nameFor !== want) return;
+    nameUrl = URL.createObjectURL(new Blob([bytes.slice(hit[0], hit[0] + hit[1])], {type: 'audio/mpeg'}));
+  } catch {}
+}
+const namePart = () => ({url: nameUrl, text: ''});
 let tok = 0;
 // The clips that name a letter are fetched all at once, in a fixed order, and kept in memory.
 // Fetched one by one while a child spells their name, their order would show the name to the web host.
@@ -209,7 +234,8 @@ async function preloadLetters(){
 const clipUrl = id => clipCache[id] || `audio/${S.lang}/v${S.voiceChar+1}/${id}.mp3`;
 function say(parts, then){
   parts = [].concat(parts).filter(Boolean);
-  const text = parts.map(p => p.text).join(' ');
+  if (nameUrl) parts = parts.flatMap(p => p.named ? [p, namePart()] : [p]); // "Well done!" + "Moa!"
+  const text = parts.map(p => p.text).filter(Boolean).join(' ');
   $$('.say').forEach(e => e.textContent = text);
   const my = ++tok; let done = false, tm, i = 0;
   const fin = () => { if (done) return; done = true; clearTimeout(tm); if (then && my===tok) then(); };
@@ -222,7 +248,7 @@ function say(parts, then){
     const p = parts[i++]; let moved = false;
     const go = () => { if (!moved){ moved = true; next(); } };
     player.onended = go; player.onerror = go;
-    player.src = clipUrl(p.id); player.playbackRate = S.speed;
+    player.src = p.url || clipUrl(p.id); player.playbackRate = S.speed;
     player.play().catch(go);
   };
   next();
@@ -320,12 +346,15 @@ function refresh(){
 }
 function goHome(first){
   G = null; stopClock(); clearStage(); show('home'); refresh(); preloadLetters();
-  say(g(first ? 'greet' : 'homeAgain'));
+  // With a recorded name the greeting is said as "Hi" + name + the rest.
+  if (first && nameUrl && T.g.hi) say([{id:'hi', text:shown(T.g.greet)}, namePart(), {id:'greetRest', text:''}]);
+  else say(g(first ? 'greet' : 'homeAgain'));
 }
 function begin(){
   syncName(); save();
   try { ac = ac || new (window.AudioContext||window.webkitAudioContext)(); ac.resume?.(); } catch {}
-  goHome(true);
+  // Wait briefly for the name clip, so the very first greeting can use it.
+  Promise.race([loadNameClip(), new Promise(r => setTimeout(r, 1500))]).then(() => goHome(true));
 }
 
 document.addEventListener('click', e => { const b = e.target.closest('[data-g]'); if (b) startGame(b.dataset.g); });
@@ -730,7 +759,7 @@ $('#installBtn').onclick = async () => {
 };
 showInstallState();
 matchMedia('(display-mode: fullscreen), (display-mode: standalone)').addEventListener?.('change', showInstallState);
-$('#langSeg').addEventListener('click', e => { const b = e.target.closest('[data-lang]'); if (!b) return; S.lang = b.dataset.lang; save(); applyLang(); });
+$('#langSeg').addEventListener('click', e => { const b = e.target.closest('[data-lang]'); if (!b) return; S.lang = b.dataset.lang; save(); applyLang(); loadNameClip(); });
 
 const dlg = $('#settings');
 $('#openSettings').onclick = () => { refresh(); $('#fullscreen').hidden = !document.fullscreenEnabled; dlg.showModal(); };
@@ -746,7 +775,7 @@ document.addEventListener('click', e => {
   const ag = e.target.closest('[data-age]');
   if (ag){ syncName(); S.age = +ag.dataset.age; S.level = S.age - 2; save(); refresh(); return; }
   const v = e.target.closest('[data-voice]');
-  if (v){ if (screen==='start') syncName(); S.voiceChar = +v.dataset.voice; save(); refresh(); if (screen!=='start') preloadLetters(); say({id:'hello', text:T.hello[S.voiceChar]}); }
+  if (v){ if (screen==='start') syncName(); S.voiceChar = +v.dataset.voice; save(); refresh(); if (screen!=='start'){ preloadLetters(); loadNameClip(); } say({id:'hello', text:T.hello[S.voiceChar]}); }
 });
 $('#optVoice').onchange = e => { S.voice = e.target.checked; if (!S.voice) player.pause(); save(); };
 $('#optSfx').onchange = e => { S.sfx = e.target.checked; save(); };

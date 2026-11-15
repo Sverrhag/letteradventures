@@ -1884,5 +1884,7 @@
  "word_399": "en-US-Chirp3-HD-Puck|1|Spell the word squirrel.",
  "say_398": "en-US-Chirp3-HD-Puck|1|Flamingo.",
  "wrote_399": "en-US-Chirp3-HD-Puck|1|You spelled squirrel!",
- "say_399": "en-US-Chirp3-HD-Puck|1|Squirrel."
+ "say_399": "en-US-Chirp3-HD-Puck|1|Squirrel.",
+ "hi": "en-US-Chirp3-HD-Puck|1|Hi,",
+ "greetRest": "en-US-Chirp3-HD-Puck|1|Welcome to Letter Adventures! What would you like to play?"
 }

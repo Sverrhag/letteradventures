@@ -1927,5 +1927,7 @@
  "findU2_28": "sv-SE-Chirp3-HD-Puck|1|Var är stora Ö?",
  "findU3_28": "sv-SE-Chirp3-HD-Puck|1|Kan du trycka på stora Ö?",
  "findL2_28": "sv-SE-Chirp3-HD-Puck|1|Var är lilla Ö?",
- "findL3_28": "sv-SE-Chirp3-HD-Puck|1|Kan du trycka på lilla Ö?"
+ "findL3_28": "sv-SE-Chirp3-HD-Puck|1|Kan du trycka på lilla Ö?",
+ "hi": "sv-SE-Chirp3-HD-Puck|1|Hej,",
+ "greetRest": "sv-SE-Chirp3-HD-Puck|1|Välkommen till Letter Adventures! Vad vill du spela?"
 }

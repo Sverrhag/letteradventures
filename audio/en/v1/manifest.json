@@ -1884,5 +1884,7 @@
  "findU2_25": "en-US-Chirp3-HD-Aoede|1|Where is big Z?",
  "findU3_25": "en-US-Chirp3-HD-Aoede|1|Can you press big Z?",
  "findL2_25": "en-US-Chirp3-HD-Aoede|1|Where is small Z?",
- "findL3_25": "en-US-Chirp3-HD-Aoede|1|Can you press small Z?"
+ "findL3_25": "en-US-Chirp3-HD-Aoede|1|Can you press small Z?",
+ "hi": "en-US-Chirp3-HD-Aoede|1|Hi,",
+ "greetRest": "en-US-Chirp3-HD-Aoede|1|Welcome to Letter Adventures! What would you like to play?"
 }

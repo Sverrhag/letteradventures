@@ -1884,5 +1884,7 @@
  "say_398": "en-US-Chirp3-HD-Charon|1|Flamingo.",
  "word_399": "en-US-Chirp3-HD-Charon|1|Spell the word squirrel.",
  "wrote_399": "en-US-Chirp3-HD-Charon|1|You spelled squirrel!",
- "say_399": "en-US-Chirp3-HD-Charon|1|Squirrel."
+ "say_399": "en-US-Chirp3-HD-Charon|1|Squirrel.",
+ "hi": "en-US-Chirp3-HD-Charon|1|Hi,",
+ "greetRest": "en-US-Chirp3-HD-Charon|1|Welcome to Letter Adventures! What would you like to play?"
 }
