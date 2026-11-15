@@ -1,0 +1,44 @@
+{
+  "sv": [
+    { "name": "sv-SE-Chirp3-HD-Aoede" },
+    { "name": "sv-SE-Chirp3-HD-Leda" },
+    { "name": "sv-SE-Chirp3-HD-Kore" },
+    { "name": "sv-SE-Chirp3-HD-Charon" },
+    { "name": "sv-SE-Chirp3-HD-Puck" }
+  ],
+  "en": [
+    { "name": "en-US-Chirp3-HD-Aoede" },
+    { "name": "en-US-Chirp3-HD-Leda" },
+    { "name": "en-US-Chirp3-HD-Kore" },
+    { "name": "en-US-Chirp3-HD-Charon" },
+    { "name": "en-US-Chirp3-HD-Puck" }
+  ],
+  "es": [
+    { "name": "es-ES-Chirp3-HD-Aoede" },
+    { "name": "es-ES-Chirp3-HD-Leda" },
+    { "name": "es-ES-Chirp3-HD-Kore" },
+    { "name": "es-ES-Chirp3-HD-Charon" },
+    { "name": "es-ES-Chirp3-HD-Puck" }
+  ],
+  "fr": [
+    { "name": "fr-FR-Chirp3-HD-Aoede" },
+    { "name": "fr-FR-Chirp3-HD-Leda" },
+    { "name": "fr-FR-Chirp3-HD-Kore" },
+    { "name": "fr-FR-Chirp3-HD-Charon" },
+    { "name": "fr-FR-Chirp3-HD-Puck" }
+  ],
+  "pt": [
+    { "name": "pt-BR-Chirp3-HD-Aoede" },
+    { "name": "pt-BR-Chirp3-HD-Leda" },
+    { "name": "pt-BR-Chirp3-HD-Kore" },
+    { "name": "pt-BR-Chirp3-HD-Charon" },
+    { "name": "pt-BR-Chirp3-HD-Puck" }
+  ],
+  "de": [
+    { "name": "de-DE-Chirp3-HD-Aoede" },
+    { "name": "de-DE-Chirp3-HD-Leda" },
+    { "name": "de-DE-Chirp3-HD-Kore" },
+    { "name": "de-DE-Chirp3-HD-Charon" },
+    { "name": "de-DE-Chirp3-HD-Puck" }
+  ]
+}
