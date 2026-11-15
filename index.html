@@ -219,6 +219,8 @@ dialog .voice[aria-pressed="true"]{background:var(--card)}
 dialog{border:0; border-radius:30px; background:var(--card); color:var(--ink); padding:22px; width:min(520px,calc(100vw - 32px)); max-height:calc(100% - 32px); box-shadow:0 20px 60px var(--shadow); font-family:var(--f-ui)}
 dialog::backdrop{background:rgba(40,15,70,.55)}
 dialog h2{margin:0 0 12px; font-size:26px}
+#fbText{display:block; width:100%; margin:12px 0 8px; padding:12px 14px; font:inherit; font-size:18px; line-height:1.4; color:var(--ink); background:var(--empty); border:2px solid var(--line); border-radius:16px; resize:vertical; user-select:text; -webkit-user-select:text}
+.addr{margin:0 0 6px; font-weight:600; user-select:all; -webkit-user-select:all; overflow-wrap:anywhere}
 .opt{display:flex; align-items:center; justify-content:space-between; gap:14px; padding:10px 0; border-top:2px solid var(--line); flex-wrap:wrap}
 .opt label{font-weight:600}
 .opt select{font:inherit; padding:6px 10px; border-radius:12px; max-width:240px; background:var(--empty); color:var(--ink); border:2px solid var(--line)}
@@ -346,8 +348,17 @@ dialog .seg button{font-size:18px; padding:6px 14px}
   <div class="opt"><span></span><button class="pill" id="reload" data-t="setReload"></button></div>
   <div class="opt"><label for="optKb" data-t="setKb"></label><input type="checkbox" id="optKb"></div>
   <div class="opt"><button class="pill" id="fullscreen" data-t="setFull"></button><button class="pill" id="reset" data-t="setReset"></button></div>
-  <div class="opt"><span></span><button class="pill" id="wipe" data-t="setWipe"></button></div>
+  <div class="opt"><button class="pill" id="openFeedback" data-t="setFeedback"></button><button class="pill" id="wipe" data-t="setWipe"></button></div>
   <div class="opt"><button class="pill" id="changeName" data-t="setChange"></button><button class="big" id="closeSettings" style="font-size:20px" data-t="setDone"></button></div>
+</dialog>
+
+<dialog id="feedbackDlg">
+  <h2 data-t="fbH"></h2>
+  <p class="note" data-t="fbIntro"></p>
+  <textarea id="fbText" rows="6"></textarea>
+  <p class="addr">hello@letteradventures.com</p>
+  <div class="opt"><button class="pill" id="fbCopy" data-t="fbCopy"></button><button class="big" id="fbSend" style="font-size:20px" data-t="fbSend"></button></div>
+  <div class="opt" style="justify-content:flex-end"><button class="pill" id="fbClose" data-t="close"></button></div>
 </dialog>
 
 <dialog id="boardDlg">

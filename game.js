@@ -646,6 +646,20 @@ $('#openBoard').onclick = () => {
   boardDlg.showModal();
 };
 $('#closeBoard').onclick = () => boardDlg.close();
+
+// Feedback goes by ordinary email from the visitor's own mail app; the page itself sends nothing.
+const fbDlg = $('#feedbackDlg'), FEEDBACK_TO = 'hello@letteradventures.com';
+$('#openFeedback').onclick = () => { dlg.close(); $('#fbText').placeholder = T.ui.fbPh; $('#fbCopy').textContent = T.ui.fbCopy; fbDlg.showModal(); $('#fbText').focus(); };
+$('#fbClose').onclick = () => fbDlg.close();
+$('#fbSend').onclick = () => {
+  // The child's name is deliberately left out; only language and difficulty are added, to help answer.
+  const body = `${$('#fbText').value.trim()}\n\n--\nLetter Adventures · ${S.lang} · ${T.ui.levelChip(S.level)}`;
+  location.href = `mailto:${FEEDBACK_TO}?subject=${encodeURIComponent('Letter Adventures: feedback')}&body=${encodeURIComponent(body)}`;
+};
+$('#fbCopy').onclick = async e => {
+  try { await navigator.clipboard.writeText(FEEDBACK_TO); e.target.textContent = T.ui.fbCopied; }
+  catch { const r = document.createRange(); r.selectNodeContents($('.addr')); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); }
+};
 $('#levelChip').onclick = () => $('#openSettings').click();
 $('#installBtn').onclick = async () => {
   if (!installPrompt) return;
@@ -692,7 +706,7 @@ $('#reset').onclick = e => {
 };
 
 document.addEventListener('keydown', e => {
-  if (e.ctrlKey || e.altKey || e.metaKey || e.repeat || dlg.open || boardDlg.open) return;
+  if (e.ctrlKey || e.altKey || e.metaKey || e.repeat || dlg.open || boardDlg.open || fbDlg.open) return;
   if (screen==='start'){ if (e.key==='Enter'){ e.preventDefault(); begin(); } return; }
   if (e.key==='Escape'){ if (screen!=='home') goHome(); return; }
   if (screen==='home'){ const n = e.key.length===1 ? '123456789'.indexOf(e.key) : -1; if (n>=0 && T.games[n]){ e.preventDefault(); startGame(GAME_META[n].id); } return; }
