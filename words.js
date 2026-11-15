@@ -491,7 +491,7 @@ const PER_LEVEL = 20, LEVELS = 20;
 // Languages whose new audio is recorded and published. The others keep their earlier short
 // word list, single wordings and nine games until their clips exist. Add a language here
 // when its clips are committed.
-const READY = ['en', 'sv'];
+const READY = ['en', 'sv', 'es'];
 
 // The usable words of one language as [WORD, picture], in level order.
 function build(lang) {
