@@ -313,10 +313,13 @@ function applyLang(){
 }
 // The game cards; the word games also show their word level and how far it has come.
 function renderCards(){
+  // Numbered in the order they are shown: the letter games first, then the word games.
+  const shownIds = GAME_META.filter((gm,i) => T.games[i]).map(gm => gm.id);
+  const order = [...shownIds.filter(id => !WORD_GROUP.includes(id)), ...shownIds.filter(id => WORD_GROUP.includes(id))];
   const cards = GAME_META.map((gm,i) => {
     if (!T.games[i]) return ''; // a game this language does not have yet
     const pr = PROG_GAMES.includes(gm.id) ? prog(gm.id) : null;
-    return `<button class="game" data-g="${gm.id}" style="background:var(${gm.c})"><span class="num">${i+1}</span><span class="em">${gm.em}</span>${T.games[i][0]}<small>${T.games[i][1]}</small>${pr ? `<small class="lv">${T.ui.wordLevel(pr.lv, pr.done.length)}</small>` : ''}</button>`;
+    return `<button class="game" data-g="${gm.id}" style="background:var(${gm.c})"><span class="num">${order.indexOf(gm.id)+1}</span><span class="em">${gm.em}</span>${T.games[i][0]}<small>${T.games[i][1]}</small>${pr ? `<small class="lv">${T.ui.wordLevel(pr.lv, pr.done.length)}</small>` : ''}</button>`;
   });
   $('#games').innerHTML = cards.filter((_,i) => !WORD_GROUP.includes(GAME_META[i].id)).join('');
   $('#games2').innerHTML = cards.filter((_,i) => WORD_GROUP.includes(GAME_META[i].id)).join('');
