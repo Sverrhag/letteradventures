@@ -548,6 +548,8 @@ $('#optVoice').onchange = e => { S.voice = e.target.checked; if (!S.voice) playe
 $('#optSfx').onchange = e => { S.sfx = e.target.checked; save(); };
 $('#optKb').onchange = e => { S.kb = e.target.checked; save(); buildKb(); };
 $('#optRate').onchange = e => { S.speed = +e.target.value; save(); };
+// Loads the page again, which fetches the newest version of the game. Nothing saved is lost.
+$('#reload').onclick = () => location.reload();
 $('#fullscreen').onclick = () => { (document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen())?.catch?.(()=>{}); };
 let armed = false;
 // Removes everything the game has saved on this device: name, age, settings, stars, stickers and top lists.
