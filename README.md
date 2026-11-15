@@ -10,6 +10,7 @@ index.html             The page and all styles
 game.js                Game logic
 phrases.js             Swedish and English texts, words and spoken phrases
 phrases-more.js        Spanish, French, Portuguese and German
+words.js               The 400-word list in six languages, sorted into 20 word levels
 audio/<lang>/v<1-5>/   Recorded voice clips, five voices per language
 icons/                 App icons
 fonts/                 Fredoka and Andika, served from this site

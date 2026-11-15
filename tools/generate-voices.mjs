@@ -21,6 +21,7 @@ const root = join(here, '..');
 const require = createRequire(import.meta.url);
 const { LANGS, clipList } = require(join(root, 'phrases.js'));
 Object.assign(LANGS, require(join(root, 'phrases-more.js'))); // Spanish, French, Portuguese, German
+require(join(root, 'words.js')).apply(LANGS);                   // the 400-word list
 
 // Five voices per language: unicorn, ladybug, owl, bear, fox.
 const VOICES = JSON.parse(readFileSync(join(here, 'voices.json'), 'utf8'));

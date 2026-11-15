@@ -17,14 +17,16 @@ const GAME_META = [
 const LETTER_GAMES = 5; // the first five are letter games, the rest word games
 const WORD_GAMES = ['bildord','lasord','forsta','saknad'];
 const WORD_ROUNDS = [0, 4, 5, 6, 8, 10];   // words per round on levels 1-5
-const WORD_MAXLEN = [0, 3, 4, 5, 6, 10];   // longest word on levels 1-5
+const ORD_WORDS   = [0, 2, 3, 4, 5, 6];    // words per round in the spelling game, besides the child's name
+const PROG_GAMES = ['ord', ...WORD_GAMES]; // games with their own word level
+const PER_LEVEL = 20, MAX_WORD_LEVEL = 20;
 const VOICE_EM = ['🦄','🐞','🦉','🐻','🦊'];
 const STICKERS = [...'🦄🐞🌈⭐🌸🦋🍓🧁👑💖🐱🐶🍭🎀🌟🐰🍉🎈🐥🌻'];
 const cap = s => s[0].toUpperCase() + s.slice(1);
 
 /* ---------- state ---------- */
 const KEY = 'letter-adventure-v1';
-const S = {name:'', lang:'en', letterCase:'upper', voice:true, voiceChar:0, speed:1, sfx:true, kb:true, stars:0, stickers:[], age:null, level:2, boards:{}};
+const S = {name:'', lang:'en', letterCase:'upper', voice:true, voiceChar:0, speed:1, sfx:true, kb:true, stars:0, stickers:[], age:null, level:2, boards:{}, prog:{}};
 try { Object.assign(S, JSON.parse(localStorage.getItem(KEY)) || {}); } catch {}
 if (!LANGS[S.lang]) S.lang = 'en';
 if (!VOICE_EM[S.voiceChar]) S.voiceChar = 0;
@@ -103,7 +105,9 @@ function g(key){
 // The caption must not give away what the screen hides: the letter in the listening
 // game, and on the levels without visible letters, until the answer has been revealed.
 const secret = () => G && !G.revealed && (G.id==='lyssna' || (!LV().show && G.id!=='para'));
-const per = (key, L, open) => ({id:`${key}_${ALPHA.indexOf(L)}`, text:T.per[key](!open && secret() ? '?' : L)});
+// The plain letter for an accented one (É -> E), unless the language counts it as a letter of its own (Å, Ñ).
+const base = ch => !ch || ALPHA.includes(ch) ? ch : ch.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+const per = (key, L, open) => { L = base(L); return {id:`${key}_${ALPHA.indexOf(L)}`, text:T.per[key](!open && secret() ? '?' : L)}; };
 const wordPart = (key, it) => ({id:`${key}_${it.wi}`, text:T.perWord[key](key==='word' && secret() ? '…' : it.w.toLowerCase())});
 
 /* ---------- voice: recorded clips ---------- */
@@ -202,15 +206,22 @@ function applyLang(){
   $('#name').placeholder = T.ui.namePh;
   $('#privacyLink').href = 'privacy.html#' + S.lang;
   $('#langSeg').innerHTML = ['en','es','fr','pt','de','sv'].map(k => [k, LANGS[k]]).map(([k, L]) => `<button data-lang="${k}" aria-pressed="${k===S.lang}">${L.label || {sv:'Svenska', en:'English'}[k]}</button>`).join('');
-  const cards = GAME_META.map((gm,i)=>`<button class="game" data-g="${gm.id}" style="background:var(${gm.c})"><span class="num">${i+1}</span><span class="em">${gm.em}</span>${T.games[i][0]}<small>${T.games[i][1]}</small></button>`);
-  $('#games').innerHTML = cards.slice(0, LETTER_GAMES).join('');
-  $('#games2').innerHTML = cards.slice(LETTER_GAMES).join('');
   $('#aboutList').innerHTML = GAME_META.map((gm,i)=>`<li>${gm.em} <b>${T.games[i][0]}</b> – ${T.games[i][1]}</li>`).join('');
   $$('.voices').forEach(box => box.innerHTML = VOICE_EM.map((em,i)=>`<button class="voice" data-voice="${i}"><span>${em}</span>${T.voices[i]}</button>`).join(''));
   refresh();
 }
+// The game cards; the word games also show their word level and how far it has come.
+function renderCards(){
+  const cards = GAME_META.map((gm,i) => {
+    const pr = PROG_GAMES.includes(gm.id) ? prog(gm.id) : null;
+    return `<button class="game" data-g="${gm.id}" style="background:var(${gm.c})"><span class="num">${i+1}</span><span class="em">${gm.em}</span>${T.games[i][0]}<small>${T.games[i][1]}</small>${pr ? `<small class="lv">${T.ui.wordLevel(pr.lv, pr.done.length)}</small>` : ''}</button>`;
+  });
+  $('#games').innerHTML = cards.slice(0, LETTER_GAMES).join('');
+  $('#games2').innerHTML = cards.slice(LETTER_GAMES).join('');
+}
 function refresh(){
   const p = T.poss(nm());
+  renderCards();
   // Without a name, languages where "friend's letters" reads badly say "My letters" instead.
   $('#homeTitle').textContent = !S.name && T.homePlain || T.homeTitle(p);
   $('#shelfTitle').textContent = !S.name && T.shelfPlain || T.shelfTitle(p);
@@ -254,7 +265,28 @@ $('#choices').addEventListener('click', e => { const b = e.target.closest('[data
 /* ---------- games ---------- */
 function nameWord(){
   const w = S.name.toLocaleUpperCase(S.lang);
-  return w.length>=2 && w.length<=10 && [...w].every(ch => ALPHA.includes(ch)) ? w : null;
+  return w.length>=2 && w.length<=10 && [...w].every(ch => ALPHA.includes(base(ch))) ? w : null;
+}
+/* ---------- word levels: 20 levels of 20 words, one progress per game and language ---------- */
+function prog(id){ const a = (S.prog[S.lang] ||= {}); return (a[id] ||= {lv:1, done:[]}); }
+// Words for one round: mostly words of the current level that have not been done yet,
+// filled up with words from this and earlier levels for repetition.
+function pickWords(id, n){
+  const p = prog(id), all = T.words.map(([w,e],wi)=>({w,e,wi}));
+  const lo = (p.lv-1)*PER_LEVEL, unlocked = all.slice(0, lo+PER_LEVEL);
+  const fresh = shuffle(all.slice(lo, lo+PER_LEVEL).filter(x => !p.done.includes(x.wi)));
+  const chosen = fresh.slice(0, Math.max(1, Math.ceil(n*2/3)));
+  const rest = shuffle(unlocked.filter(x => !chosen.includes(x)));
+  return shuffle([...chosen, ...rest.slice(0, n - chosen.length)]);
+}
+// A word done right counts once towards its level; when all 20 are done the game moves up a level.
+function markWord(it){
+  if (!G || it.isName || it.wi == null) return;
+  const p = prog(G.id), lo = (p.lv-1)*PER_LEVEL;
+  if (it.wi < lo || it.wi >= lo+PER_LEVEL || p.done.includes(it.wi)) return;
+  p.done.push(it.wi);
+  if (p.done.length >= PER_LEVEL && p.lv < MAX_WORD_LEVEL){ p.lv++; p.done = []; G.leveled = p.lv; }
+  save();
 }
 function startGame(id){
   lastId = id;
@@ -263,22 +295,20 @@ function startGame(id){
   $('#timer').hidden = id!=='alfabet'; $('#timer').textContent = '⏱ 0:00';
   if (id==='alfabet') G.items = ALPHA.map(L=>({L}));
   else if (id==='ord'){
-    const all = T.words.map(([w,e],wi)=>({w,e,wi}));
-    const pool = shuffle(all.slice(0, -T.finale)), me = nameWord();
-    const [nShort, nMedium, nLong] = LV().words;
-    const ws = [...(me ? [{w:me, e:'💖', isName:true}] : []), ...pool.filter(x=>x.w.length<=LV().short).slice(0, nShort), ...pool.filter(x=>x.w.length>=5).slice(0, nMedium), ...shuffle(all.slice(-T.finale)).slice(0, nLong)];
+    const me = nameWord();
+    const ws = [...(me ? [{w:me, e:'💖', isName:true}] : []), ...pickWords(id, ORD_WORDS[S.level])];
     G.items = ws.map(x=>({...x, c:pickCase()}));
   } else if (WORD_GAMES.includes(id)){
-    const all = T.words.map(([w,e],wi)=>({w,e,wi}));
-    const pool = shuffle(all.filter(x => x.w.length <= WORD_MAXLEN[S.level]));
-    G.items = pool.slice(0, WORD_ROUNDS[S.level]).map(x => {
-      const it = {...x, c:pickCase()};
-      // Other words to choose between; from level 4 words with the same first letter come first.
-      const others = shuffle(all.filter(o => o.wi!==x.wi));
-      if (!LV().show) others.sort((a,b) => (b.w[0]===x.w[0]) - (a.w[0]===x.w[0]));
+    const unlocked = T.words.slice(0, prog(id).lv*PER_LEVEL).map(([w,e],wi)=>({w,e,wi}));
+    G.items = pickWords(id, WORD_ROUNDS[S.level]).map(x => {
+      const it = {...x, c:pickCase()}, first = base(x.w[0]);
+      // Other words to choose between, taken from the levels reached so far;
+      // from difficulty 4 words with the same first letter come first.
+      const others = shuffle(unlocked.filter(o => o.wi!==x.wi));
+      if (!LV().show) others.sort((a,b) => (base(b.w[0])===first) - (base(a.w[0])===first));
       it.opts = shuffle([x, ...others.slice(0, LV().choices - 1)]);
-      it.letters = shuffle([x.w[0], ...shuffle(ALPHA.filter(l => l!==x.w[0])).slice(0, LV().choices - 1)]);
-      // Missing letters: the first one on levels 1-2, any one on level 3, two on levels 4-5.
+      it.letters = shuffle([first, ...shuffle(ALPHA.filter(l => l!==first)).slice(0, LV().choices - 1)]);
+      // Missing letters: the first one on difficulty 1-2, any one on 3, two on 4-5.
       const idx = shuffle([...x.w].map((_,i)=>i));
       it.gaps = S.level<=2 ? [0] : idx.slice(0, S.level>=4 && x.w.length>=3 ? 2 : 1).sort((a,b)=>a-b);
       return it;
@@ -293,7 +323,7 @@ function target(){
   switch (G.id){
     case 'ord': return it.w[G.pos];
     case 'bildord': case 'lasord': return String(it.wi); // the choice buttons carry the word's index
-    case 'forsta': return it.w[0];
+    case 'forsta': return base(it.w[0]);
     case 'saknad': return it.w[it.gaps[G.pos]];
     default: return it.L;
   }
@@ -377,7 +407,7 @@ function render(){
 }
 
 function hint(){
-  const t = target();
+  const t = base(target());
   $$(`#kb [data-k="${t}"], #choices [data-k="${t}"]`).forEach(e=>e.classList.add('hint'));
 }
 // After enough mistakes: light up the key, and on the levels that hide the letter, show it.
@@ -395,7 +425,7 @@ function showStars(){ $$('.starcount').forEach(e => e.textContent = S.stars); }
 function press(k){
   if (screen!=='game' || !G || G.lock) return;
   const t = target(), it = item();
-  if (k !== t){
+  if (base(k) !== base(t)){
     G.wrong++; G.errs++; sfxNo(); flash('no');
     const helped = G.wrong >= Math.max(1, LV().hintAt);
     if (helped) reveal();
@@ -418,16 +448,17 @@ function press(k){
   if (G.id==='ord'){
     G.pos++;
     if (G.pos < it.w.length){ render(); say([g('short'), ...prompt()]); return; }
-    G.lock = true; render(); burst(16, $('#card'));
+    G.lock = true; markWord(it); render(); burst(16, $('#card'));
     say([it.isName ? g('wroteName') : wordPart('wrote',it), g('long')], () => advance(last)); return;
   }
   if (G.id==='saknad'){
     G.pos++;
     if (G.pos < it.gaps.length){ render(); say(g('short')); return; }
-    G.lock = true; render(); burst(16, $('#card'));
+    G.lock = true; markWord(it); render(); burst(16, $('#card'));
     say([sayWord(it, true), g('long')], () => advance(last)); return;
   }
   G.lock = true;
+  if (WORD_GAMES.includes(G.id)) markWord(it);
   if (G.id==='lyssna') $('#card').textContent = disp(it.L,it.c);
   $$('#choices .choice').forEach(b => { if (b.dataset.k!==t) b.style.opacity = .25; });
   // After a right answer in a word game the voice says the word, so sound and spelling meet.
@@ -440,7 +471,7 @@ function advance(last){
 }
 function win(){
   if (!G) return;
-  const id = G.id, res = G.result; G = null;
+  const id = G.id, res = G.result, leveled = G.leveled; G = null;
   const st = pick(STICKERS); S.stickers.push(st); S.stars += 5;
   $('#result').hidden = !res; $('#win').classList.toggle('timed', !!res);
   if (res){
@@ -453,7 +484,10 @@ function win(){
   save();
   $('#prize').textContent = st;
   show('win'); refresh(); sfxWin(); rain(70);
-  say([g('hurra'), g('win'+cap(id)), g('winTail')]);
+  const wl = $('#wordLevel'), pr = PROG_GAMES.includes(id) ? prog(id) : null;
+  wl.hidden = !pr;
+  if (pr) wl.textContent = leveled ? '⭐ ' + T.ui.newWordLevel(leveled) : T.ui.wordLevel(pr.lv, pr.done.length);
+  say([g('hurra'), g('win'+cap(id)), leveled && g('levelUp'), g('winTail')]);
 }
 
 /* ---------- buttons & keys ---------- */
@@ -523,7 +557,7 @@ document.addEventListener('keydown', e => {
   if (screen==='win'){ if (e.key==='Enter' || e.key===' '){ e.preventDefault(); startGame(lastId); } return; }
   if (screen==='game'){
     if (e.key===' ' || e.key==='Enter'){ e.preventDefault(); repeat(); return; }
-    const k = e.key.toLocaleUpperCase(S.lang);
+    const k = base(e.key.toLocaleUpperCase(S.lang));
     if (k.length===1 && ALPHA.includes(k)){ e.preventDefault(); press(k); }
   }
 });

@@ -148,6 +148,8 @@ dialog .voice[aria-pressed="true"]{background:var(--card)}
 .game{border-radius:30px; padding:12px 10px; color:var(--on-color); font-weight:700; font-size:clamp(19px,2.9vh,26px); box-shadow:0 7px 0 var(--line); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; position:relative; line-height:1.1}
 .game .em{font-size:clamp(44px,9vh,80px); line-height:1.1}
 .game small{font-weight:400; font-size:.68em}
+.game small.lv{font-weight:700; font-size:.6em; background:var(--card); color:var(--ink); border-radius:999px; padding:2px 10px; margin-top:4px}
+#wordLevel{margin:0; font-weight:700; font-size:22px; background:var(--card); border-radius:999px; padding:8px 20px; box-shadow:0 5px 0 var(--line)}
 .game .num{position:absolute; top:10px; left:12px; width:30px; height:30px; border-radius:50%; background:var(--card); color:var(--ink); font-size:17px; display:grid; place-items:center}
 .homebar{display:flex; gap:14px; flex-wrap:wrap; align-items:center; justify-content:space-between; flex:none}
 #caseSeg button{font-family:var(--f-abc)}
@@ -297,6 +299,7 @@ dialog .seg button{font-size:18px; padding:6px 14px}
   <div id="prize">🦄</div>
   <h1 id="winTitle"></h1>
   <div class="bubble"><span class="who">🐞</span><span class="say"></span></div>
+  <p id="wordLevel" hidden></p>
   <div class="board" id="result" hidden>
     <p id="yourTime"></p>
     <ol id="winBoard"></ol>
@@ -338,6 +341,7 @@ dialog .seg button{font-size:18px; padding:6px 14px}
 
 <script src="phrases.js"></script>
 <script src="phrases-more.js"></script>
+<script src="words.js"></script>
 <script src="game.js"></script>
 </body>
 </html>
