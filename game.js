@@ -24,7 +24,7 @@ const cap = s => s[0].toUpperCase() + s.slice(1);
 
 /* ---------- state ---------- */
 const KEY = 'letter-adventure-v1';
-const S = {name:'', lang:(navigator.language||'').slice(0,2).toLowerCase(), letterCase:'upper', voice:true, voiceChar:0, speed:1, sfx:true, kb:true, stars:0, stickers:[], age:null, level:2, boards:{}};
+const S = {name:'', lang:'en', letterCase:'upper', voice:true, voiceChar:0, speed:1, sfx:true, kb:true, stars:0, stickers:[], age:null, level:2, boards:{}};
 try { Object.assign(S, JSON.parse(localStorage.getItem(KEY)) || {}); } catch {}
 if (!LANGS[S.lang]) S.lang = 'en';
 if (!VOICE_EM[S.voiceChar]) S.voiceChar = 0;
@@ -188,7 +188,7 @@ function applyLang(){
   $('#installSteps').innerHTML = T.ui.installSteps.map(([who, how]) => `<li><b>${who}:</b> ${how}</li>`).join('');
   $$('[data-ta]').forEach(e => e.setAttribute('aria-label', T.ui[e.dataset.ta]));
   $('#name').placeholder = T.ui.namePh;
-  $('#langSeg').innerHTML = Object.entries(LANGS).map(([k, L]) => `<button data-lang="${k}" aria-pressed="${k===S.lang}">${L.label || {sv:'Svenska', en:'English'}[k]}</button>`).join('');
+  $('#langSeg').innerHTML = ['en','es','fr','pt','de','sv'].map(k => [k, LANGS[k]]).map(([k, L]) => `<button data-lang="${k}" aria-pressed="${k===S.lang}">${L.label || {sv:'Svenska', en:'English'}[k]}</button>`).join('');
   const cards = GAME_META.map((gm,i)=>`<button class="game" data-g="${gm.id}" style="background:var(${gm.c})"><span class="num">${i+1}</span><span class="em">${gm.em}</span>${T.games[i][0]}<small>${T.games[i][1]}</small></button>`);
   $('#games').innerHTML = cards.slice(0, LETTER_GAMES).join('');
   $('#games2').innerHTML = cards.slice(LETTER_GAMES).join('');
