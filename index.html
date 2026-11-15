@@ -125,6 +125,9 @@ dialog .voice[aria-pressed="true"]{background:var(--card)}
 #langSeg{flex-wrap:wrap; justify-content:center; border-radius:28px; max-width:100%}
 #langSeg button{font-size:18px; padding:7px 14px; min-width:0}
 
+.player{background:var(--card); color:var(--ink); border-radius:999px; padding:8px 20px; font-weight:700; font-size:20px; box-shadow:0 4px 0 var(--line); border:3px solid transparent}
+.player[aria-pressed="true"]{border-color:var(--pink); background:var(--empty)}
+
 /* --- rhyme, memory, catch the letter --- */
 .choice.rhyme{display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1.1; min-width:2.6em}
 .choice.rhyme .pic{font-size:1.7em; line-height:1.15}
@@ -254,6 +257,8 @@ dialog .seg button{font-size:18px; padding:6px 14px}
     <div class="seg" id="langSeg" role="group" aria-label="Språk / Language">
       <button data-lang="sv">Svenska</button><button data-lang="en">English</button>
     </div>
+    <div class="vlabel" id="playersLabel" data-t="playersLabel" hidden></div>
+    <div class="voices" id="players" hidden></div>
     <div class="namebox">
       <label for="name" data-t="nameLabel"></label>
       <input id="name" type="text" maxlength="16" autocomplete="off" autocapitalize="words" spellcheck="false" enterkeyhint="go">
@@ -349,6 +354,7 @@ dialog .seg button{font-size:18px; padding:6px 14px}
   <div class="opt"><label for="optKb" data-t="setKb"></label><input type="checkbox" id="optKb"></div>
   <div class="opt"><button class="pill" id="fullscreen" data-t="setFull"></button><button class="pill" id="reset" data-t="setReset"></button></div>
   <div class="opt"><button class="pill" id="openFeedback" data-t="setFeedback"></button><button class="pill" id="wipe" data-t="setWipe"></button></div>
+  <div class="opt"><span></span><button class="pill" id="removePlayer" hidden></button></div>
   <div class="opt"><button class="pill" id="changeName" data-t="setChange"></button><button class="big" id="closeSettings" style="font-size:20px" data-t="setDone"></button></div>
 </dialog>
 

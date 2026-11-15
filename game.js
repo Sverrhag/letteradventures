@@ -31,7 +31,7 @@ const cap = s => s[0].toUpperCase() + s.slice(1);
 
 /* ---------- state ---------- */
 const KEY = 'letter-adventure-v1';
-const S = {name:'', lang:'en', letterCase:'upper', voice:true, voiceChar:0, speed:1, sfx:true, kb:true, stars:0, stickers:[], age:null, level:2, boards:{}, prog:{}};
+const S = {name:'', lang:'en', letterCase:'upper', voice:true, voiceChar:0, speed:1, sfx:true, kb:true, stars:0, stickers:[], age:null, level:2, boards:{}, prog:{}, profiles:{}};
 try { Object.assign(S, JSON.parse(localStorage.getItem(KEY)) || {}); } catch {}
 if (!LANGS[S.lang]) S.lang = 'en';
 if (!VOICE_EM[S.voiceChar]) S.voiceChar = 0;
@@ -55,7 +55,41 @@ const LEVELS = [null,
 if (S.hard !== undefined){ S.level = S.hard ? 4 : 2; delete S.hard; } // from the earlier easy/hard switch
 if (!LEVELS[S.level]) S.level = 2;
 const LV = () => LEVELS[S.level];
-const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch {} };
+const save = () => { try { stashPlayer(); localStorage.setItem(KEY, JSON.stringify(S)); } catch {} };
+
+/* ---------- players ----------
+   Each name has its own stars, stickers, word levels, age, difficulty, letter case and voice.
+   The fields of the player who is playing live directly in S; the others wait in S.profiles.
+   Language, sound settings and the alphabet top list are shared by everyone on the device. */
+const PLAYER_FIELDS = ['name','age','level','letterCase','voiceChar','stars','stickers','prog'];
+const NEW_PLAYER = () => ({age:null, level:2, letterCase:'upper', stars:0, stickers:[], prog:{}});
+const playerKey = n => (n || '').trim().toLocaleLowerCase();
+const cleanName = v => v.trim().replace(/\s+/g,' ').slice(0,16);
+const copy = o => JSON.parse(JSON.stringify(o));
+function stashPlayer(){ S.profiles[playerKey(S.name)] = copy(Object.fromEntries(PLAYER_FIELDS.map(f => [f, S[f]]))); }
+function switchPlayer(name){
+  stashPlayer();
+  const saved = S.profiles[playerKey(name)];
+  Object.assign(S, saved ? copy(saved) : NEW_PLAYER(), {name});
+}
+// Makes the name in the name field the active player; a new name starts from zero.
+function syncName(){
+  const n = cleanName($('#name').value);
+  if (playerKey(n) !== playerKey(S.name)) switchPlayer(n); else S.name = n;
+}
+function renderPlayers(){
+  const names = Object.values(S.profiles).map(p => p.name).filter(Boolean);
+  if (S.name && !names.some(n => playerKey(n) === playerKey(S.name))) names.push(S.name);
+  const box = $('#players');
+  $('#playersLabel').hidden = box.hidden = names.length === 0;
+  box.innerHTML = '';
+  names.sort((a, b) => a.localeCompare(b)).forEach(n => {
+    const b = document.createElement('button');
+    b.className = 'player'; b.dataset.player = n; b.textContent = n;
+    b.setAttribute('aria-pressed', playerKey(n) === playerKey(S.name));
+    box.append(b);
+  });
+}
 let T = LANGS[S.lang], ALPHA = [...T.alpha];
 
 const pick = a => a[Math.floor(Math.random()*a.length)];
@@ -240,7 +274,8 @@ function renderCards(){
 }
 function refresh(){
   const p = T.poss(nm());
-  renderCards();
+  renderCards(); renderPlayers();
+  $('#removePlayer').hidden = !S.name; $('#removePlayer').textContent = T.ui.setRemove(S.name);
   // Without a name, languages where "friend's letters" reads badly say "My letters" instead.
   $('#homeTitle').textContent = !S.name && T.homePlain || T.homeTitle(p);
   $('#shelfTitle').textContent = !S.name && T.shelfPlain || T.shelfTitle(p);
@@ -263,7 +298,7 @@ function goHome(first){
   say(g(first ? 'greet' : 'homeAgain'));
 }
 function begin(){
-  S.name = $('#name').value.trim().replace(/\s+/g,' ').slice(0,16); save();
+  syncName(); save();
   try { ac = ac || new (window.AudioContext||window.webkitAudioContext)(); ac.resume?.(); } catch {}
   goHome(true);
 }
@@ -681,9 +716,9 @@ document.addEventListener('click', e => {
   const lv = e.target.closest('[data-level]');
   if (lv){ S.level = +lv.dataset.level; save(); refresh(); say({id:`level_${S.level-1}`, text:T.g.level[S.level-1]}); return; }
   const ag = e.target.closest('[data-age]');
-  if (ag){ S.age = +ag.dataset.age; S.level = S.age - 2; save(); refresh(); return; }
+  if (ag){ syncName(); S.age = +ag.dataset.age; S.level = S.age - 2; save(); refresh(); return; }
   const v = e.target.closest('[data-voice]');
-  if (v){ S.voiceChar = +v.dataset.voice; save(); refresh(); if (screen!=='start') preloadLetters(); say({id:'hello', text:T.hello[S.voiceChar]}); }
+  if (v){ if (screen==='start') syncName(); S.voiceChar = +v.dataset.voice; save(); refresh(); if (screen!=='start') preloadLetters(); say({id:'hello', text:T.hello[S.voiceChar]}); }
 });
 $('#optVoice').onchange = e => { S.voice = e.target.checked; if (!S.voice) player.pause(); save(); };
 $('#optSfx').onchange = e => { S.sfx = e.target.checked; save(); };
@@ -699,6 +734,25 @@ $('#wipe').onclick = e => {
   if (!wipeArmed){ wipeArmed = true; e.target.textContent = T.ui.setWipeArm; setTimeout(() => { if (wipeArmed){ wipeArmed = false; e.target.textContent = T.ui.setWipe; } }, 4000); return; }
   try { localStorage.removeItem(KEY); } catch {}
   location.reload();
+};
+// Choosing a saved name on the start screen, or typing one that is already saved, switches player.
+$('#players').addEventListener('click', e => {
+  const b = e.target.closest('[data-player]'); if (!b) return;
+  $('#name').value = b.dataset.player; syncName(); save(); refresh();
+});
+$('#name').addEventListener('change', () => {
+  if (S.profiles[playerKey(cleanName($('#name').value))]){ syncName(); save(); refresh(); }
+});
+// Removes the player who is playing, with everything saved under that name.
+let removeArmed = false;
+$('#removePlayer').onclick = e => {
+  if (!removeArmed){ removeArmed = true; e.target.textContent = T.ui.setRemoveArm; setTimeout(() => { if (removeArmed){ removeArmed = false; e.target.textContent = T.ui.setRemove(S.name); } }, 4000); return; }
+  removeArmed = false;
+  const key = playerKey(S.name);
+  Object.assign(S, NEW_PLAYER(), {name: ''});
+  delete S.profiles[key];
+  save(); dlg.close(); G = null; stopClock(); tok++; player.pause();
+  $('#name').value = ''; show('start'); refresh();
 };
 $('#reset').onclick = e => {
   if (!armed){ armed = true; e.target.textContent = T.ui.setResetArm; setTimeout(()=>{ if (armed){ armed=false; e.target.textContent=T.ui.setReset; } }, 4000); return; }
