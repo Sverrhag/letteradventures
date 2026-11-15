@@ -1,5 +1,16 @@
 {
-  "en": { "bow": "=beau" },
-  "fr": { "jean": "dʒin" },
-  "sv": { "gem": "ɡeːm", "planet": "plaˈneːt", "banan": "baˈnɑːn" }
+  "en": {
+    "bow": "=beau"
+  },
+  "fr": {
+    "jean": "dʒin"
+  },
+  "sv": {
+    "gem": "ɡeːm",
+    "planet": "plaˈneːt",
+    "banan": "baˈnɑːn"
+  },
+  "pt": {
+    "colher": "=colhér"
+  }
 }
