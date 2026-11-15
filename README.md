@@ -12,6 +12,7 @@ phrases.js             Swedish and English texts, words and spoken phrases
 phrases-more.js        Spanish, French, Portuguese and German
 words.js               The 400-word list in six languages, sorted into 20 word levels
 variants.js            Alternative wordings, so the voice does not repeat one sentence
+more-games.js          Texts and rhyme lists for Catch the letter, Memory and Rhyme
 audio/<lang>/v<1-5>/   Recorded voice clips, five voices per language
 icons/                 App icons
 fonts/                 Fredoka and Andika, served from this site

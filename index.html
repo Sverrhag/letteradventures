@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Letter Adventures</title>
-<meta name="description" content="A playful letter and word game for children aged 3 to 7, in six languages. Nine small games with a cheerful voice guide, unicorns and ladybugs.">
+<meta name="description" content="A playful letter and word game for children aged 3 to 7, in six languages. Twelve small games with a cheerful voice guide, unicorns and ladybugs.">
 <meta property="og:title" content="Letter Adventures">
 <meta property="og:description" content="A playful letter-learning game for children aged 3 to 7, in six languages.">
 <meta name="mobile-web-app-capable" content="yes">
@@ -124,6 +124,26 @@ dialog .voice[aria-pressed="true"]{background:var(--card)}
 
 #langSeg{flex-wrap:wrap; justify-content:center; border-radius:28px; max-width:100%}
 #langSeg button{font-size:18px; padding:7px 14px; min-width:0}
+
+/* --- rhyme, memory, catch the letter --- */
+.choice.rhyme{display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1.1; min-width:2.6em}
+.choice.rhyme .pic{font-size:1.7em; line-height:1.15}
+#memory{display:grid; grid-template-columns:repeat(var(--cols,4),minmax(0,1fr)); gap:min(1.6vh,10px); width:min(100%,calc(var(--cols,4) * 18vh))}
+.mcard{container-type:inline-size; aspect-ratio:1; border-radius:14%; background:var(--r6); color:var(--on-color); box-shadow:0 5px 0 var(--line); padding:0; display:grid; place-items:center; overflow:hidden}
+.mcard .back{font-size:46cqw; line-height:1; opacity:.9}
+.mcard .front{display:none; flex-direction:column; align-items:center; justify-content:center; gap:2cqw; line-height:1.05}
+.mcard.open,.mcard.found{background:var(--card); color:var(--ink)}
+.mcard.open .front,.mcard.found .front{display:flex}
+.mcard.open .back,.mcard.found .back{display:none}
+.mcard.found{outline:4px solid var(--r4); outline-offset:-4px}
+.mcard .pic{font-size:58cqw; line-height:1.1}
+.mcard .pic.small{font-size:34cqw}
+.mcard .mw{font-family:var(--f-abc); font-weight:700; font-size:min(26cqw,calc(118cqw / var(--n)))}
+#sky{position:relative; align-self:stretch; flex:1; min-height:0; overflow:hidden}
+.drop{position:absolute; top:0; width:clamp(64px,13vh,110px); aspect-ratio:1; border-radius:50% 50% 50% 50% / 62% 62% 38% 38%; padding:0; font-family:var(--f-abc); font-weight:700; font-size:clamp(34px,7.5vh,64px); line-height:1; color:var(--on-color); box-shadow:0 6px 0 var(--line); animation:fall linear forwards}
+@keyframes fall{from{top:0; transform:translateY(-110%)} to{top:100%; transform:translateY(0)}}
+.drop.gone{animation:caught .25s ease-out forwards}
+@keyframes caught{from{transform:scale(1)} to{transform:scale(1.7); opacity:0}}
 
 /* --- top list --- */
 .board{width:100%; max-width:420px; text-align:left}
@@ -290,7 +310,7 @@ dialog .seg button{font-size:18px; padding:6px 14px}
     <span class="stars" id="timer" hidden>⏱ 0:00</span>
     <span class="stars">⭐ <span class="starcount">0</span></span>
   </div>
-  <div class="stage"><div id="card"></div><div id="choices"></div></div>
+  <div class="stage"><div id="card"></div><div id="choices"></div><div id="memory" hidden></div><div id="sky" hidden></div></div>
   <div id="progress"></div>
   <div id="kb"></div>
 </section>
@@ -344,6 +364,7 @@ dialog .seg button{font-size:18px; padding:6px 14px}
 <script src="phrases-more.js"></script>
 <script src="words.js"></script>
 <script src="variants.js"></script>
+<script src="more-games.js"></script>
 <script src="game.js"></script>
 </body>
 </html>

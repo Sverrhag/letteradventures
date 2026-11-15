@@ -23,6 +23,7 @@ const { LANGS, clipList } = require(join(root, 'phrases.js'));
 Object.assign(LANGS, require(join(root, 'phrases-more.js'))); // Spanish, French, Portuguese, German
 require(join(root, 'words.js')).apply(LANGS);                   // the 400-word list
 require(join(root, 'variants.js')).apply(LANGS);                // alternative wordings
+require(join(root, 'more-games.js')).apply(LANGS);              // catch the letter, memory, rhyme
 
 // Five voices per language: unicorn, ladybug, owl, bear, fox.
 const VOICES = JSON.parse(readFileSync(join(here, 'voices.json'), 'utf8'));

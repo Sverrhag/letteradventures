@@ -13,12 +13,17 @@ const GAME_META = [
   {id:'lasord',  em:'📖', c:'--r2'},
   {id:'forsta',  em:'🔤', c:'--r3'},
   {id:'saknad',  em:'🧩', c:'--r4'},
+  // added later; listed last so the numbers of the older games stay the same
+  {id:'fanga',   em:'☔', c:'--r5'},
+  {id:'memory',  em:'🃏', c:'--r6'},
+  {id:'rimma',   em:'🎵', c:'--r1'},
 ];
+const WORD_GROUP = ['bildord','lasord','forsta','saknad','memory','rimma']; // shown under "Words" on the home screen
 const LETTER_GAMES = 5; // the first five are letter games, the rest word games
 const WORD_GAMES = ['bildord','lasord','forsta','saknad'];
 const WORD_ROUNDS = [0, 4, 5, 6, 8, 10];   // words per round on levels 1-5
 const ORD_WORDS   = [0, 2, 3, 4, 5, 6];    // words per round in the spelling game, besides the child's name
-const PROG_GAMES = ['ord', ...WORD_GAMES]; // games with their own word level
+const PROG_GAMES = ['ord', ...WORD_GAMES, 'memory']; // games with their own word level
 const PER_LEVEL = 20, MAX_WORD_LEVEL = 20;
 const VOICE_EM = ['🦄','🐞','🦉','🐻','🦊'];
 const STICKERS = [...'🦄🐞🌈⭐🌸🦋🍓🧁👑💖🐱🐶🍭🎀🌟🐰🍉🎈🐥🌻'];
@@ -228,8 +233,8 @@ function renderCards(){
     const pr = PROG_GAMES.includes(gm.id) ? prog(gm.id) : null;
     return `<button class="game" data-g="${gm.id}" style="background:var(${gm.c})"><span class="num">${i+1}</span><span class="em">${gm.em}</span>${T.games[i][0]}<small>${T.games[i][1]}</small>${pr ? `<small class="lv">${T.ui.wordLevel(pr.lv, pr.done.length)}</small>` : ''}</button>`;
   });
-  $('#games').innerHTML = cards.slice(0, LETTER_GAMES).join('');
-  $('#games2').innerHTML = cards.slice(LETTER_GAMES).join('');
+  $('#games').innerHTML = cards.filter((_,i) => !WORD_GROUP.includes(GAME_META[i].id)).join('');
+  $('#games2').innerHTML = cards.filter((_,i) => WORD_GROUP.includes(GAME_META[i].id)).join('');
 }
 function refresh(){
   const p = T.poss(nm());
@@ -252,7 +257,7 @@ function refresh(){
   buildKb();
 }
 function goHome(first){
-  G = null; stopClock(); show('home'); refresh(); preloadLetters();
+  G = null; stopClock(); clearStage(); show('home'); refresh(); preloadLetters();
   say(g(first ? 'greet' : 'homeAgain'));
 }
 function begin(){
@@ -264,7 +269,7 @@ function begin(){
 document.addEventListener('click', e => { const b = e.target.closest('[data-g]'); if (b) startGame(b.dataset.g); });
 
 // Games answered by tapping a choice instead of typing.
-const usesChoices = () => G && (['lyssna','para','bildord','lasord'].includes(G.id) || (G.id==='forsta' && S.level<=3));
+const usesChoices = () => G && (['lyssna','para','bildord','lasord','rimma','memory'].includes(G.id) || (G.id==='forsta' && S.level<=3));
 function buildKb(){
   const kb = $('#kb');
   kb.hidden = !S.kb || usesChoices();
@@ -305,6 +310,9 @@ function startGame(id){
   G = {id, i:0, pos:0, wrong:0, lock:false, errs:0, t0:0};
   stopClock();
   $('#timer').hidden = id!=='alfabet'; $('#timer').textContent = '⏱ 0:00';
+  clearStage();
+  if (id==='memory') return startMemory();
+  if (id==='fanga') return startFanga();
   if (id==='alfabet') G.items = ALPHA.map(L=>({L}));
   else if (id==='ord'){
     const me = nameWord();
@@ -325,6 +333,8 @@ function startGame(id){
       it.gaps = S.level<=2 ? [0] : idx.slice(0, S.level>=4 && x.w.length>=3 ? 2 : 1).sort((a,b)=>a-b);
       return it;
     });
+  } else if (id==='rimma'){
+    G.items = rhymeItems();
   } else G.items = shuffle(ALPHA).slice(0, LV().rounds).map(L=>({L,c:pickCase()}));
   show('game'); buildKb(); render();
   say([g('intro'+cap(id)), ...prompt()]);
@@ -337,6 +347,7 @@ function target(){
     case 'bildord': case 'lasord': return String(it.wi); // the choice buttons carry the word's index
     case 'forsta': return base(it.w[0]);
     case 'saknad': return it.w[it.gaps[G.pos]];
+    case 'rimma': return 'r' + it.ans.ri; // the choice buttons carry the rhyme word's number
     default: return it.L;
   }
 }
@@ -363,6 +374,10 @@ function prompt(){
     case 'lasord': return [g('askLasord'), LV().say && sayWord(it, true)];
     case 'forsta': return [g('askForsta'), sayWord(it)];
     case 'saknad': return G.pos>0 ? [] : [g('askSaknad'), LV().show && sayWord(it)];
+    // Rhyme: the question, the word, and on the easier levels each of the choices read aloud.
+    case 'rimma': return [g('askRimma'), rim(it.q, true), ...(S.level<=3 ? it.opts.map(o => rim(o)) : [])];
+    case 'memory': return [g('askMemory')];
+    case 'fanga': return [g('askFanga')];
   }
 }
 
@@ -411,6 +426,13 @@ function render(){
     const gi = i => it.gaps.indexOf(i); // -1 for letters that are given
     card.innerHTML = `<span class="pic">${it.e}</span>` + wordSlots(i => gi(i)<0 ? 'given' : gi(i)<G.pos ? 'done' : gi(i)===G.pos ? 'now' : '', i => gi(i)<0 || gi(i)<G.pos);
   }
+  if (id==='rimma'){
+    card.classList.add('compact','wordcard'); card.style.setProperty('--n', it.q.w.length);
+    card.innerHTML = `<span class="pic">${it.q.e}</span>${disp(it.q.w,it.c)}`;
+    ch.hidden = false;
+    // Pictures help on levels 1-3 (level 3 shows only the picture); levels 4-5 have to be read.
+    ch.innerHTML = it.opts.map((o,i)=>`<button class="choice word rhyme" data-k="r${o.ri}" style="background:var(${COLORS[(i*2+G.i)%6]})">${S.level<=3 ? `<span class="pic">${o.e}</span>` : ''}${S.level===3 ? '' : disp(o.w,it.c)}</button>`).join('');
+  }
   card.classList.toggle('tap', card.textContent==='👂');
   const p = $('#progress');
   if (id==='alfabet') p.innerHTML = ALPHA.map((L,i)=>`<span class="dot ${i<G.i?'done':i===G.i?'now':''}" ${i<G.i?`style="background:var(${COLORS[i%6]})"`:''}>${hide && i>=G.i ? '' : disp(L,S.letterCase==='lower'?'lower':'upper')}</span>`).join('');
@@ -437,6 +459,8 @@ function showStars(){ $$('.starcount').forEach(e => e.textContent = S.stars); }
 
 function press(k){
   if (screen!=='game' || !G || G.lock) return;
+  if (G.id==='fanga') return catchLetter(base(k));
+  if (G.id==='memory') return;
   const t = target(), it = item();
   if (base(k) !== base(t)){
     G.wrong++; G.errs++; sfxNo(); flash('no');
@@ -444,7 +468,7 @@ function press(k){
     if (helped) reveal();
     // Where the letter is hidden, the answer is only said aloud once it has been revealed.
     const tell = LV().show || helped || (G.id!=='alfabet' && G.id!=='ord');
-    let follow = tell && !WORD_GAMES.includes(G.id) && per(G.id==='hitta' || G.id==='lyssna' ? findKey(it.c) : 'find', t);
+    let follow = tell && !WORD_GAMES.includes(G.id) && G.id!=='rimma' && per(G.id==='hitta' || G.id==='lyssna' ? findKey(it.c) : 'find', t);
     // In the word games the letter is only named once the help has appeared.
     if ((G.id==='forsta' || G.id==='saknad') && helped) follow = per('find', t, true);
     say([g('wrong'), follow]);
@@ -475,7 +499,7 @@ function press(k){
   if (G.id==='lyssna') $('#card').textContent = disp(it.L,it.c);
   $$('#choices .choice').forEach(b => { if (b.dataset.k!==t) b.style.opacity = .25; });
   // After a right answer in a word game the voice says the word, so sound and spelling meet.
-  say([WORD_GAMES.includes(G.id) && sayWord(it, true), g('long')], () => advance(last));
+  say(G.id==='rimma' ? [rim(it.q), rim(it.ans), g('long')] : [WORD_GAMES.includes(G.id) && sayWord(it, true), g('long')], () => advance(last));
 }
 function advance(last){
   if (!G) return;
@@ -484,7 +508,7 @@ function advance(last){
 }
 function win(){
   if (!G) return;
-  const id = G.id, res = G.result, leveled = G.leveled; G = null;
+  const id = G.id, res = G.result, leveled = G.leveled; G = null; clearStage();
   const st = pick(STICKERS); S.stickers.push(st); S.stars += 5;
   $('#result').hidden = !res; $('#win').classList.toggle('timed', !!res);
   if (res){
@@ -502,6 +526,107 @@ function win(){
   if (pr) wl.textContent = leveled ? '⭐ ' + T.ui.newWordLevel(leveled) : T.ui.wordLevel(pr.lv, pr.done.length);
   say([g('hurra'), g('win'+cap(id)), leveled && g('levelUp'), g('winTail')]);
 }
+
+/* ---------- the stage for the games that do not use the big card ---------- */
+function clearStage(){
+  $('#sky').innerHTML = ''; $('#sky').hidden = true;
+  $('#memory').innerHTML = ''; $('#memory').hidden = true;
+  $('#card').hidden = false;
+}
+const pipsHtml = (total, done) => Array.from({length: total}, (_, i) => `<span class="pip ${i<done?'done':''}">${i<done?(i%2?'🦄':'🐞'):''}</span>`).join('');
+
+/* ---------- rhyme ---------- */
+// A rhyme word as a spoken part: "hus?" when it is the question, "Hus." otherwise.
+const rim = (o, ask) => ({id:`rim_${o.ri}`, text: ask ? o.w.toLocaleLowerCase(S.lang) + '?' : T.g.rim[o.ri]});
+function rhymeItems(){
+  const groups = shuffle(T.rhymes), n = Math.min(WORD_ROUNDS[S.level], groups.length), nOpt = S.level===1 ? 2 : 3;
+  return groups.slice(0, n).map(grp => {
+    const [q, ans] = shuffle(grp);
+    // Wrong answers come from other groups, one from each, so none of them rhymes.
+    const others = shuffle(groups.filter(x => x!==grp)).slice(0, nOpt-1).map(x => pick(x));
+    return {q, ans, opts: shuffle([ans, ...others]), c: pickCase()};
+  });
+}
+
+/* ---------- memory ---------- */
+const MEM_PAIRS = [0, 3, 4, 6, 8, 10]; // pairs on difficulty 1-5
+function startMemory(){
+  const words = pickWords('memory', MEM_PAIRS[S.level]).map(x => ({...x, c: pickCase()}));
+  // Each word gives two cards: its picture, and the written word (with a small picture on difficulty 1-2).
+  const cards = shuffle(words.flatMap(x => [{x, pic:true}, {x, pic:false}]));
+  G.items = words; G.mem = {cards, open: [], found: 0};
+  const box = $('#memory');
+  box.style.setProperty('--cols', cards.length<=6 ? 3 : cards.length<=16 ? 4 : 5);
+  box.innerHTML = cards.map((cd,i) => `<button class="mcard" data-m="${i}"><span class="back">🦄</span><span class="front">${cd.pic ? `<span class="pic">${cd.x.e}</span>` : `${S.level<=2 ? `<span class="pic small">${cd.x.e}</span>` : ''}<span class="mw" style="--n:${cd.x.w.length}">${disp(cd.x.w, cd.x.c)}</span>`}</span></button>`).join('');
+  $('#card').hidden = true; $('#choices').hidden = true; box.hidden = false;
+  show('game'); buildKb();
+  $('#progress').innerHTML = pipsHtml(words.length, 0);
+  say([g('introMemory'), g('askMemory')]);
+}
+function memTap(i){
+  if (!G || G.id!=='memory' || G.lock) return;
+  const m = G.mem, cd = m.cards[i], my = G;
+  if (cd.done || m.open.includes(i)) return;
+  const el = n => $(`#memory [data-m="${n}"]`);
+  el(i).classList.add('open'); m.open.push(i);
+  // The voice names pictures always, written words only on difficulty 1-3, so that 4-5 have to be read.
+  if (cd.pic || S.level<=3) say(sayWord(cd.x, true));
+  if (m.open.length < 2) return;
+  const [a, b] = m.open; m.open = [];
+  if (m.cards[a].x === m.cards[b].x){
+    m.cards[a].done = m.cards[b].done = true; m.found++;
+    [a, b].forEach(n => el(n).classList.add('found'));
+    S.stars++; save(); showStars(); sfxYes(); burst(10, el(i)); markWord(cd.x);
+    $('#progress').innerHTML = pipsHtml(G.items.length, m.found);
+    if (m.found === G.items.length){ G.lock = true; setTimeout(() => { if (G===my) win(); }, 1600); }
+  } else {
+    G.lock = true; sfxNo();
+    setTimeout(() => { if (G!==my) return; [a, b].forEach(n => el(n).classList.remove('open')); G.lock = false; }, 1300);
+  }
+}
+$('#memory').addEventListener('click', e => { const b = e.target.closest('[data-m]'); if (b) memTap(+b.dataset.m); });
+
+/* ---------- catch the letter ---------- */
+// n letters to catch, how many fall at once, and seconds from top to bottom, for difficulty 1-5.
+const FANGA = [null, {n:8, live:1, secs:14}, {n:10, live:1, secs:11}, {n:12, live:2, secs:10}, {n:15, live:2, secs:8}, {n:20, live:3, secs:7}];
+function startFanga(){
+  const cfg = FANGA[S.level], my = G;
+  G.items = Array.from({length: cfg.n}, () => ({})); G.fang = {caught: 0, cfg};
+  $('#card').hidden = true; $('#choices').hidden = true; $('#sky').hidden = false;
+  show('game'); buildKb();
+  $('#progress').innerHTML = pipsHtml(cfg.n, 0);
+  say([g('introFanga'), g('askFanga')], () => { if (G===my) spawnDrops(); });
+}
+function spawnDrops(){
+  if (!G || G.id!=='fanga' || G.lock) return;
+  const sky = $('#sky'), f = G.fang, my = G;
+  const falling = () => [...sky.children].filter(d => !d.classList.contains('gone'));
+  while (falling().length < f.cfg.live && f.caught + falling().length < f.cfg.n){
+    const taken = falling().map(d => d.dataset.k), L = pick(ALPHA.filter(x => !taken.includes(x)));
+    const d = document.createElement('button');
+    d.className = 'drop'; d.dataset.k = L; d.textContent = disp(L, pickCase());
+    d.style.left = (6 + Math.random()*76) + '%'; d.style.background = `var(${pick(COLORS)})`;
+    d.style.animationDuration = f.cfg.secs + 's';
+    // A letter that lands is not counted as a mistake; another one simply follows.
+    d.addEventListener('animationend', () => { d.remove(); setTimeout(() => { if (G===my) spawnDrops(); }, 500); });
+    sky.append(d);
+    // With one letter at a time the voice names it, which helps the youngest.
+    if (f.cfg.live === 1) say(per('L', L, true));
+  }
+}
+function catchLetter(k){
+  if (!G || G.id!=='fanga') return;
+  const sky = $('#sky'), d = [...sky.children].find(x => x.dataset.k === k && !x.classList.contains('gone'));
+  if (!d){ sfxNo(); return; }
+  const f = G.fang, my = G, r = d.getBoundingClientRect(), s0 = sky.getBoundingClientRect();
+  burst(8, d); sfxYes(); S.stars++; save(); showStars();
+  d.style.top = (r.top - s0.top) + 'px'; d.classList.add('gone'); // freeze it where it was caught
+  f.caught++; $('#progress').innerHTML = pipsHtml(f.cfg.n, f.caught);
+  if (f.caught >= f.cfg.n){ G.lock = true; say(g('long'), () => { if (G===my) win(); }); return; }
+  if (f.cfg.live > 1 && f.caught % 3 === 0) say(g('short'));
+  setTimeout(() => { if (G===my) spawnDrops(); }, 400);
+}
+$('#sky').addEventListener('click', e => { const d = e.target.closest('.drop'); if (d && G && !G.lock) catchLetter(d.dataset.k); });
 
 /* ---------- buttons & keys ---------- */
 $('#name').value = S.name;
