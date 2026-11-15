@@ -25,6 +25,22 @@ require(join(root, 'words.js')).apply(LANGS, true);                   // the 400
 require(join(root, 'variants.js')).apply(LANGS, true);                // alternative wordings
 require(join(root, 'more-games.js')).apply(LANGS, true);              // catch the letter, memory, rhyme
 
+// Words that are spelled like another word but said differently ("bow" as in bow and arrow)
+// get their pronunciation spelled out in IPA, in tools/pronunciations.json: {lang: {word: ipa}}.
+const PRON = JSON.parse(readFileSync(join(here, 'pronunciations.json'), 'utf8'));
+const xml = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+// A value that starts with "=" is instead another spelling that is read the right way ("=beau").
+// Returns what to send for a word clip that contains such a word, or null for every other clip.
+function pronounced(lang, id, text) {
+  if (!/^(word|wrote|say|rim)_/.test(id)) return null;
+  for (const [word, ipa] of Object.entries(PRON[lang] || {})) {
+    const m = new RegExp(String.raw`(?<!\p{L})${word}(?!\p{L})`, 'iu').exec(text);
+    if (m && ipa[0] === '=') return text.slice(0, m.index) + (/^\p{Lu}/u.test(m[0]) ? ipa[1].toUpperCase() + ipa.slice(2) : ipa.slice(1)) + text.slice(m.index + m[0].length);
+    if (m) return `<speak>${xml(text.slice(0, m.index))}<phoneme alphabet="ipa" ph="${ipa}">${xml(m[0])}</phoneme>${xml(text.slice(m.index + m[0].length))}</speak>`;
+  }
+  return null;
+}
+
 // Five voices per language: unicorn, ladybug, owl, bear, fox.
 const VOICES = JSON.parse(readFileSync(join(here, 'voices.json'), 'utf8'));
 
@@ -49,13 +65,13 @@ async function throttle() {
   if (slot > now) await new Promise(s => setTimeout(s, slot - now));
 }
 
-async function synth(text, lang, voice) {
+async function synth(text, lang, voice, ssml) {
   for (let attempt = 0; ; attempt++) {
     await throttle();
     const r = await fetch(`${API}/text:synthesize`, {
       method: 'POST', headers,
       body: JSON.stringify({
-        input: { text },
+        input: ssml?.startsWith('<speak>') ? { ssml } : { text: ssml ?? text },
         voice: { languageCode: LANGS[lang].code, name: voice.name },
         audioConfig: { audioEncoding: 'MP3', speakingRate: voice.rate ?? 1, sampleRateHertz: 24000 },
       }),
@@ -76,8 +92,10 @@ for (const lang of opt('list') ? [] : Object.keys(LANGS)) {
     mkdirSync(dir, { recursive: true });
     const manifestPath = join(dir, 'manifest.json');
     const manifest = existsSync(manifestPath) ? JSON.parse(readFileSync(manifestPath, 'utf8')) : {};
+    // What a clip was made from; a clip is recorded again when this changes.
+    const made_from = (id, text) => `${voice.name}|${voice.rate ?? 1}|${pronounced(lang, id, text) ?? text}`;
     const todo = clipList(lang, vi).filter(([id, text]) => {
-      const same = manifest[id] === `${voice.name}|${voice.rate ?? 1}|${text}` && existsSync(join(dir, id + '.mp3'));
+      const same = manifest[id] === made_from(id, text) && existsSync(join(dir, id + '.mp3'));
       if (same && !opt('force')) { kept++; return false; }
       return true;
     });
@@ -86,8 +104,8 @@ for (const lang of opt('list') ? [] : Object.keys(LANGS)) {
     await Promise.all(Array.from({ length: 4 }, async () => {
       while (next < todo.length) {
         const [id, text] = todo[next++];
-        writeFileSync(join(dir, id + '.mp3'), await synth(text, lang, voice));
-        manifest[id] = `${voice.name}|${voice.rate ?? 1}|${text}`;
+        writeFileSync(join(dir, id + '.mp3'), await synth(text, lang, voice, pronounced(lang, id, text)));
+        manifest[id] = made_from(id, text);
         made++; chars += text.length;
         if (made % 20 === 0) writeFileSync(manifestPath, JSON.stringify(manifest, null, 1));
       }

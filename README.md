@@ -70,3 +70,14 @@ from the list in `tools/names/<lang>.txt`. The clips are published as packs per 
 (`audio/<lang>/v<n>/names/<letter>.bin` + `.json`). The game downloads the whole pack for the
 first letter and cuts the name out on the device, so the host only learns the first letter –
 keep it that way, and keep `privacy.html` in step. A name that is not in the list is not said.
+
+## Checking the pronunciation
+
+Nobody has to listen to the clips. `tools/check-words.py` transcribes every word clip with a
+local speech recogniser (faster-whisper) and lists the ones that do not come back as the word;
+most of those are homophones or short words the recogniser struggles with, so the list is read
+through, not acted on blindly. `tools/hear-phonemes.py` writes down the sounds and their lengths,
+which tells apart words that are spelled alike but said differently. Such words get their
+pronunciation fixed in `tools/pronunciations.json` (IPA, or `=respelling`), and the recording tool
+then re-records their clips. Single short words on their own are judged least reliably; the
+sentence clips ("Spell the word bow.") are the ones to trust.
