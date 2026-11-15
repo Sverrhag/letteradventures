@@ -772,6 +772,17 @@ document.addEventListener('keydown', e => {
   }
 });
 
+/* ---------- no zooming ----------
+   Small hands pinch, double-tap and ctrl-scroll by accident, and a zoomed game is hard to get
+   back from. The viewport and touch-action settings in index.html cover most browsers; these
+   handlers cover the rest (Safari's pinch gesture, two-finger moves, ctrl+wheel, ctrl+plus/minus). */
+['gesturestart', 'gesturechange', 'gestureend'].forEach(t => document.addEventListener(t, e => e.preventDefault(), {passive: false}));
+document.addEventListener('touchmove', e => { if (e.touches.length > 1) e.preventDefault(); }, {passive: false});
+document.addEventListener('wheel', e => { if (e.ctrlKey) e.preventDefault(); }, {passive: false});
+document.addEventListener('keydown', e => { if ((e.ctrlKey || e.metaKey) && ['+', '-', '=', '0'].includes(e.key)) e.preventDefault(); });
+let lastTap = 0;
+document.addEventListener('touchend', e => { const now = Date.now(); if (now - lastTap < 350 && !e.target.closest('button, input, textarea, select, a')) e.preventDefault(); lastTap = now; }, {passive: false});
+
 applyLang();
 if (!S.name && matchMedia('(pointer:fine)').matches) $('#name').focus();
 })();
