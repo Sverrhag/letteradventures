@@ -86,6 +86,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible
 .bubble .say{min-width:0}
 @keyframes bob{50%{transform:translateY(-6px) rotate(-6deg)}}
 .round{width:58px; height:58px; flex:none; border-radius:50%; background:var(--card); box-shadow:0 5px 0 var(--line); font-size:28px; display:grid; place-items:center}
+.round.flag{width:44px; height:44px; font-size:20px; opacity:.75; align-self:center}
 .round:active,.big:active,.game:active,.key:active,.choice:active{transform:translateY(4px); box-shadow:none}
 .stars{flex:none; background:var(--r3); color:var(--on-color); border-radius:30px; padding:8px 16px; font-weight:700; font-size:22px; box-shadow:0 5px 0 var(--line); font-variant-numeric:tabular-nums}
 .big{background:var(--pink); color:var(--on-accent); font-weight:700; font-size:clamp(22px,4vh,34px); padding:.55em 1.3em; border-radius:999px; box-shadow:0 7px 0 var(--line)}
@@ -341,6 +342,7 @@ dialog .seg button{font-size:18px; padding:6px 14px}
     <button class="round" id="toHome" data-ta="ariaHome">🏠</button>
     <div class="bubble"><span class="who">🦄</span><span class="say"></span></div>
     <button class="round" id="again" data-ta="ariaAgain">🔊</button>
+    <button class="round flag" data-report data-ta="setFeedback">🚩</button>
     <span class="stars" id="timer" hidden>⏱ 0:00</span>
     <span class="stars">⭐ <span class="starcount">0</span></span>
   </div>
@@ -358,7 +360,7 @@ dialog .seg button{font-size:18px; padding:6px 14px}
     <p id="yourTime"></p>
     <ol id="winBoard"></ol>
   </div>
-  <div class="row"><button class="big" id="replay" data-t="replay"></button><button class="big alt" id="winHome" data-t="winHome"></button></div>
+  <div class="row"><button class="big" id="replay" data-t="replay"></button><button class="big alt" id="winHome" data-t="winHome"></button><button class="round flag" data-report data-ta="setFeedback">🚩</button></div>
 </section>
 
 <div id="fx"></div>

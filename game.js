@@ -805,13 +805,16 @@ $('#closeBoard').onclick = () => boardDlg.close();
 
 // Feedback goes by ordinary email from the visitor's own mail app; the page itself sends nothing.
 const fbDlg = $('#feedbackDlg'), FEEDBACK_TO = 'hello@letteradventures.com';
-$('#openFeedback').onclick = () => {
-  dlg.close(); $('#fbText').placeholder = T.ui.fbPh; $('#fbCopy').textContent = T.ui.fbCopy;
+// Opened from the settings, and from the flag inside a game, where a phrase that sounded wrong was just heard.
+const openFeedback = fromGame => {
+  dlg.close();$('#fbText').placeholder = T.ui.fbPh; $('#fbCopy').textContent = T.ui.fbCopy;
   // What the voice said last, to tick if it sounded wrong.
   $('#fbHeard').hidden = !heard.length;
   $('#fbHeardList').replaceChildren(...heard.map((h, i) => { const l = document.createElement('label'), c = document.createElement('input'); c.type = 'checkbox'; c.value = i; l.append(c, h.text); return l; }));
-  fbDlg.showModal(); $('#fbText').focus();
+  fbDlg.showModal(); if (!fromGame || !heard.length) $('#fbText').focus();
 };
+$('#openFeedback').onclick = () => openFeedback(false);
+$$('[data-report]').forEach(b => b.onclick = () => openFeedback(true));
 $('#fbClose').onclick = () => fbDlg.close();
 $('#fbSend').onclick = () => {
   // The child's name is deliberately left out; only language and difficulty are added, to help answer.
