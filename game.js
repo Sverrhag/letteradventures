@@ -81,10 +81,12 @@ function applyLook(){
 }
 
 /* ---------- players ----------
-   Each name has its own stars, stickers, word levels, age, difficulty, letter case and voice.
-   The fields of the player who is playing live directly in S; the others wait in S.profiles.
-   Language, sound settings and the alphabet top list are shared by everyone on the device. */
-const PLAYER_FIELDS = ['name','age','level','letterCase','voiceChar','look','stars','stickers','prog'];
+   Each name has its own stars, stickers, word levels, age, difficulty, letter case, voice, look,
+   language and speaking speed. The fields of the player who is playing live directly in S; the
+   others wait in S.profiles. Sound on/off, the on-screen keyboard and the alphabet top list are
+   shared by everyone on the device. A player saved before language was per player keeps the
+   language that is in use when they are chosen. */
+const PLAYER_FIELDS = ['name','age','level','letterCase','voiceChar','look','stars','stickers','prog','lang','speed'];
 const NEW_PLAYER = () => ({age:null, level:2, letterCase:'upper', look:'adventure', stars:0, stickers:[], prog:{}});
 const playerKey = n => (n || '').trim().toLocaleLowerCase();
 const cleanName = v => v.trim().replace(/\s+/g,' ').slice(0,16);
@@ -103,15 +105,27 @@ function syncName(){
 function renderPlayers(){
   const names = Object.values(S.profiles).map(p => p.name).filter(Boolean);
   if (S.name && !names.some(n => playerKey(n) === playerKey(S.name))) names.push(S.name);
-  const box = $('#players');
-  $('#playersLabel').hidden = box.hidden = names.length === 0;
-  box.innerHTML = '';
-  names.sort((a, b) => a.localeCompare(b)).forEach(n => {
-    const b = document.createElement('button');
-    b.className = 'player'; b.dataset.player = n; b.textContent = n;
-    b.setAttribute('aria-pressed', playerKey(n) === playerKey(S.name));
-    box.append(b);
-  });
+  names.sort((a, b) => a.localeCompare(b));
+  const fill = (box, list) => {
+    box.innerHTML = '';
+    list.forEach(n => {
+      const b = document.createElement('button');
+      b.className = 'player'; b.dataset.player = n; b.textContent = n;
+      b.setAttribute('aria-pressed', playerKey(n) === playerKey(S.name));
+      box.append(b);
+    });
+  };
+  $('#playersLabel').hidden = $('#players').hidden = names.length === 0;
+  fill($('#players'), names);
+  // On the home screen the names are there to switch player with one tap, so one name alone is not shown.
+  $('#homePlayers').hidden = names.length < 2;
+  fill($('#homePlayers'), names.length < 2 ? [] : names);
+}
+// Switches to another saved player, with that player's own language, voice, look and level.
+function choosePlayer(name){
+  const lang = S.lang;
+  $('#name').value = name; syncName(); save();
+  if (S.lang !== lang) applyLang(); else refresh();
 }
 let T = LANGS[S.lang], ALPHA = [...T.alpha];
 
@@ -775,7 +789,7 @@ $('#installBtn').onclick = async () => {
 };
 showInstallState();
 matchMedia('(display-mode: fullscreen), (display-mode: standalone)').addEventListener?.('change', showInstallState);
-$('#langSeg').addEventListener('click', e => { const b = e.target.closest('[data-lang]'); if (!b) return; S.lang = b.dataset.lang; save(); applyLang(); loadNameClip(); });
+$('#langSeg').addEventListener('click', e => { const b = e.target.closest('[data-lang]'); if (!b) return; syncName(); S.lang = b.dataset.lang; save(); applyLang(); loadNameClip(); });
 
 const dlg = $('#settings');
 $('#openSettings').onclick = () => { refresh(); $('#fullscreen').hidden = !document.fullscreenEnabled; dlg.showModal(); };
@@ -811,10 +825,18 @@ $('#wipe').onclick = e => {
 // Choosing a saved name on the start screen, or typing one that is already saved, switches player.
 $('#players').addEventListener('click', e => {
   const b = e.target.closest('[data-player]'); if (!b) return;
-  $('#name').value = b.dataset.player; syncName(); save(); refresh();
+  choosePlayer(b.dataset.player);
 });
 $('#name').addEventListener('change', () => {
-  if (S.profiles[playerKey(cleanName($('#name').value))]){ syncName(); save(); refresh(); }
+  const n = cleanName($('#name').value);
+  if (S.profiles[playerKey(n)]) choosePlayer(n);
+});
+// On the home screen a tap on another name switches straight to that player and greets them.
+$('#homePlayers').addEventListener('click', e => {
+  const b = e.target.closest('[data-player]'); if (!b || playerKey(b.dataset.player) === playerKey(S.name)) return;
+  tok++; player.pause();
+  choosePlayer(b.dataset.player);
+  Promise.race([loadNameClip(), new Promise(r => setTimeout(r, 1500))]).then(() => goHome(true));
 });
 // Removes the player who is playing, with everything saved under that name.
 let removeArmed = false;
