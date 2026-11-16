@@ -132,6 +132,12 @@ dialog .voice[aria-pressed="true"]{background:var(--card)}
 
 .player{background:var(--card); color:var(--ink); border-radius:999px; padding:8px 20px; font-weight:700; font-size:20px; box-shadow:0 4px 0 var(--line); border:3px solid transparent}
 .player[aria-pressed="true"]{border-color:var(--pink); background:var(--empty)}
+#removeList{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end}
+#removeList .player{padding:4px 14px; font-size:17px; box-shadow:none; background:var(--empty)}
+#removeGate{background:var(--empty); border-radius:18px; padding:10px 14px; margin:6px 0}
+#removeGate p{margin:0 0 8px; font-weight:700}
+#removeName{flex:1; min-width:0; font:inherit; font-size:18px; padding:6px 12px; border-radius:12px; border:3px solid var(--line); background:var(--card); color:var(--ink)}
+#removeGo:disabled{opacity:.45}
 #homePlayers{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end}
 #homePlayers[hidden]{display:none}
 #homePlayers .player{padding:6px 16px; font-size:18px}
@@ -365,7 +371,8 @@ dialog .seg button{font-size:18px; padding:6px 14px}
   <div class="opt"><label for="optKb" data-t="setKb"></label><input type="checkbox" id="optKb"></div>
   <div class="opt"><button class="pill" id="fullscreen" data-t="setFull"></button><button class="pill" id="reset" data-t="setReset"></button></div>
   <div class="opt"><button class="pill" id="openFeedback" data-t="setFeedback"></button><button class="pill" id="wipe" data-t="setWipe"></button></div>
-  <div class="opt"><span></span><button class="pill" id="removePlayer" hidden></button></div>
+  <div class="opt" id="removeRow"><span data-t="setRemoveLabel"></span><div id="removeList"></div></div>
+  <div id="removeGate" hidden><p id="removeAsk"></p><div class="opt"><input id="removeName" type="text" autocomplete="off" autocapitalize="words" spellcheck="false" maxlength="16"><button class="pill" id="removeGo" data-t="setRemoveGo" disabled></button></div></div>
   <div class="opt"><button class="pill" id="changeName" data-t="setChange"></button><button class="big" id="closeSettings" style="font-size:20px" data-t="setDone"></button></div>
 </dialog>
 

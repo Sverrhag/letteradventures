@@ -125,7 +125,12 @@ function renderPlayers(){
   const add = document.createElement('button');
   add.className = 'player'; add.id = 'addPlayer'; add.textContent = '+'; add.setAttribute('aria-label', T.ui.newPlayer); add.title = T.ui.newPlayer;
   $('#homePlayers').append(add);
+  // In the settings: the saved players, to remove one.
+  $('#removeRow').hidden = names.length === 0;
+  fill($('#removeList'), names);
+  $$('#removeList .player').forEach(b => b.setAttribute('aria-pressed', b.dataset.player === removing));
 }
+let removing = null; // the player the settings are asking to have typed, before it is removed
 // Switches to another saved player, with that player's own language, voice, look and level.
 function choosePlayer(name){
   const lang = S.lang;
@@ -359,7 +364,6 @@ function renderCards(){
 function refresh(){
   const p = T.poss(nm());
   renderCards(); renderPlayers();
-  $('#removePlayer').hidden = !S.name; $('#removePlayer').textContent = T.ui.setRemove(S.name);
   // Without a name, languages where "friend's letters" reads badly say "My letters" instead.
   $('#homeTitle').textContent = !S.name && T.homePlain || T.homeTitle(p);
   $('#shelfTitle').textContent = !S.name && T.shelfPlain || T.shelfTitle(p);
@@ -797,7 +801,7 @@ matchMedia('(display-mode: fullscreen), (display-mode: standalone)').addEventLis
 $('#langSeg').addEventListener('click', e => { const b = e.target.closest('[data-lang]'); if (!b) return; syncName(); S.lang = b.dataset.lang; save(); applyLang(); loadNameClip(); });
 
 const dlg = $('#settings');
-$('#openSettings').onclick = () => { refresh(); $('#fullscreen').hidden = !document.fullscreenEnabled; dlg.showModal(); };
+$('#openSettings').onclick = () => { askRemove(null); refresh(); $('#fullscreen').hidden = !document.fullscreenEnabled; dlg.showModal(); };
 $('#closeSettings').onclick = () => dlg.close();
 $('#changeName').onclick = () => { dlg.close(); G = null; stopClock(); tok++; player.pause(); show('start'); };
 document.addEventListener('click', e => {
@@ -851,14 +855,27 @@ $('#homePlayers').addEventListener('click', e => {
   choosePlayer(b.dataset.player);
   Promise.race([loadNameClip(), new Promise(r => setTimeout(r, 1500))]).then(() => goHome(true));
 });
-// Removes the player who is playing, with everything saved under that name.
-let removeArmed = false;
-$('#removePlayer').onclick = e => {
-  if (!removeArmed){ removeArmed = true; e.target.textContent = T.ui.setRemoveArm; setTimeout(() => { if (removeArmed){ removeArmed = false; e.target.textContent = T.ui.setRemove(S.name); } }, 4000); return; }
-  removeArmed = false;
-  const key = playerKey(S.name);
-  Object.assign(S, NEW_PLAYER(), {name: ''}); draft = true;
+// Removes a saved player, with everything saved under that name. So that a child does not do it
+// by accident, the player's name has to be typed first.
+function askRemove(name){
+  removing = name;
+  $('#removeGate').hidden = !name; $('#removeName').value = ''; $('#removeGo').disabled = true;
+  if (name) $('#removeAsk').textContent = T.ui.setRemoveType(name);
+  $$('#removeList .player').forEach(b => b.setAttribute('aria-pressed', b.dataset.player === removing));
+}
+$('#removeList').addEventListener('click', e => {
+  const b = e.target.closest('[data-player]'); if (!b) return;
+  askRemove(b.dataset.player === removing ? null : b.dataset.player);
+  if (removing) $('#removeName').focus();
+});
+$('#removeName').addEventListener('input', e => { $('#removeGo').disabled = !removing || playerKey(e.target.value) !== playerKey(removing); });
+$('#removeGo').onclick = () => {
+  if (!removing || playerKey($('#removeName').value) !== playerKey(removing)) return;
+  const key = playerKey(removing), current = key === playerKey(S.name);
+  askRemove(null);
   delete S.profiles[key];
+  if (!current){ save(); refresh(); return; }
+  Object.assign(S, NEW_PLAYER(), {name: ''}); draft = true;
   save(); dlg.close(); G = null; stopClock(); tok++; player.pause();
   $('#name').value = ''; show('start'); refresh();
 };
