@@ -1,0 +1,44 @@
+<!doctype html>
+<!-- The picture shown when a link to the game is shared: the twelve games, in English.
+     Render with headless Chrome (see README): 1200x627 for og-image.png; any other size works too. -->
+<html lang="en">
+<meta charset="utf-8">
+<title>Letter Adventures</title>
+<style>
+@font-face{font-family:"Fredoka"; src:url("../fonts/Fredoka-latin.woff2") format("woff2"); font-weight:300 700}
+*{box-sizing:border-box}
+html,body{margin:0; height:100%}
+body{font-family:"Fredoka","Trebuchet MS",sans-serif; color:#48266b; overflow:hidden;
+  background:linear-gradient(160deg,#ffd9ec,#e9dcff 50%,#d2f0ff);
+  display:flex; flex-direction:column; padding:3.2vmin 4vmin 3.6vmin}
+header{display:flex; align-items:center; gap:2vmin; margin-bottom:2.4vmin}
+header .hero{font-size:10vmin; line-height:1}
+h1{margin:0; font-size:8.4vmin; font-weight:700; line-height:1}
+header p{margin:.6vmin 0 0; font-size:3.7vmin; font-weight:500; color:#7d5f9c}
+main{flex:1; display:grid; gap:1.9vmin; grid-template-columns:repeat(var(--cols),1fr); grid-auto-rows:1fr; min-height:0}
+.g{background:#fff; border-radius:3.4vmin; box-shadow:0 .9vmin 0 rgba(110,60,160,.18); border-top:1.5vmin solid var(--c);
+  display:flex; align-items:center; gap:1.6vmin; padding:1vmin 2vmin; min-width:0}
+.g span{font-size:7vmin; line-height:1}
+.g b{display:block; font-size:3.7vmin; font-weight:600; line-height:1.1}
+.g i{display:block; font-style:normal; font-size:2.6vmin; color:#7d5f9c; line-height:1.15; margin-top:.5vmin}
+body.tall main{--cols:3} body.tall .g{flex-direction:column; justify-content:center; text-align:center; gap:.8vmin} body.tall .g span{font-size:7.5vmin} body.tall .g b{font-size:3.5vmin} body.tall .g i{font-size:2.5vmin}
+body.tall h1{font-size:7.6vmin} body.tall header p{font-size:3.1vmin}
+body.wide main{--cols:4}
+</style>
+<body>
+<header><div class="hero">🦊</div><div><h1>Letter Adventures</h1><p>Twelve small games with letters and words · six languages</p></div></header>
+<main id="games"></main>
+<script>
+const GAMES = [
+  ['🌈','The alphabet','A to Z in the right order','#ff7a93'], ['🐞','Find the letter','Press the right key','#ffa552'],
+  ['👂','Listen','Which letter do you hear?','#ffd84a'], ['🦋','Big and small','Which ones match?','#6ad895'],
+  ['☔','Catch the letter','Press before it lands','#69bcff'], ['🦄','Spell words','Letter by letter','#b893ff'],
+  ['🖼️','Picture and word','Which word fits?','#69bcff'], ['📖','Read the word','Which picture fits?','#ffa552'],
+  ['🔤','First letter','What does the word start with?','#ffd84a'], ['🧩','Missing letter','Which letter is missing?','#6ad895'],
+  ['🃏','Memory','Find two that match','#b893ff'], ['🎵','Rhyme','Which words sound alike?','#ff7a93'],
+];
+document.body.className = innerHeight >= innerWidth * .9 ? 'tall' : 'wide';
+document.getElementById('games').innerHTML = GAMES.map(([e, n, d, c]) => `<div class="g" style="--c:${c}"><span>${e}</span><div><b>${n}</b><i>${d}</i></div></div>`).join('');
+</script>
+</body>
+</html>

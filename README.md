@@ -51,6 +51,9 @@ chrome --headless=new --hide-scrollbars --window-size=512,512 --screenshot=icons
 
 Repeat with 192 and 180 for `icon-192.png` and `icon-180.png`.
 
+The picture shown when a link to the game is shared, `og-image.png`, is `tools/share-image.html`
+rendered the same way at `--window-size=1200,627`.
+
 ## Privacy rules for this code
 
 The game is for children aged 3 to 7, so it must not send anything to other servers.
