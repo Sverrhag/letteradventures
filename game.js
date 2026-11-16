@@ -118,8 +118,11 @@ function renderPlayers(){
   $('#playersLabel').hidden = $('#players').hidden = names.length === 0;
   fill($('#players'), names);
   // On the home screen the names are there to switch player with one tap, so one name alone is not shown.
-  $('#homePlayers').hidden = names.length < 2;
+  // and a "+" for adding a new player.
   fill($('#homePlayers'), names.length < 2 ? [] : names);
+  const add = document.createElement('button');
+  add.className = 'player'; add.id = 'addPlayer'; add.textContent = '+'; add.setAttribute('aria-label', T.ui.newPlayer); add.title = T.ui.newPlayer;
+  $('#homePlayers').append(add);
 }
 // Switches to another saved player, with that player's own language, voice, look and level.
 function choosePlayer(name){
@@ -833,6 +836,11 @@ $('#name').addEventListener('change', () => {
 });
 // On the home screen a tap on another name switches straight to that player and greets them.
 $('#homePlayers').addEventListener('click', e => {
+  if (e.target.closest('#addPlayer')){ // the start screen with an empty name; the player who was playing is kept
+    G = null; stopClock(); tok++; player.pause();
+    $('#name').value = ''; syncName(); save(); show('start'); refresh(); $('#name').focus();
+    return;
+  }
   const b = e.target.closest('[data-player]'); if (!b || playerKey(b.dataset.player) === playerKey(S.name)) return;
   tok++; player.pause();
   choosePlayer(b.dataset.player);

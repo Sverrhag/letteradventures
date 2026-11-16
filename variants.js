@@ -106,7 +106,7 @@ de: {
 // cases are practised, and the label of the button that reloads the game.
 const MORE = {
 sv: {
-  ui: { setReload: '🔄 Hämta senaste versionen', playersLabel: 'Vem spelar?', setRemove: n => `Ta bort spelaren ${n}`, setRemoveArm: 'Tryck igen för att ta bort',
+  ui: { setReload: '🔄 Hämta senaste versionen', playersLabel: 'Vem spelar?', newPlayer: 'Ny spelare', setRemove: n => `Ta bort spelaren ${n}`, setRemoveArm: 'Tryck igen för att ta bort',
         lookLabel: 'Välj utseende', looks: ['Äventyr', 'Regnbåge', 'Rymden', 'Djungel', 'Havet'], tagline: 'Lär dig bokstäver och ord med dina djurvänner' },
   g: {
     hi: 'Hej,', greetRest: 'Välkommen till Letter Adventures! Vad vill du spela?',
@@ -126,7 +126,7 @@ sv: {
   },
 },
 en: {
-  ui: { setReload: '🔄 Get the latest version', playersLabel: 'Who is playing?', setRemove: n => `Remove the player ${n}`, setRemoveArm: 'Tap again to remove',
+  ui: { setReload: '🔄 Get the latest version', playersLabel: 'Who is playing?', newPlayer: 'New player', setRemove: n => `Remove the player ${n}`, setRemoveArm: 'Tap again to remove',
         lookLabel: 'Choose a look', looks: ['Adventure', 'Rainbow', 'Space', 'Jungle', 'Ocean'], tagline: 'Learn letters and words with your animal friends' },
   g: {
     hi: 'Hi,', greetRest: 'Welcome to Letter Adventures! What would you like to play?',
@@ -146,7 +146,7 @@ en: {
   },
 },
 es: {
-  ui: { setReload: '🔄 Cargar la última versión', playersLabel: '¿Quién juega?', setRemove: n => `Quitar al jugador ${n}`, setRemoveArm: 'Pulsa otra vez para quitar',
+  ui: { setReload: '🔄 Cargar la última versión', playersLabel: '¿Quién juega?', newPlayer: 'Nuevo jugador', setRemove: n => `Quitar al jugador ${n}`, setRemoveArm: 'Pulsa otra vez para quitar',
         lookLabel: 'Elige un estilo', looks: ['Aventura', 'Arcoíris', 'Espacio', 'Selva', 'Océano'], tagline: 'Aprende letras y palabras con tus amigos animales' },
   g: {
     hi: 'Hola,', greetRest: '¡Te doy la bienvenida a Letter Adventures! ¿A qué quieres jugar?',
@@ -166,7 +166,7 @@ es: {
   },
 },
 fr: {
-  ui: { setReload: '🔄 Charger la dernière version', playersLabel: 'Qui joue ?', setRemove: n => `Supprimer le joueur ${n}`, setRemoveArm: 'Appuyez encore pour supprimer',
+  ui: { setReload: '🔄 Charger la dernière version', playersLabel: 'Qui joue ?', newPlayer: 'Nouveau joueur', setRemove: n => `Supprimer le joueur ${n}`, setRemoveArm: 'Appuyez encore pour supprimer',
         lookLabel: 'Choisis un décor', looks: ['Aventure', 'Arc-en-ciel', 'Espace', 'Jungle', 'Océan'], tagline: 'Apprends les lettres et les mots avec tes amis les animaux' },
   g: {
     hi: 'Bonjour,', greetRest: 'Bienvenue dans Letter Adventures ! À quoi veux-tu jouer ?',
@@ -186,7 +186,7 @@ fr: {
   },
 },
 pt: {
-  ui: { setReload: '🔄 Carregar a versão mais recente', playersLabel: 'Quem vai jogar?', setRemove: n => `Remover o jogador ${n}`, setRemoveArm: 'Toque de novo para remover',
+  ui: { setReload: '🔄 Carregar a versão mais recente', playersLabel: 'Quem vai jogar?', newPlayer: 'Novo jogador', setRemove: n => `Remover o jogador ${n}`, setRemoveArm: 'Toque de novo para remover',
         lookLabel: 'Escolha um visual', looks: ['Aventura', 'Arco-íris', 'Espaço', 'Selva', 'Oceano'], tagline: 'Aprenda letras e palavras com seus amigos animais' },
   g: {
     hi: 'Oi,', greetRest: 'Boas-vindas ao Letter Adventures! Do que você quer brincar?',
@@ -206,7 +206,7 @@ pt: {
   },
 },
 de: {
-  ui: { setReload: '🔄 Neueste Version laden', playersLabel: 'Wer spielt?', setRemove: n => `Spieler ${n} entfernen`, setRemoveArm: 'Zum Entfernen noch mal tippen',
+  ui: { setReload: '🔄 Neueste Version laden', playersLabel: 'Wer spielt?', newPlayer: 'Neuer Spieler', setRemove: n => `Spieler ${n} entfernen`, setRemoveArm: 'Zum Entfernen noch mal tippen',
         lookLabel: 'Wähle ein Aussehen', looks: ['Abenteuer', 'Regenbogen', 'Weltraum', 'Dschungel', 'Ozean'], tagline: 'Lerne Buchstaben und Wörter mit deinen Tierfreunden' },
   g: {
     hi: 'Hallo,', greetRest: 'Willkommen bei Letter Adventures! Was möchtest du spielen?',
