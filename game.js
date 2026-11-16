@@ -193,13 +193,13 @@ const player = new Audio();
    Common names are recorded once per voice and packed by first letter. The game downloads the
    whole pack for the first letter and cuts the name out here, so the web host only ever sees
    the first letter. A name that is not in the pack is simply not said. */
-let nameUrl = null, nameFor = '';
+let nameClip = null, nameFor = '';
 const plainText = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 async function loadNameClip(){
   const k = playerKey(S.name), want = `${S.lang}/v${S.voiceChar+1}/${k}`;
   if (nameFor === want) return;
   nameFor = want;
-  if (nameUrl){ URL.revokeObjectURL(nameUrl); nameUrl = null; }
+  nameClip = null;
   if (!k) return;
   const first = plainText(k)[0], pack = `audio/${S.lang}/v${S.voiceChar+1}/names/${/^[a-z]$/.test(first) ? first : '0'}`;
   try {
@@ -208,10 +208,22 @@ async function loadNameClip(){
     if (!hit) return;
     const bytes = await (await fetch(pack + '.bin')).arrayBuffer();
     if (nameFor !== want) return;
-    nameUrl = URL.createObjectURL(new Blob([bytes.slice(hit[0], hit[0] + hit[1])], {type: 'audio/mpeg'}));
+    nameClip = bytes.slice(hit[0], hit[0] + hit[1]);
   } catch {}
 }
-const namePart = () => ({url: nameUrl, text: ''});
+// The name is joined to the phrase before it (and after it) into one sound, so that it is said
+// in one breath: "Well done," + "Moa!". The clips have had their silence trimmed for this.
+let joinedUrl = null;
+async function joined(ids){
+  const clip = nameClip;
+  const bufs = await Promise.all(ids.map(async id => {
+    if (!id) return clip;
+    const r = await fetch(clipUrl(id)); if (!r.ok) throw 0;
+    return r.arrayBuffer();
+  }));
+  if (joinedUrl) URL.revokeObjectURL(joinedUrl);
+  return joinedUrl = URL.createObjectURL(new Blob(bufs, {type: 'audio/mpeg'}));
+}
 let tok = 0;
 // The clips that name a letter are fetched all at once, in a fixed order, and kept in memory.
 // Fetched one by one while a child spells their name, their order would show the name to the web host.
@@ -234,7 +246,7 @@ async function preloadLetters(){
 const clipUrl = id => clipCache[id] || `audio/${S.lang}/v${S.voiceChar+1}/${id}.mp3`;
 function say(parts, then){
   parts = [].concat(parts).filter(Boolean);
-  if (nameUrl) parts = parts.flatMap(p => p.named ? [p, namePart()] : [p]); // "Well done!" + "Moa!"
+  if (nameClip) parts = parts.map(p => p.named ? {...p, join: [p.id, null]} : p); // "Well done," + "Moa!"
   const text = parts.map(p => p.text).filter(Boolean).join(' ');
   $$('.say').forEach(e => e.textContent = text);
   const my = ++tok; let done = false, tm, i = 0;
@@ -242,13 +254,14 @@ function say(parts, then){
   player.pause();
   if (!S.voice){ if (then) tm = setTimeout(fin, 1300); return; }
   tm = setTimeout(fin, 3000 + text.length*120);
-  const next = () => {
+  const next = async () => {
     if (my !== tok) return;
     if (i >= parts.length) return fin();
-    const p = parts[i++]; let moved = false;
+    const p = parts[i++]; let moved = false, src = clipUrl(p.id);
     const go = () => { if (!moved){ moved = true; next(); } };
+    if (p.join){ try { src = await joined(p.join); } catch {} if (my !== tok) return; }
     player.onended = go; player.onerror = go;
-    player.src = p.url || clipUrl(p.id); player.playbackRate = S.speed;
+    player.src = src; player.playbackRate = S.speed;
     player.play().catch(go);
   };
   next();
@@ -350,7 +363,7 @@ function refresh(){
 function goHome(first){
   G = null; stopClock(); clearStage(); show('home'); refresh(); preloadLetters();
   // With a recorded name the greeting is said as "Hi" + name + the rest.
-  if (first && nameUrl && T.g.hi) say([{id:'hi', text:shown(T.g.greet)}, namePart(), {id:'greetRest', text:''}]);
+  if (first && nameClip && T.g.hi) say({id:'greet', text:shown(T.g.greet), join:['hi', null, 'greetRest']});
   else say(g(first ? 'greet' : 'homeAgain'));
 }
 function begin(){

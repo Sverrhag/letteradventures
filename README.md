@@ -71,6 +71,20 @@ from the list in `tools/names/<lang>.txt`. The clips are published as packs per 
 first letter and cuts the name out on the device, so the host only learns the first letter –
 keep it that way, and keep `privacy.html` in step. A name that is not in the list is not said.
 
+The game joins the name to the phrase before it ("Well done," + "Moa!") into one sound. The voice
+puts up to a second of silence around every clip, so after recording names, cut it off and pack
+again, or the name is said with long pauses around it:
+
+    python tools/trim-silence.py --trail 200 .cache/names/<lang>
+    node tools/generate-names.mjs --lang <lang> --pack
+
+The phrases a name is joined to are trimmed the same way after they have been recorded:
+
+    python tools/trim-silence.py "audio/*/v*/hi.mp3" "audio/*/v*/greetRest.mp3" "audio/*/v*/long_*.mp3" "audio/*/v*/hurra*.mp3"
+
+The voice service now and then returns a clip with no sound for a very short text (a single
+letter, "Hi,"). `trim-silence.py` reports those as SILENT; delete them and record again.
+
 ## Checking the pronunciation
 
 Nobody has to listen to the clips. `tools/check-words.py` transcribes every word clip with a
