@@ -95,3 +95,14 @@ which tells apart words that are spelled alike but said differently. Such words 
 pronunciation fixed in `tools/pronunciations.json` (IPA, or `=respelling`), and the recording tool
 then re-records their clips. Single short words on their own are judged least reliably; the
 sentence clips ("Spell the word bow.") are the ones to trust.
+
+Short words said on their own ("Fe.", "Bi.") are where the voice service goes wrong most, and
+the recogniser cannot judge a bare one-syllable word. Two tools deal with that:
+
+    python tools/retry-clips.py sv word_5 wrote_5        record again until the sentence is heard right
+    python tools/say-after-pause.py sv 5                 make say_5.mp3 from "The word is ... fe."
+
+`say-after-pause.py` records the word at the end of a sentence, after a pause, lets the recogniser
+check the sentence, and saves what comes after the pause as the clip. A clip made that way is
+replaced by an ordinary recording if `generate-voices.mjs --force` is run, so run it again then.
+
