@@ -476,8 +476,10 @@ function pickWords(id, n){
   return shuffle([...chosen, ...rest.slice(0, n - chosen.length)]);
 }
 // A word done right counts once towards its level; when all 20 are done the game moves up a level.
+// It has to be right at the first try: after a wrong press (G.missed) the word does not count, and
+// comes back another round. Memory has no wrong presses, so there every pair found counts.
 function markWord(it){
-  if (!G || it.isName || it.wi == null) return;
+  if (!G || G.missed || it.isName || it.wi == null) return;
   const p = prog(G.id), lo = (p.lv-1)*PER_LEVEL;
   if (it.wi < lo || it.wi >= lo+PER_LEVEL || p.done.includes(it.wi)) return;
   p.done.push(it.wi);
@@ -644,7 +646,7 @@ function press(k){
   if (G.id==='memory') return;
   const t = target(), it = item();
   if (base(k) !== base(t)){
-    G.wrong++; G.errs++; sfxNo(); flash('no');
+    G.wrong++; G.errs++; G.missed = true; sfxNo(); flash('no');
     const helped = G.wrong >= Math.max(1, LV().hintAt);
     if (helped) reveal();
     // Where the letter is hidden, the answer is only said aloud once it has been revealed.
@@ -685,7 +687,7 @@ function press(k){
 function advance(last){
   if (!G) return;
   if (last) return win();
-  G.i++; G.pos = 0; G.lock = false; render(); say(prompt());
+  G.i++; G.pos = 0; G.lock = false; G.missed = false; render(); say(prompt());
 }
 function win(){
   if (!G) return;
