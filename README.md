@@ -144,3 +144,9 @@ the published site is built fresh either way.
 A language page starts the game in its language. The English page keeps the language chosen
 last, and the address follows the language when it is changed. All paths in `index.html` start at
 the top of the site (`<base href="/">`), so the site must be served from the root of its domain.
+
+Each game also has a page of its own in each language (`/sv/rimspel/`, `/en/rhyming-game/` ...;
+`GAME_PAGES` in `seo.js` holds the address, title and text of each). It is the same game: the
+game is named on the start screen, the first "Start" opens that game, and the list of games in
+"About the game" links to these pages. English game pages are under `/en/`, while the English
+start page stays at `/`.

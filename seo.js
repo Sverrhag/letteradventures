@@ -1,5 +1,5 @@
 // What search engines read about the game, per language: the title and description of the page,
-// and a short text shown at the end of "About the game". Each language has its own address
+// a short text shown at the end of "About the game", and `free`, the words that end the description of a game's page. Each language has its own address
 // (/ for English, /sv/, /es/ ...), built from index.html by tools/build-pages.mjs, which also
 // writes these texts into the pages so that they are there without any script having run.
 (function (root) {
@@ -9,38 +9,133 @@ const SEO = {
     desc: 'A free letter and word game for children: learn the alphabet, find letters, spell and read first words in twelve small games with a friendly voice. No ads, no account.',
     h: 'Free alphabet games in the browser',
     p: 'Letter Adventures is a free learning game for children who are getting to know the alphabet and starting to spell and read. It runs straight in the browser with nothing to install, and a friendly voice says every letter and word aloud. There are no ads and no account, and what your child does in the game stays on the device.',
-    also: 'The game in other languages:' },
+    also: 'The game in other languages:',
+    free: 'Free in the browser, with no ads and no account.' },
   sv: { title: 'Bokstavsspel för barn – lär dig bokstäver och ord, gratis | Letter Adventures',
     desc: 'Ett gratis bokstavsspel för barn: lär dig alfabetet, hitta bokstäver, stava och läs de första orden i tolv små spel med en vänlig röst. Ingen reklam, inget konto.',
     h: 'Gratis bokstavsspel i webbläsaren',
     p: 'Letter Adventures är ett gratis lärospel för barn som håller på att lära sig alfabetet och börjar stava och läsa. Det körs direkt i webbläsaren utan att något behöver installeras, och en vänlig röst säger varje bokstav och ord högt. Ingen reklam och inget konto, och det barnet gör i spelet stannar på enheten.',
-    also: 'Spelet på andra språk:' },
+    also: 'Spelet på andra språk:',
+    free: 'Gratis i webbläsaren, utan reklam och utan konto.' },
   es: { title: 'Juegos de letras y del abecedario para niños – gratis | Letter Adventures',
     desc: 'Un juego gratuito de letras y palabras para niños: aprende el abecedario, encuentra letras, deletrea y lee las primeras palabras en doce pequeños juegos con una voz amable. Sin anuncios ni cuenta.',
     h: 'Juegos gratis del abecedario en el navegador',
     p: 'Letter Adventures es un juego educativo gratuito para niños que están conociendo el abecedario y empiezan a deletrear y a leer. Funciona directamente en el navegador, sin instalar nada, y una voz amable dice en voz alta cada letra y cada palabra. Sin anuncios y sin cuenta, y lo que hace el niño en el juego se queda en el dispositivo.',
-    also: 'El juego en otros idiomas:' },
+    also: 'El juego en otros idiomas:',
+    free: 'Gratis en el navegador, sin anuncios ni cuenta.' },
   fr: { title: 'Jeux de lettres et d’alphabet pour enfants – gratuit | Letter Adventures',
     desc: 'Un jeu gratuit de lettres et de mots pour les enfants : apprendre l’alphabet, trouver les lettres, épeler et lire ses premiers mots dans douze petits jeux, avec une voix amicale. Sans publicité ni compte.',
     h: 'Des jeux d’alphabet gratuits dans le navigateur',
     p: 'Letter Adventures est un jeu éducatif gratuit pour les enfants qui découvrent l’alphabet et commencent à épeler et à lire. Il fonctionne directement dans le navigateur, sans rien installer, et une voix amicale prononce chaque lettre et chaque mot. Sans publicité et sans compte, et ce que fait l’enfant dans le jeu reste sur l’appareil.',
-    also: 'Le jeu dans d’autres langues :' },
+    also: 'Le jeu dans d’autres langues :',
+    free: 'Gratuit dans le navigateur, sans publicité ni compte.' },
   pt: { title: 'Jogos de letras e do alfabeto para crianças – grátis | Letter Adventures',
     desc: 'Um jogo gratuito de letras e palavras para crianças: aprender o alfabeto, encontrar letras, soletrar e ler as primeiras palavras em doze pequenos jogos com uma voz amigável. Sem anúncios e sem conta.',
     h: 'Jogos gratuitos do alfabeto no navegador',
     p: 'Letter Adventures é um jogo educativo gratuito para crianças que estão conhecendo o alfabeto e começando a soletrar e a ler. Funciona direto no navegador, sem instalar nada, e uma voz amigável diz cada letra e cada palavra em voz alta. Sem anúncios e sem conta, e o que a criança faz no jogo fica no dispositivo.',
-    also: 'O jogo em outros idiomas:' },
+    also: 'O jogo em outros idiomas:',
+    free: 'Grátis no navegador, sem anúncios e sem conta.' },
   de: { title: 'Buchstabenspiele für Kinder – ABC und erste Wörter, kostenlos | Letter Adventures',
     desc: 'Ein kostenloses Buchstaben- und Wörterspiel für Kinder: das ABC lernen, Buchstaben finden, erste Wörter schreiben und lesen in zwölf kleinen Spielen mit einer freundlichen Stimme. Ohne Werbung, ohne Konto.',
     h: 'Kostenlose ABC-Spiele im Browser',
     p: 'Letter Adventures ist ein kostenloses Lernspiel für Kinder, die das Alphabet kennenlernen und anfangen zu schreiben und zu lesen. Es läuft direkt im Browser, ohne Installation, und eine freundliche Stimme spricht jeden Buchstaben und jedes Wort laut aus. Ohne Werbung und ohne Konto, und was das Kind im Spiel macht, bleibt auf dem Gerät.',
-    also: 'Das Spiel in anderen Sprachen:' },
+    also: 'Das Spiel in anderen Sprachen:',
+    free: 'Kostenlos im Browser, ohne Werbung und ohne Konto.' },
 };
-// The address of a language's page, and the languages in the order they are listed.
+// Each game also has a page of its own in each language (/sv/rimspel/, /en/rhyming-game/ ...): the
+// same game, with the game named on the start screen, and "Start" opens that game. Per game:
+// [the last part of the address, the title of the page, what the game is].
+const GAME_PAGES = {
+  en: {
+    alfabet: ['alphabet-game', 'Alphabet game for kids – A to Z in the right order', 'Type the alphabet from A to Z in the right order. The voice helps with the next letter, the clock is running and the best times go on a top list.'],
+    hitta: ['find-the-letter', 'Find the letter – learn the letters on the keyboard', 'A voice says a letter and the child finds it on the keyboard or on the keys on the screen. A calm way to learn where the letters are and what they are called.'],
+    lyssna: ['letter-listening-game', 'Listen and choose – which letter do you hear?', 'A voice says a letter and the child picks the right one among several. Trains the link between how a letter is said and how it looks.'],
+    para: ['uppercase-and-lowercase', 'Uppercase and lowercase letters – a matching game', 'Match each big letter with its small one. Helps children see that A and a, G and g are the same letter.'],
+    ord: ['spelling-game', 'Spelling game for kids – first words, letter by letter', 'The child spells a word letter by letter, with a picture and a voice that says the word. The words get longer as the child moves up the word levels.'],
+    bildord: ['picture-and-word', 'Picture and word – which word matches the picture?', 'A picture is shown and the child chooses the word that fits. First reading practice with familiar words.'],
+    lasord: ['read-the-word', 'Read the word – which picture fits?', 'A word is shown and the child chooses the picture that fits. Reading for meaning, one word at a time.'],
+    forsta: ['first-letter-game', 'First letter game – what does the word start with?', 'The child sees a picture, hears the word and works out which letter it starts with. Practises listening for the beginning of a word.'],
+    saknad: ['missing-letter-game', 'Missing letter game – which letter is missing?', 'One letter is missing from a word and the child fills it in. Good practice for spelling and for looking closely at words.'],
+    fanga: ['catch-the-letter', 'Catch the letter – a letter game with a little speed', 'Letters fall from the sky and the child presses the right key before they land. Practises finding the letters quickly.'],
+    memory: ['word-memory-game', 'Memory game for kids with pictures and words', 'Turn the cards and pair each picture with its written word. A classic memory game that also practises reading.'],
+    rimma: ['rhyming-game', 'Rhyming game for kids – which words sound alike?', 'The child gets a word and chooses the word that rhymes with it. Rhyming trains the ear for how words sound, a step on the way to reading.'],
+  },
+  sv: {
+    alfabet: ['alfabetsspel', 'Alfabetsspel för barn – A till Ö i rätt ordning', 'Skriv alfabetet från A till Ö i rätt ordning. Rösten hjälper till med nästa bokstav, klockan går och de bästa tiderna hamnar på en topplista.'],
+    hitta: ['hitta-bokstaven', 'Hitta bokstaven – lär dig bokstäverna på tangentbordet', 'En röst säger en bokstav och barnet letar upp den på tangentbordet eller på skärmens tangenter. Ett lugnt sätt att lära sig var bokstäverna finns och vad de heter.'],
+    lyssna: ['lyssna-pa-bokstaven', 'Lyssna och välj – vilken bokstav hör du?', 'En röst säger en bokstav och barnet väljer rätt bland flera. Tränar kopplingen mellan hur en bokstav låter och hur den ser ut.'],
+    para: ['stora-och-sma-bokstaver', 'Stora och små bokstäver – para ihop dem', 'Para ihop varje stor bokstav med sin lilla. Hjälper barnet att se att A och a, G och g är samma bokstav.'],
+    ord: ['stava-ord', 'Stavningsspel för barn – skriv de första orden', 'Barnet stavar ett ord bokstav för bokstav, med en bild och en röst som säger ordet. Orden blir längre när barnet går upp i ordnivå.'],
+    bildord: ['bild-och-ord', 'Bild och ord – vilket ord passar till bilden?', 'En bild visas och barnet väljer ordet som passar. Första lästräningen med välbekanta ord.'],
+    lasord: ['las-ordet', 'Läs ordet – vilken bild passar?', 'Ett ord visas och barnet väljer bilden som passar. Läsförståelse, ett ord i taget.'],
+    forsta: ['forsta-bokstaven', 'Första bokstaven – vad börjar ordet på?', 'Barnet ser en bild, hör ordet och listar ut vilken bokstav det börjar på. Tränar på att lyssna efter hur ett ord börjar.'],
+    saknad: ['saknad-bokstav', 'Saknad bokstav – vilken bokstav fattas?', 'En bokstav saknas i ett ord och barnet fyller i den. Bra träning på stavning och på att titta noga på ord.'],
+    fanga: ['fanga-bokstaven', 'Fånga bokstaven – bokstavsspel med lite fart', 'Bokstäver faller från himlen och barnet trycker på rätt tangent innan de landar. Tränar på att hitta bokstäverna snabbt.'],
+    memory: ['memory-med-ord', 'Memory för barn med bilder och ord', 'Vänd korten och para ihop varje bild med sitt skrivna ord. Ett klassiskt memory som också tränar läsning.'],
+    rimma: ['rimspel', 'Rimspel för barn – vilka ord låter lika?', 'Barnet får ett ord och väljer ordet som rimmar på det. Att rimma tränar örat för hur ord låter, ett steg på vägen mot att läsa.'],
+  },
+  es: {
+    alfabet: ['juego-del-abecedario', 'Juego del abecedario para niños – de la A a la Z en orden', 'Escribe el abecedario de la A a la Z en orden. La voz ayuda con la letra siguiente, el cronómetro corre y los mejores tiempos entran en una lista.'],
+    hitta: ['encuentra-la-letra', 'Encuentra la letra – aprende las letras en el teclado', 'Una voz dice una letra y el niño la busca en el teclado o en las teclas de la pantalla. Una forma tranquila de aprender dónde están las letras y cómo se llaman.'],
+    lyssna: ['escucha-la-letra', 'Escucha y elige – ¿qué letra oyes?', 'Una voz dice una letra y el niño elige la correcta entre varias. Refuerza la relación entre cómo suena una letra y cómo se ve.'],
+    para: ['mayusculas-y-minusculas', 'Mayúsculas y minúsculas – juego de parejas', 'Une cada letra mayúscula con su minúscula. Ayuda a ver que A y a, G y g son la misma letra.'],
+    ord: ['juego-de-deletrear', 'Juego de deletrear para niños – las primeras palabras', 'El niño escribe una palabra letra a letra, con un dibujo y una voz que dice la palabra. Las palabras se alargan a medida que sube de nivel.'],
+    bildord: ['dibujo-y-palabra', 'Dibujo y palabra – ¿qué palabra corresponde al dibujo?', 'Se muestra un dibujo y el niño elige la palabra que corresponde. Primera práctica de lectura con palabras conocidas.'],
+    lasord: ['lee-la-palabra', 'Lee la palabra – ¿qué dibujo corresponde?', 'Se muestra una palabra y el niño elige el dibujo que corresponde. Lectura comprensiva, palabra a palabra.'],
+    forsta: ['primera-letra', 'La primera letra – ¿por qué letra empieza la palabra?', 'El niño ve un dibujo, oye la palabra y descubre por qué letra empieza. Practica escuchar cómo empieza una palabra.'],
+    saknad: ['letra-que-falta', 'La letra que falta – ¿qué letra falta en la palabra?', 'Falta una letra en una palabra y el niño la completa. Buena práctica de ortografía y de mirar las palabras con atención.'],
+    fanga: ['atrapa-la-letra', 'Atrapa la letra – un juego de letras con algo de velocidad', 'Las letras caen del cielo y el niño pulsa la tecla correcta antes de que lleguen al suelo. Practica encontrar las letras con rapidez.'],
+    memory: ['memoria-de-palabras', 'Juego de memoria para niños con dibujos y palabras', 'Da la vuelta a las cartas y une cada dibujo con su palabra escrita. Un juego de memoria clásico que también practica la lectura.'],
+    rimma: ['juego-de-rimas', 'Juego de rimas para niños – ¿qué palabras suenan igual?', 'El niño recibe una palabra y elige la que rima con ella. Rimar entrena el oído para cómo suenan las palabras, un paso hacia la lectura.'],
+  },
+  fr: {
+    alfabet: ['jeu-de-l-alphabet', 'Jeu de l’alphabet pour enfants – de A à Z dans l’ordre', 'Tape l’alphabet de A à Z dans l’ordre. La voix aide pour la lettre suivante, le chronomètre tourne et les meilleurs temps entrent au classement.'],
+    hitta: ['trouve-la-lettre', 'Trouve la lettre – apprendre les lettres au clavier', 'Une voix dit une lettre et l’enfant la cherche sur le clavier ou sur les touches à l’écran. Une façon tranquille d’apprendre où sont les lettres et comment elles s’appellent.'],
+    lyssna: ['ecoute-la-lettre', 'Écoute et choisis – quelle lettre entends-tu ?', 'Une voix dit une lettre et l’enfant choisit la bonne parmi plusieurs. Renforce le lien entre le son d’une lettre et sa forme.'],
+    para: ['majuscules-et-minuscules', 'Majuscules et minuscules – jeu d’association', 'Associe chaque lettre majuscule à sa minuscule. Aide à voir que A et a, G et g sont la même lettre.'],
+    ord: ['jeu-d-orthographe', 'Jeu d’orthographe pour enfants – les premiers mots', 'L’enfant écrit un mot lettre par lettre, avec une image et une voix qui dit le mot. Les mots s’allongent au fil des niveaux.'],
+    bildord: ['image-et-mot', 'Image et mot – quel mot va avec l’image ?', 'Une image s’affiche et l’enfant choisit le mot qui convient. Premiers pas en lecture avec des mots familiers.'],
+    lasord: ['lis-le-mot', 'Lis le mot – quelle image convient ?', 'Un mot s’affiche et l’enfant choisit l’image qui convient. Lire pour comprendre, un mot à la fois.'],
+    forsta: ['premiere-lettre', 'La première lettre – par quelle lettre commence le mot ?', 'L’enfant voit une image, entend le mot et trouve par quelle lettre il commence. Un entraînement à écouter le début d’un mot.'],
+    saknad: ['lettre-manquante', 'La lettre manquante – quelle lettre manque dans le mot ?', 'Il manque une lettre dans un mot et l’enfant la complète. Un bon exercice d’orthographe et d’observation des mots.'],
+    fanga: ['attrape-la-lettre', 'Attrape la lettre – un jeu de lettres avec un peu de vitesse', 'Les lettres tombent du ciel et l’enfant appuie sur la bonne touche avant qu’elles touchent le sol. Un entraînement à trouver vite les lettres.'],
+    memory: ['memory-des-mots', 'Jeu de memory pour enfants avec images et mots', 'Retourne les cartes et associe chaque image à son mot écrit. Un memory classique qui fait aussi travailler la lecture.'],
+    rimma: ['jeu-de-rimes', 'Jeu de rimes pour enfants – quels mots se ressemblent ?', 'L’enfant reçoit un mot et choisit celui qui rime avec lui. Les rimes exercent l’oreille aux sons des mots, une étape vers la lecture.'],
+  },
+  pt: {
+    alfabet: ['jogo-do-alfabeto', 'Jogo do alfabeto para crianças – de A a Z na ordem', 'Digite o alfabeto de A a Z na ordem. A voz ajuda com a próxima letra, o cronômetro corre e os melhores tempos entram em uma lista.'],
+    hitta: ['encontre-a-letra', 'Encontre a letra – aprenda as letras no teclado', 'Uma voz diz uma letra e a criança a procura no teclado ou nas teclas da tela. Um jeito tranquilo de aprender onde ficam as letras e como se chamam.'],
+    lyssna: ['escute-a-letra', 'Escute e escolha – que letra você ouve?', 'Uma voz diz uma letra e a criança escolhe a certa entre várias. Reforça a relação entre o som de uma letra e a sua forma.'],
+    para: ['maiusculas-e-minusculas', 'Maiúsculas e minúsculas – jogo de combinar', 'Combine cada letra maiúscula com a sua minúscula. Ajuda a ver que A e a, G e g são a mesma letra.'],
+    ord: ['jogo-de-soletrar', 'Jogo de soletrar para crianças – as primeiras palavras', 'A criança escreve uma palavra letra por letra, com uma figura e uma voz que diz a palavra. As palavras ficam mais longas conforme ela sobe de nível.'],
+    bildord: ['figura-e-palavra', 'Figura e palavra – que palavra combina com a figura?', 'Uma figura aparece e a criança escolhe a palavra que combina. Primeira prática de leitura com palavras conhecidas.'],
+    lasord: ['leia-a-palavra', 'Leia a palavra – que figura combina?', 'Uma palavra aparece e a criança escolhe a figura que combina. Ler para entender, uma palavra de cada vez.'],
+    forsta: ['primeira-letra', 'A primeira letra – com que letra a palavra começa?', 'A criança vê uma figura, ouve a palavra e descobre com que letra ela começa. Pratica escutar como uma palavra começa.'],
+    saknad: ['letra-que-falta', 'A letra que falta – que letra está faltando na palavra?', 'Falta uma letra em uma palavra e a criança a completa. Boa prática de ortografia e de olhar as palavras com atenção.'],
+    fanga: ['pegue-a-letra', 'Pegue a letra – um jogo de letras com um pouco de velocidade', 'As letras caem do céu e a criança aperta a tecla certa antes que cheguem ao chão. Pratica encontrar as letras com rapidez.'],
+    memory: ['memoria-de-palavras', 'Jogo da memória para crianças com figuras e palavras', 'Vire as cartas e combine cada figura com a sua palavra escrita. Um jogo da memória clássico que também pratica a leitura.'],
+    rimma: ['jogo-de-rimas', 'Jogo de rimas para crianças – quais palavras soam igual?', 'A criança recebe uma palavra e escolhe a que rima com ela. Rimar treina o ouvido para o som das palavras, um passo rumo à leitura.'],
+  },
+  de: {
+    alfabet: ['abc-spiel', 'ABC-Spiel für Kinder – von A bis Z der Reihe nach', 'Tippe das Alphabet von A bis Z der Reihe nach. Die Stimme hilft beim nächsten Buchstaben, die Uhr läuft und die besten Zeiten kommen in eine Bestenliste.'],
+    hitta: ['finde-den-buchstaben', 'Finde den Buchstaben – Buchstaben auf der Tastatur lernen', 'Eine Stimme nennt einen Buchstaben und das Kind sucht ihn auf der Tastatur oder auf den Tasten am Bildschirm. Ein ruhiger Weg zu lernen, wo die Buchstaben sind und wie sie heißen.'],
+    lyssna: ['buchstaben-hoeren', 'Hör zu und wähle – welchen Buchstaben hörst du?', 'Eine Stimme nennt einen Buchstaben und das Kind wählt den richtigen aus mehreren. Übt die Verbindung zwischen dem Klang eines Buchstabens und seinem Aussehen.'],
+    para: ['gross-und-kleinbuchstaben', 'Groß- und Kleinbuchstaben – ein Zuordnungsspiel', 'Ordne jedem großen Buchstaben seinen kleinen zu. Hilft zu sehen, dass A und a, G und g derselbe Buchstabe sind.'],
+    ord: ['woerter-schreiben', 'Rechtschreibspiel für Kinder – erste Wörter schreiben', 'Das Kind schreibt ein Wort Buchstabe für Buchstabe, mit einem Bild und einer Stimme, die das Wort sagt. Die Wörter werden mit jeder Wortstufe länger.'],
+    bildord: ['bild-und-wort', 'Bild und Wort – welches Wort passt zum Bild?', 'Ein Bild erscheint und das Kind wählt das passende Wort. Erstes Lesen mit vertrauten Wörtern.'],
+    lasord: ['lies-das-wort', 'Lies das Wort – welches Bild passt?', 'Ein Wort erscheint und das Kind wählt das passende Bild. Sinnerfassendes Lesen, Wort für Wort.'],
+    forsta: ['anfangsbuchstabe', 'Anfangsbuchstabe – womit fängt das Wort an?', 'Das Kind sieht ein Bild, hört das Wort und findet heraus, mit welchem Buchstaben es anfängt. Übt, auf den Anfang eines Wortes zu hören.'],
+    saknad: ['fehlender-buchstabe', 'Fehlender Buchstabe – welcher Buchstabe fehlt im Wort?', 'In einem Wort fehlt ein Buchstabe und das Kind ergänzt ihn. Eine gute Übung für die Rechtschreibung und für genaues Hinsehen.'],
+    fanga: ['fang-den-buchstaben', 'Fang den Buchstaben – ein Buchstabenspiel mit etwas Tempo', 'Buchstaben fallen vom Himmel und das Kind drückt die richtige Taste, bevor sie landen. Übt, die Buchstaben schnell zu finden.'],
+    memory: ['woerter-memory', 'Memory für Kinder mit Bildern und Wörtern', 'Dreh die Karten um und ordne jedem Bild sein geschriebenes Wort zu. Ein klassisches Memory, das auch das Lesen übt.'],
+    rimma: ['reimspiel', 'Reimspiel für Kinder – welche Wörter klingen gleich?', 'Das Kind bekommt ein Wort und wählt das Wort, das sich darauf reimt. Reimen schult das Ohr für den Klang der Wörter, ein Schritt auf dem Weg zum Lesen.'],
+  },
+};
+// The address of a language's page, or of one game's page in it, and the languages in the order they are listed.
 const PAGE_LANGS = ['en', 'es', 'fr', 'pt', 'de', 'sv'];
-const pagePath = lang => lang === 'en' ? '/' : `/${lang}/`;
+const pagePath = (lang, game) => game && GAME_PAGES[lang][game] ? `/${lang}/${GAME_PAGES[lang][game][0]}/` : lang === 'en' ? '/' : `/${lang}/`;
 
-const api = { SITE, SEO, PAGE_LANGS, pagePath };
+const api = { SITE, SEO, GAME_PAGES, PAGE_LANGS, pagePath };
 if (typeof module !== 'undefined' && module.exports) module.exports = api;
 else Object.assign(root.LA, api);
 })(typeof window !== 'undefined' ? window : globalThis);

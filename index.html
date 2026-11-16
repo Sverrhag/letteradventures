@@ -116,6 +116,9 @@ h1{font-size:clamp(38px,9vh,84px); margin:0; line-height:1; color:var(--pink-dee
 .startbox{margin:auto; display:flex; flex-direction:column; align-items:center; text-align:center; gap:14px; width:100%; max-width:680px; padding:8px 0 20px}
 .hero{font-size:clamp(70px,16vh,150px); line-height:1; animation:bob 2.4s ease-in-out infinite}
 #start h1{font-size:clamp(34px,7vh,68px)}
+/* On the page of one game (see GAME_PAGES in seo.js): the game it is about. */
+#pageGame{margin:6px 0 0; font-size:clamp(20px,3.2vh,28px); font-weight:700}
+#pageGameP{margin:2px auto 4px; max-width:560px; font-size:16px; line-height:1.45; color:var(--ink-soft)}
 .tagline{margin:0; font-size:clamp(17px,2.6vh,22px); color:var(--ink-soft); font-weight:600}
 .namebox{display:flex; flex-direction:column; gap:8px; align-items:center; width:100%}
 .namebox label{font-weight:700; font-size:22px}
@@ -294,6 +297,8 @@ dialog .seg button{font-size:18px; padding:6px 14px}
   <div class="startbox">
     <div class="hero" id="hero">🦊</div>
     <h1 id="gameTitle">Letter Adventures</h1>
+    <h2 id="pageGame" hidden></h2>
+    <p id="pageGameP" hidden></p>
     <p class="tagline" data-t="tagline">Learn letters and words with your animal friends</p>
     <div class="seg" id="langSeg" role="group" aria-label="Språk / Language">
       <button data-lang="sv">Svenska</button><button data-lang="en">English</button>
@@ -316,7 +321,7 @@ dialog .seg button{font-size:18px; padding:6px 14px}
     <div class="about">
       <h2 data-t="aboutH">About the game</h2>
       <p data-t="about">A letter game for children. Your child practises recognising and typing letters, with a keyboard or a touch screen, and reading and building words, in twelve small games. A cheerful voice guides the way, praises every right answer and gently helps after a mistake. Choose between five voices, and between big letters, small letters or both. The difficulty follows the child’s age in five levels and can be changed in the settings. On the hardest levels the letters are hidden. The alphabet game is timed, with a top list.</p>
-      <ul id="aboutList"><li>🌈 <b>The alphabet</b> – A to Z in the right order</li><li>🐞 <b>Find the letter</b> – Press the right key</li><li>👂 <b>Listen</b> – Which letter do you hear?</li><li>🦋 <b>Big and small</b> – Which ones match?</li><li>🦄 <b>Spell words</b> – Letter by letter</li><li>🖼️ <b>Picture and word</b> – Which word fits?</li><li>📖 <b>Read the word</b> – Which picture fits?</li><li>🔤 <b>First letter</b> – What does the word start with?</li><li>🧩 <b>Missing letter</b> – Which letter is missing?</li><li>☔ <b>Catch the letter</b> – Press before it lands</li><li>🃏 <b>Memory</b> – Find two that match</li><li>🎵 <b>Rhyme</b> – Which words sound alike?</li></ul>
+      <ul id="aboutList"><li>🌈 <a href="/en/alphabet-game/"><b>The alphabet</b></a> – A to Z in the right order</li><li>🐞 <a href="/en/find-the-letter/"><b>Find the letter</b></a> – Press the right key</li><li>👂 <a href="/en/letter-listening-game/"><b>Listen</b></a> – Which letter do you hear?</li><li>🦋 <a href="/en/uppercase-and-lowercase/"><b>Big and small</b></a> – Which ones match?</li><li>🦄 <a href="/en/spelling-game/"><b>Spell words</b></a> – Letter by letter</li><li>🖼️ <a href="/en/picture-and-word/"><b>Picture and word</b></a> – Which word fits?</li><li>📖 <a href="/en/read-the-word/"><b>Read the word</b></a> – Which picture fits?</li><li>🔤 <a href="/en/first-letter-game/"><b>First letter</b></a> – What does the word start with?</li><li>🧩 <a href="/en/missing-letter-game/"><b>Missing letter</b></a> – Which letter is missing?</li><li>☔ <a href="/en/catch-the-letter/"><b>Catch the letter</b></a> – Press before it lands</li><li>🃏 <a href="/en/word-memory-game/"><b>Memory</b></a> – Find two that match</li><li>🎵 <a href="/en/rhyming-game/"><b>Rhyme</b></a> – Which words sound alike?</li></ul>
       <p class="tip" data-t="tip">Works in the browser on tablets, computers and phones. No account and no ads. Stars and stickers are saved only in this browser.</p>
       <p class="tip"><a href="privacy.html" id="privacyLink" data-t="privacyLink">Privacy, publisher and licences</a></p>
       <div id="install">

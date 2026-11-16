@@ -10,6 +10,114 @@
     <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/"/>
   </url>
   <url>
+    <loc>https://letteradventures.com/en/alphabet-game/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/alphabet-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/juego-del-abecedario/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/jeu-de-l-alphabet/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/jogo-do-alfabeto/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/abc-spiel/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/alfabetsspel/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/en/find-the-letter/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/find-the-letter/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/encuentra-la-letra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/trouve-la-lettre/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/encontre-a-letra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/finde-den-buchstaben/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/hitta-bokstaven/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/en/letter-listening-game/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/letter-listening-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/escucha-la-letra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/ecoute-la-lettre/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/escute-a-letra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/buchstaben-hoeren/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/lyssna-pa-bokstaven/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/en/uppercase-and-lowercase/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/uppercase-and-lowercase/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/mayusculas-y-minusculas/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/majuscules-et-minuscules/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/maiusculas-e-minusculas/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/gross-und-kleinbuchstaben/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/stora-och-sma-bokstaver/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/en/spelling-game/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/spelling-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/juego-de-deletrear/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/jeu-d-orthographe/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/jogo-de-soletrar/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/woerter-schreiben/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/stava-ord/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/en/picture-and-word/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/picture-and-word/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/dibujo-y-palabra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/image-et-mot/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/figura-e-palavra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/bild-und-wort/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/bild-och-ord/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/en/read-the-word/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/read-the-word/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/lee-la-palabra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/lis-le-mot/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/leia-a-palavra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/lies-das-wort/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/las-ordet/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/en/first-letter-game/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/first-letter-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/primera-letra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/premiere-lettre/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/primeira-letra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/anfangsbuchstabe/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/forsta-bokstaven/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/en/missing-letter-game/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/missing-letter-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/letra-que-falta/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/lettre-manquante/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/letra-que-falta/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/fehlender-buchstabe/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/saknad-bokstav/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/en/catch-the-letter/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/catch-the-letter/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/atrapa-la-letra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/attrape-la-lettre/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/pegue-a-letra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/fang-den-buchstaben/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/fanga-bokstaven/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/en/word-memory-game/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/word-memory-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/memoria-de-palabras/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/memory-des-mots/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/memoria-de-palavras/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/woerter-memory/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/memory-med-ord/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/en/rhyming-game/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/rhyming-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/juego-de-rimas/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/jeu-de-rimes/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/jogo-de-rimas/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/reimspiel/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/rimspel/"/>
+  </url>
+  <url>
     <loc>https://letteradventures.com/es/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/"/>
@@ -17,6 +125,114 @@
     <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/"/>
     <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/es/juego-del-abecedario/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/alphabet-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/juego-del-abecedario/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/jeu-de-l-alphabet/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/jogo-do-alfabeto/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/abc-spiel/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/alfabetsspel/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/es/encuentra-la-letra/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/find-the-letter/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/encuentra-la-letra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/trouve-la-lettre/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/encontre-a-letra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/finde-den-buchstaben/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/hitta-bokstaven/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/es/escucha-la-letra/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/letter-listening-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/escucha-la-letra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/ecoute-la-lettre/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/escute-a-letra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/buchstaben-hoeren/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/lyssna-pa-bokstaven/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/es/mayusculas-y-minusculas/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/uppercase-and-lowercase/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/mayusculas-y-minusculas/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/majuscules-et-minuscules/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/maiusculas-e-minusculas/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/gross-und-kleinbuchstaben/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/stora-och-sma-bokstaver/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/es/juego-de-deletrear/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/spelling-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/juego-de-deletrear/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/jeu-d-orthographe/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/jogo-de-soletrar/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/woerter-schreiben/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/stava-ord/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/es/dibujo-y-palabra/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/picture-and-word/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/dibujo-y-palabra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/image-et-mot/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/figura-e-palavra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/bild-und-wort/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/bild-och-ord/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/es/lee-la-palabra/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/read-the-word/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/lee-la-palabra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/lis-le-mot/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/leia-a-palavra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/lies-das-wort/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/las-ordet/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/es/primera-letra/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/first-letter-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/primera-letra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/premiere-lettre/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/primeira-letra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/anfangsbuchstabe/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/forsta-bokstaven/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/es/letra-que-falta/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/missing-letter-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/letra-que-falta/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/lettre-manquante/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/letra-que-falta/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/fehlender-buchstabe/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/saknad-bokstav/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/es/atrapa-la-letra/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/catch-the-letter/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/atrapa-la-letra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/attrape-la-lettre/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/pegue-a-letra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/fang-den-buchstaben/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/fanga-bokstaven/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/es/memoria-de-palabras/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/word-memory-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/memoria-de-palabras/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/memory-des-mots/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/memoria-de-palavras/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/woerter-memory/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/memory-med-ord/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/es/juego-de-rimas/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/rhyming-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/juego-de-rimas/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/jeu-de-rimes/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/jogo-de-rimas/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/reimspiel/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/rimspel/"/>
   </url>
   <url>
     <loc>https://letteradventures.com/fr/</loc>
@@ -28,6 +244,114 @@
     <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/"/>
   </url>
   <url>
+    <loc>https://letteradventures.com/fr/jeu-de-l-alphabet/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/alphabet-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/juego-del-abecedario/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/jeu-de-l-alphabet/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/jogo-do-alfabeto/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/abc-spiel/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/alfabetsspel/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/fr/trouve-la-lettre/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/find-the-letter/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/encuentra-la-letra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/trouve-la-lettre/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/encontre-a-letra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/finde-den-buchstaben/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/hitta-bokstaven/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/fr/ecoute-la-lettre/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/letter-listening-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/escucha-la-letra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/ecoute-la-lettre/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/escute-a-letra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/buchstaben-hoeren/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/lyssna-pa-bokstaven/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/fr/majuscules-et-minuscules/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/uppercase-and-lowercase/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/mayusculas-y-minusculas/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/majuscules-et-minuscules/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/maiusculas-e-minusculas/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/gross-und-kleinbuchstaben/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/stora-och-sma-bokstaver/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/fr/jeu-d-orthographe/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/spelling-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/juego-de-deletrear/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/jeu-d-orthographe/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/jogo-de-soletrar/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/woerter-schreiben/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/stava-ord/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/fr/image-et-mot/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/picture-and-word/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/dibujo-y-palabra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/image-et-mot/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/figura-e-palavra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/bild-und-wort/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/bild-och-ord/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/fr/lis-le-mot/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/read-the-word/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/lee-la-palabra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/lis-le-mot/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/leia-a-palavra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/lies-das-wort/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/las-ordet/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/fr/premiere-lettre/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/first-letter-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/primera-letra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/premiere-lettre/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/primeira-letra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/anfangsbuchstabe/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/forsta-bokstaven/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/fr/lettre-manquante/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/missing-letter-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/letra-que-falta/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/lettre-manquante/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/letra-que-falta/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/fehlender-buchstabe/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/saknad-bokstav/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/fr/attrape-la-lettre/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/catch-the-letter/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/atrapa-la-letra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/attrape-la-lettre/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/pegue-a-letra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/fang-den-buchstaben/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/fanga-bokstaven/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/fr/memory-des-mots/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/word-memory-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/memoria-de-palabras/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/memory-des-mots/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/memoria-de-palavras/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/woerter-memory/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/memory-med-ord/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/fr/jeu-de-rimes/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/rhyming-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/juego-de-rimas/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/jeu-de-rimes/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/jogo-de-rimas/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/reimspiel/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/rimspel/"/>
+  </url>
+  <url>
     <loc>https://letteradventures.com/pt/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/"/>
@@ -35,6 +359,114 @@
     <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/"/>
     <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/pt/jogo-do-alfabeto/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/alphabet-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/juego-del-abecedario/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/jeu-de-l-alphabet/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/jogo-do-alfabeto/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/abc-spiel/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/alfabetsspel/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/pt/encontre-a-letra/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/find-the-letter/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/encuentra-la-letra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/trouve-la-lettre/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/encontre-a-letra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/finde-den-buchstaben/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/hitta-bokstaven/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/pt/escute-a-letra/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/letter-listening-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/escucha-la-letra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/ecoute-la-lettre/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/escute-a-letra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/buchstaben-hoeren/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/lyssna-pa-bokstaven/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/pt/maiusculas-e-minusculas/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/uppercase-and-lowercase/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/mayusculas-y-minusculas/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/majuscules-et-minuscules/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/maiusculas-e-minusculas/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/gross-und-kleinbuchstaben/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/stora-och-sma-bokstaver/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/pt/jogo-de-soletrar/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/spelling-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/juego-de-deletrear/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/jeu-d-orthographe/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/jogo-de-soletrar/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/woerter-schreiben/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/stava-ord/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/pt/figura-e-palavra/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/picture-and-word/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/dibujo-y-palabra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/image-et-mot/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/figura-e-palavra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/bild-und-wort/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/bild-och-ord/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/pt/leia-a-palavra/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/read-the-word/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/lee-la-palabra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/lis-le-mot/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/leia-a-palavra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/lies-das-wort/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/las-ordet/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/pt/primeira-letra/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/first-letter-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/primera-letra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/premiere-lettre/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/primeira-letra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/anfangsbuchstabe/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/forsta-bokstaven/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/pt/letra-que-falta/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/missing-letter-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/letra-que-falta/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/lettre-manquante/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/letra-que-falta/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/fehlender-buchstabe/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/saknad-bokstav/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/pt/pegue-a-letra/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/catch-the-letter/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/atrapa-la-letra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/attrape-la-lettre/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/pegue-a-letra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/fang-den-buchstaben/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/fanga-bokstaven/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/pt/memoria-de-palavras/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/word-memory-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/memoria-de-palabras/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/memory-des-mots/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/memoria-de-palavras/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/woerter-memory/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/memory-med-ord/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/pt/jogo-de-rimas/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/rhyming-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/juego-de-rimas/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/jeu-de-rimes/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/jogo-de-rimas/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/reimspiel/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/rimspel/"/>
   </url>
   <url>
     <loc>https://letteradventures.com/de/</loc>
@@ -46,6 +478,114 @@
     <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/"/>
   </url>
   <url>
+    <loc>https://letteradventures.com/de/abc-spiel/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/alphabet-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/juego-del-abecedario/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/jeu-de-l-alphabet/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/jogo-do-alfabeto/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/abc-spiel/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/alfabetsspel/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/de/finde-den-buchstaben/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/find-the-letter/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/encuentra-la-letra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/trouve-la-lettre/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/encontre-a-letra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/finde-den-buchstaben/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/hitta-bokstaven/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/de/buchstaben-hoeren/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/letter-listening-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/escucha-la-letra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/ecoute-la-lettre/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/escute-a-letra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/buchstaben-hoeren/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/lyssna-pa-bokstaven/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/de/gross-und-kleinbuchstaben/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/uppercase-and-lowercase/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/mayusculas-y-minusculas/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/majuscules-et-minuscules/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/maiusculas-e-minusculas/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/gross-und-kleinbuchstaben/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/stora-och-sma-bokstaver/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/de/woerter-schreiben/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/spelling-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/juego-de-deletrear/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/jeu-d-orthographe/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/jogo-de-soletrar/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/woerter-schreiben/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/stava-ord/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/de/bild-und-wort/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/picture-and-word/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/dibujo-y-palabra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/image-et-mot/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/figura-e-palavra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/bild-und-wort/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/bild-och-ord/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/de/lies-das-wort/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/read-the-word/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/lee-la-palabra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/lis-le-mot/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/leia-a-palavra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/lies-das-wort/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/las-ordet/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/de/anfangsbuchstabe/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/first-letter-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/primera-letra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/premiere-lettre/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/primeira-letra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/anfangsbuchstabe/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/forsta-bokstaven/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/de/fehlender-buchstabe/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/missing-letter-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/letra-que-falta/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/lettre-manquante/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/letra-que-falta/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/fehlender-buchstabe/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/saknad-bokstav/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/de/fang-den-buchstaben/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/catch-the-letter/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/atrapa-la-letra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/attrape-la-lettre/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/pegue-a-letra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/fang-den-buchstaben/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/fanga-bokstaven/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/de/woerter-memory/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/word-memory-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/memoria-de-palabras/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/memory-des-mots/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/memoria-de-palavras/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/woerter-memory/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/memory-med-ord/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/de/reimspiel/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/rhyming-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/juego-de-rimas/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/jeu-de-rimes/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/jogo-de-rimas/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/reimspiel/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/rimspel/"/>
+  </url>
+  <url>
     <loc>https://letteradventures.com/sv/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/"/>
@@ -53,6 +593,114 @@
     <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/"/>
     <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/sv/alfabetsspel/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/alphabet-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/juego-del-abecedario/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/jeu-de-l-alphabet/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/jogo-do-alfabeto/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/abc-spiel/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/alfabetsspel/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/sv/hitta-bokstaven/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/find-the-letter/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/encuentra-la-letra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/trouve-la-lettre/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/encontre-a-letra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/finde-den-buchstaben/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/hitta-bokstaven/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/sv/lyssna-pa-bokstaven/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/letter-listening-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/escucha-la-letra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/ecoute-la-lettre/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/escute-a-letra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/buchstaben-hoeren/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/lyssna-pa-bokstaven/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/sv/stora-och-sma-bokstaver/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/uppercase-and-lowercase/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/mayusculas-y-minusculas/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/majuscules-et-minuscules/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/maiusculas-e-minusculas/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/gross-und-kleinbuchstaben/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/stora-och-sma-bokstaver/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/sv/stava-ord/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/spelling-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/juego-de-deletrear/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/jeu-d-orthographe/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/jogo-de-soletrar/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/woerter-schreiben/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/stava-ord/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/sv/bild-och-ord/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/picture-and-word/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/dibujo-y-palabra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/image-et-mot/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/figura-e-palavra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/bild-und-wort/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/bild-och-ord/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/sv/las-ordet/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/read-the-word/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/lee-la-palabra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/lis-le-mot/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/leia-a-palavra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/lies-das-wort/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/las-ordet/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/sv/forsta-bokstaven/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/first-letter-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/primera-letra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/premiere-lettre/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/primeira-letra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/anfangsbuchstabe/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/forsta-bokstaven/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/sv/saknad-bokstav/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/missing-letter-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/letra-que-falta/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/lettre-manquante/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/letra-que-falta/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/fehlender-buchstabe/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/saknad-bokstav/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/sv/fanga-bokstaven/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/catch-the-letter/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/atrapa-la-letra/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/attrape-la-lettre/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/pegue-a-letra/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/fang-den-buchstaben/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/fanga-bokstaven/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/sv/memory-med-ord/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/word-memory-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/memoria-de-palabras/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/memory-des-mots/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/memoria-de-palavras/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/woerter-memory/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/memory-med-ord/"/>
+  </url>
+  <url>
+    <loc>https://letteradventures.com/sv/rimspel/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://letteradventures.com/en/rhyming-game/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://letteradventures.com/es/juego-de-rimas/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/jeu-de-rimes/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/jogo-de-rimas/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://letteradventures.com/de/reimspiel/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/rimspel/"/>
   </url>
   <url>
     <loc>https://letteradventures.com/privacy.html</loc>

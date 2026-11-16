@@ -1,5 +1,5 @@
 (() => {
-const { LANGS, SEO, PAGE_LANGS, pagePath } = window.LA;
+const { LANGS, SEO, GAME_PAGES, PAGE_LANGS, pagePath } = window.LA;
 const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
 const COLORS = ['--r1','--r2','--r3','--r4','--r5','--r6'];
 const GAME_META = [
@@ -51,11 +51,14 @@ try { Object.assign(S, JSON.parse(localStorage.getItem(KEY)) || {}); } catch {}
 if (!LANGS[S.lang]) S.lang = 'en';
 // Each language has a page of its own (/sv/, /es/ ...; see seo.js). Such a page starts in its language;
 // the English one, at the top, keeps the language that was chosen last. The address then follows the language.
-const PAGE_LANG = document.documentElement.lang;
+// A page can also be about one game (/sv/rimspel/): then that game is named on the start screen and "Start" opens it.
+const PAGE_LANG = document.documentElement.lang, PAGE_GAME = document.documentElement.dataset.game || '';
+const PAGE_PATHS = new Set(PAGE_LANGS.flatMap(l => [pagePath(l), ...Object.keys(GAME_PAGES[l]).map(id => pagePath(l, id))]));
 if (PAGE_LANG !== 'en' && LANGS[PAGE_LANG]) S.lang = PAGE_LANG;
 function syncAddress(){
-  if (!/^https?:$/.test(location.protocol) || !/^\/(?:[a-z]{2}\/)?(?:index\.html)?$/.test(location.pathname)) return;
-  if (location.pathname !== pagePath(S.lang)) try { history.replaceState(null, '', pagePath(S.lang) + location.hash); } catch {}
+  const here = location.pathname.replace(/index\.html$/, ''), want = pagePath(S.lang, PAGE_GAME);
+  if (!/^https?:$/.test(location.protocol) || !PAGE_PATHS.has(here)) return;
+  if (here !== want) try { history.replaceState(null, '', want + location.hash); } catch {}
 }
 if (!VOICE_EM[S.voiceChar]) S.voiceChar = 0;
 delete S.counted; // left over from the play counter that has been removed
@@ -371,7 +374,7 @@ function show(id){
 }
 function applyLang(){
   T = LANGS[S.lang]; ALPHA = [...T.alpha];
-  document.documentElement.lang = S.lang; document.title = SEO[S.lang].title; syncAddress();
+  document.documentElement.lang = S.lang; document.title = PAGE_GAME ? `${GAME_PAGES[S.lang][PAGE_GAME][1]} | Letter Adventures` : SEO[S.lang].title; syncAddress();
   $('#gameTitle').textContent = T.title;
   $$('[data-t]').forEach(e => e.textContent = T.ui[e.dataset.t]);
   $('#installSteps').innerHTML = T.ui.installSteps.map(([who, how]) => `<li><b>${who}:</b> ${how}</li>`).join('');
@@ -379,9 +382,10 @@ function applyLang(){
   $('#name').placeholder = T.ui.namePh;
   $('#privacyLink').href = 'privacy.html#' + S.lang;
   $('#langSeg').innerHTML = ['en','es','fr','pt','de','sv'].map(k => [k, LANGS[k]]).map(([k, L]) => `<button data-lang="${k}" aria-pressed="${k===S.lang}">${L.label || {sv:'Svenska', en:'English'}[k]}</button>`).join('');
+  if (PAGE_GAME){ const i = GAME_META.findIndex(gm => gm.id === PAGE_GAME); $('#pageGame').textContent = `${GAME_META[i].em} ${T.games[i][0]} – ${T.games[i][1]}`; $('#pageGameP').textContent = GAME_PAGES[S.lang][PAGE_GAME][2]; }
   $('#seoH').textContent = SEO[S.lang].h; $('#seoP').textContent = SEO[S.lang].p;
-  $('#seoAlso').replaceChildren(SEO[S.lang].also + ' ', ...PAGE_LANGS.filter(l => l !== S.lang).flatMap((l, i) => { const a = document.createElement('a'); a.href = pagePath(l); a.lang = a.hreflang = l; a.dataset.lang = l; a.textContent = LANGS[l].label || {sv:'Svenska', en:'English'}[l]; return i ? [' · ', a] : [a]; }));
-  $('#aboutList').innerHTML = GAME_META.map((gm,i)=> !T.games[i] ? '' : `<li>${gm.em} <b>${T.games[i][0]}</b> – ${T.games[i][1]}</li>`).join('');
+  $('#seoAlso').replaceChildren(SEO[S.lang].also + ' ', ...PAGE_LANGS.filter(l => l !== S.lang).flatMap((l, i) => { const a = document.createElement('a'); a.href = pagePath(l, PAGE_GAME); a.lang = a.hreflang = l; a.dataset.lang = l; a.textContent = LANGS[l].label || {sv:'Svenska', en:'English'}[l]; return i ? [' · ', a] : [a]; }));
+  $('#aboutList').innerHTML = GAME_META.map((gm,i)=> !T.games[i] ? '' : `<li>${gm.em} <a href="${pagePath(S.lang, gm.id)}"><b>${T.games[i][0]}</b></a> – ${T.games[i][1]}</li>`).join('');
   refresh();
 }
 // The game cards; the word games also show their word level and how far it has come.
@@ -426,11 +430,14 @@ function goHome(first){
   if (first && nameClip && T.g.hi) say({id:'greet', text:shown(T.g.greet), join:['hi', null, 'greetRest']});
   else say(g(first ? 'greet' : 'homeAgain'));
 }
+let opened = false;
 function begin(){
   syncName(); draft = false; save();
   try { ac = ac || new (window.AudioContext||window.webkitAudioContext)(); ac.resume?.(); } catch {}
+  // On the page of one game, the first "Start" opens that game; after that the page works like any other.
+  const game = !opened && PAGE_GAME; opened = true;
   // Wait briefly for the name clip, so the very first greeting can use it.
-  Promise.race([loadNameClip(), new Promise(r => setTimeout(r, 1500))]).then(() => goHome(true));
+  Promise.race([loadNameClip(), new Promise(r => setTimeout(r, 1500))]).then(() => { if (game){ refresh(); preloadLetters(); startGame(game); } else goHome(true); });
 }
 
 document.addEventListener('click', e => { const b = e.target.closest('[data-g]'); if (b) startGame(b.dataset.g); });
