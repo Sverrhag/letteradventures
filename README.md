@@ -66,6 +66,13 @@ The game is for children aged 3 to 7, so it must not send anything to other serv
   of audio requests cannot reveal the name a child is spelling.
 - Keep `privacy.html` in step with any change to what is stored or fetched.
 
+## The voices as figures of each look
+
+There are five recorded voices. Each look shows them as its own five figures (Space: astronaut,
+star, moon, robot, alien), with their names and greetings in `CAST` in `variants.js` and their
+pictures in `LOOKS` in `game.js`. Only the greeting is recorded per look (`hello_<look>.mp3`);
+everything else the voice says is the same clip in every look.
+
 ## The player's name, spoken
 
 Common first names are recorded once per voice with `node tools/generate-names.mjs --lang <lang>`,

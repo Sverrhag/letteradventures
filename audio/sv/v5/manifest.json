@@ -1929,5 +1929,9 @@
  "findL2_28": "sv-SE-Chirp3-HD-Puck|1|Var är lilla Ö?",
  "findL3_28": "sv-SE-Chirp3-HD-Puck|1|Kan du trycka på lilla Ö?",
  "hi": "sv-SE-Chirp3-HD-Puck|1|Hej,",
- "greetRest": "sv-SE-Chirp3-HD-Puck|1|Välkommen till Letter Adventures! Vad vill du spela?"
+ "greetRest": "sv-SE-Chirp3-HD-Puck|1|Välkommen till Letter Adventures! Vad vill du spela?",
+ "hello_adventure": "sv-SE-Chirp3-HD-Puck|1|Hej! Jag är räven. Ska vi leka med bokstäver?",
+ "hello_space": "sv-SE-Chirp3-HD-Puck|1|Hej! Jag är rymdvarelsen. Ska vi leka med bokstäver?",
+ "hello_jungle": "sv-SE-Chirp3-HD-Puck|1|Hej! Jag är grodan. Ska vi leka med bokstäver?",
+ "hello_ocean": "sv-SE-Chirp3-HD-Puck|1|Hej! Jag är bläckfisken. Ska vi leka med bokstäver?"
 }

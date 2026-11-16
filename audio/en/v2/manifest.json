@@ -1886,5 +1886,9 @@
  "wrote_399": "en-US-Chirp3-HD-Leda|1|You spelled squirrel!",
  "say_399": "en-US-Chirp3-HD-Leda|1|Squirrel.",
  "hi": "en-US-Chirp3-HD-Leda|1|Hi,",
- "greetRest": "en-US-Chirp3-HD-Leda|1|Welcome to Letter Adventures! What would you like to play?"
+ "greetRest": "en-US-Chirp3-HD-Leda|1|Welcome to Letter Adventures! What would you like to play?",
+ "hello_adventure": "en-US-Chirp3-HD-Leda|1|Hello hello! I am the rabbit. Shall we play with letters?",
+ "hello_space": "en-US-Chirp3-HD-Leda|1|Hello hello! I am the star. Shall we play with letters?",
+ "hello_jungle": "en-US-Chirp3-HD-Leda|1|Hello hello! I am the monkey. Shall we play with letters?",
+ "hello_ocean": "en-US-Chirp3-HD-Leda|1|Hello hello! I am the fish. Shall we play with letters?"
 }

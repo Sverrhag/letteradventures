@@ -29,12 +29,13 @@ const VOICE_EM = ['🦄','🐞','🦉','🐻','🦊'];
 const STICKERS = [...'🦄🐞🌈⭐🌸🦋🍓🧁👑💖🐱🐶🍭🎀🌟🐰🍉🎈🐥🌻🚀🦖⚽🚗🐯🐙🤖🏆🚂🦈🐉🪐🦁🐬🎸🛹🚁🦕🐢🎯'];
 
 // Looks: colours (set in index.html), a mascot, background decorations and the confetti of each.
+// `cast` is the figure each of the five voices appears as in that look (names and greetings: CAST in variants.js).
 const LOOKS = [
-  {id:'adventure', em:'🏕️', hero:'🦊', marker:'🦊', walker:'🦔', decor:['⛰️','🌳','☀️','🎈','🌲'], fx:['⭐','🎈','🦊','🌟','✨','🍃','🏆']},
+  {id:'adventure', em:'🏕️', cast:['🐿️','🐰','🦉','🐻','🦊'], hero:'🦊', marker:'🦊', walker:'🦔', decor:['⛰️','🌳','☀️','🎈','🌲'], fx:['⭐','🎈','🦊','🌟','✨','🍃','🏆']},
   {id:'rainbow',   em:'🦄', hero:'🦄', marker:'🐞', walker:'🐞', decor:[],                     fx:['⭐','💖','🦄','🐞','🌸','✨','🌈']},
-  {id:'space',     em:'🚀', hero:'🚀', marker:'🚀', walker:'🛸', decor:['🪐','⭐','🌙','☄️','✨'], fx:['⭐','🚀','🪐','👽','✨','🌟','☄️']},
-  {id:'jungle',    em:'🦖', hero:'🦖', marker:'🦕', walker:'🐒', decor:['🌴','🌿','🦜','🌴','🍃'], fx:['⭐','🦖','🌴','🦜','✨','🍃','🐒']},
-  {id:'ocean',     em:'🐙', hero:'🐙', marker:'🐠', walker:'🐢', decor:['🐚','🪸','🐬','🫧','🐳'], fx:['⭐','🐠','🐙','🫧','✨','🐬','🐚']},
+  {id:'space',     em:'🚀', cast:['🧑‍🚀','⭐','🌙','🤖','👽'], hero:'🚀', marker:'🚀', walker:'🛸', decor:['🪐','⭐','🌙','☄️','✨'], fx:['⭐','🚀','🪐','👽','✨','🌟','☄️']},
+  {id:'jungle',    em:'🦖', cast:['🦜','🐒','🐯','🦖','🐸'], hero:'🦖', marker:'🦕', walker:'🐒', decor:['🌴','🌿','🦜','🌴','🍃'], fx:['⭐','🦖','🌴','🦜','✨','🍃','🐒']},
+  {id:'ocean',     em:'🐙', cast:['🐬','🐠','🐢','🐳','🐙'], hero:'🐙', marker:'🐠', walker:'🐢', decor:['🐚','🪸','🐬','🫧','🐳'], fx:['⭐','🐠','🐙','🫧','✨','🐬','🐚']},
 ];
 // Where the five background decorations sit: [left %, top %, size in vmin].
 const DECOR_SPOTS = [[3,62,24],[76,58,28],[10,10,13],[80,8,15],[44,78,17]];
@@ -73,6 +74,10 @@ const save = () => { try { stashPlayer(); localStorage.setItem(KEY, JSON.stringi
 
 /* ---------- looks ---------- */
 const look = () => LOOKS.find(l => l.id === S.look) || LOOKS[0];
+// The picture, name and greeting of voice i in the look that is chosen.
+const voiceEm = i => (look().cast || VOICE_EM)[i];
+const voiceName = i => (T.cast && T.cast[look().id] || T.voices)[i];
+const voiceHello = i => { const c = T.helloCast && T.helloCast[look().id]; return c ? {id:`hello_${look().id}`, text:c[i]} : {id:'hello', text:T.hello[i]}; };
 function applyLook(){
   const l = look(), root = document.documentElement;
   root.dataset.look = l.id; root.style.setProperty('--marker', `"${l.marker}"`);
@@ -354,7 +359,6 @@ function applyLang(){
   $('#privacyLink').href = 'privacy.html#' + S.lang;
   $('#langSeg').innerHTML = ['en','es','fr','pt','de','sv'].map(k => [k, LANGS[k]]).map(([k, L]) => `<button data-lang="${k}" aria-pressed="${k===S.lang}">${L.label || {sv:'Svenska', en:'English'}[k]}</button>`).join('');
   $('#aboutList').innerHTML = GAME_META.map((gm,i)=> !T.games[i] ? '' : `<li>${gm.em} <b>${T.games[i][0]}</b> – ${T.games[i][1]}</li>`).join('');
-  $$('.voices:not(#looks):not(#players)').forEach(box => box.innerHTML = VOICE_EM.map((em,i)=>`<button class="voice" data-voice="${i}"><span>${em}</span>${T.voices[i]}</button>`).join(''));
   refresh();
 }
 // The game cards; the word games also show their word level and how far it has come.
@@ -379,13 +383,13 @@ function refresh(){
   $('#winTitle').textContent = shown(T.g.hurra);
   $$('.starcount').forEach(e => e.textContent = S.stars);
   $$('[data-case]').forEach(b => b.setAttribute('aria-pressed', b.dataset.case===S.letterCase));
-  $$('[data-voice]').forEach(b => b.setAttribute('aria-pressed', +b.dataset.voice===S.voiceChar));
+  $$('.voices:not(#looks):not(#players)').forEach(box => box.innerHTML = VOICE_EM.map((_,i)=>`<button class="voice" data-voice="${i}" aria-pressed="${i===S.voiceChar}"><span>${voiceEm(i)}</span>${voiceName(i)}</button>`).join(''));
   $$('[data-level]').forEach(b => b.setAttribute('aria-pressed', +b.dataset.level===S.level));
   $$('[data-age]').forEach(b => b.setAttribute('aria-pressed', +b.dataset.age===S.age));
   $('#looks').innerHTML = LOOKS.map((l,i) => `<button class="voice" data-look="${l.id}" aria-pressed="${l.id===look().id}"><span>${l.em}</span>${T.ui.looks[i]}</button>`).join('');
   applyLook();
   $('#levelChip').textContent = T.ui.levelChip(S.level);
-  $$('.who').forEach(e => e.textContent = VOICE_EM[S.voiceChar]);
+  $$('.who').forEach(e => e.textContent = voiceEm(S.voiceChar));
   const st = $('#stickers');
   st.classList.toggle('none', !S.stickers.length);
   st.textContent = S.stickers.length ? S.stickers.slice(-45).join('') : T.ui.noStickers;
@@ -819,11 +823,11 @@ document.addEventListener('click', e => {
   const lv = e.target.closest('[data-level]');
   if (lv){ S.level = +lv.dataset.level; save(); refresh(); say({id:`level_${S.level-1}`, text:T.g.level[S.level-1]}); return; }
   const lk = e.target.closest('#looks [data-look]');
-  if (lk){ syncName(); S.look = lk.dataset.look; save(); refresh(); return; }
+  if (lk){ syncName(); S.look = lk.dataset.look; save(); refresh(); say(voiceHello(S.voiceChar)); return; }
   const ag = e.target.closest('[data-age]');
   if (ag){ syncName(); S.age = +ag.dataset.age; S.level = S.age - 2; save(); refresh(); return; }
   const v = e.target.closest('[data-voice]');
-  if (v){ if (screen==='start') syncName(); S.voiceChar = +v.dataset.voice; save(); refresh(); if (screen!=='start'){ preloadLetters(); loadNameClip(); } say({id:'hello', text:T.hello[S.voiceChar]}); }
+  if (v){ if (screen==='start') syncName(); S.voiceChar = +v.dataset.voice; save(); refresh(); if (screen!=='start'){ preloadLetters(); loadNameClip(); } say(voiceHello(S.voiceChar)); }
 });
 $('#optVoice').onchange = e => { S.voice = e.target.checked; if (!S.voice) player.pause(); save(); };
 $('#optSfx').onchange = e => { S.sfx = e.target.checked; save(); };

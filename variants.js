@@ -226,6 +226,45 @@ de: {
   },
 }};
 
+// The five voices appear as other figures in each look: in Space the first voice is the astronaut,
+// in the Ocean the dolphin. The recorded voice is the same; only the picture, the name and the
+// greeting ("Hi! I am the robot.") differ. Per look, in voice order: [article, name]. The Rainbow
+// look keeps the figures in `voices` and `hello` of the language. The French l' has a straight
+// apostrophe: with a curly one the voice says "le écureuil".
+const CAST = {
+  sv: { open: ['Hej!', 'Hej hej!', 'Hej!', 'Hej!', 'Hej!'], say: (o, a, n) => `${o} Jag är ${n.toLowerCase()}. Ska vi leka med bokstäver?`,
+    adventure: [['', 'Ekorren'], ['', 'Kaninen'], ['', 'Ugglan'], ['', 'Björnen'], ['', 'Räven']],
+    space: [['', 'Astronauten'], ['', 'Stjärnan'], ['', 'Månen'], ['', 'Roboten'], ['', 'Rymdvarelsen']],
+    jungle: [['', 'Papegojan'], ['', 'Apan'], ['', 'Tigern'], ['', 'Dinosaurien'], ['', 'Grodan']],
+    ocean: [['', 'Delfinen'], ['', 'Fisken'], ['', 'Sköldpaddan'], ['', 'Valen'], ['', 'Bläckfisken']] },
+  en: { open: ['Hi!', 'Hello hello!', 'Hello!', 'Hello!', 'Hi!'], say: (o, a, n) => `${o} I am the ${n.toLowerCase()}. Shall we play with letters?`,
+    adventure: [['', 'Squirrel'], ['', 'Rabbit'], ['', 'Owl'], ['', 'Bear'], ['', 'Fox']],
+    space: [['', 'Astronaut'], ['', 'Star'], ['', 'Moon'], ['', 'Robot'], ['', 'Alien']],
+    jungle: [['', 'Parrot'], ['', 'Monkey'], ['', 'Tiger'], ['', 'Dinosaur'], ['', 'Frog']],
+    ocean: [['', 'Dolphin'], ['', 'Fish'], ['', 'Turtle'], ['', 'Whale'], ['', 'Octopus']] },
+  es: { open: ['¡Hola!', '¡Hola, hola!', '¡Hola!', '¡Hola!', '¡Hola!'], say: (o, a, n) => `${o} Soy ${a} ${n.toLowerCase()}. ¿Jugamos con las letras?`,
+    adventure: [['la', 'Ardilla'], ['el', 'Conejo'], ['el', 'Búho'], ['el', 'Oso'], ['el', 'Zorro']],
+    space: [['la', 'Astronauta'], ['la', 'Estrella'], ['la', 'Luna'], ['el', 'Robot'], ['el', 'Extraterrestre']],
+    jungle: [['el', 'Loro'], ['el', 'Mono'], ['el', 'Tigre'], ['el', 'Dinosaurio'], ['la', 'Rana']],
+    ocean: [['el', 'Delfín'], ['el', 'Pez'], ['la', 'Tortuga'], ['la', 'Ballena'], ['el', 'Pulpo']] },
+  fr: { open: ['Bonjour !', 'Coucou !', 'Bonjour !', 'Bonjour !', 'Salut !'], say: (o, a, n) => `${o} Je suis ${a}${a.endsWith("'") ? '' : ' '}${n.toLowerCase()}. On joue avec les lettres ?`,
+    adventure: [["l'", 'Écureuil'], ['le', 'Lapin'], ['le', 'Hibou'], ["l'", 'Ours'], ['le', 'Renard']],
+    space: [["l'", 'Astronaute'], ["l'", 'Étoile'], ['la', 'Lune'], ['le', 'Robot'], ["l'", 'Extraterrestre']],
+    jungle: [['le', 'Perroquet'], ['le', 'Singe'], ['le', 'Tigre'], ['le', 'Dinosaure'], ['la', 'Grenouille']],
+    ocean: [['le', 'Dauphin'], ['le', 'Poisson'], ['la', 'Tortue'], ['la', 'Baleine'], ['la', 'Pieuvre']] },
+  pt: { open: ['Oi!', 'Oi, oi!', 'Olá!', 'Olá!', 'Oi!'], say: (o, a, n) => `${o} Eu sou ${a} ${n.toLowerCase()}. Vamos brincar com as letras?`,
+    adventure: [['o', 'Esquilo'], ['o', 'Coelho'], ['a', 'Coruja'], ['o', 'Urso'], ['a', 'Raposa']],
+    space: [['a', 'Astronauta'], ['a', 'Estrela'], ['a', 'Lua'], ['o', 'Robô'], ['o', 'Extraterrestre']],
+    jungle: [['o', 'Papagaio'], ['o', 'Macaco'], ['o', 'Tigre'], ['o', 'Dinossauro'], ['o', 'Sapo']],
+    ocean: [['o', 'Golfinho'], ['o', 'Peixe'], ['a', 'Tartaruga'], ['a', 'Baleia'], ['o', 'Polvo']] },
+  de: { open: ['Hallo!', 'Hallo, hallo!', 'Hallo!', 'Hallo!', 'Hallo!'], say: (o, a, n) => `${o} Ich bin ${a} ${n}. Wollen wir mit Buchstaben spielen?`,
+    adventure: [['das', 'Eichhörnchen'], ['der', 'Hase'], ['die', 'Eule'], ['der', 'Bär'], ['der', 'Fuchs']],
+    space: [['die', 'Astronautin'], ['der', 'Stern'], ['der', 'Mond'], ['der', 'Roboter'], ['das', 'Alien']],
+    jungle: [['der', 'Papagei'], ['der', 'Affe'], ['der', 'Tiger'], ['der', 'Dinosaurier'], ['der', 'Frosch']],
+    ocean: [['der', 'Delfin'], ['der', 'Fisch'], ['die', 'Schildkröte'], ['der', 'Wal'], ['der', 'Tintenfisch']] },
+};
+const CAST_LOOKS = ['adventure', 'space', 'jungle', 'ocean'];
+
 // Only languages whose clips are recorded get the alternative wordings (see READY in words.js);
 // `all` is set by the recording script.
 function apply(LANGS, all) {
@@ -233,6 +272,12 @@ function apply(LANGS, all) {
   for (const lang of Object.keys(LANGS)) {
     if (!V[lang]) continue;
     Object.assign(LANGS[lang].ui, MORE[lang].ui);
+    const C = CAST[lang];
+    LANGS[lang].cast = {}; LANGS[lang].helloCast = {};
+    for (const look of CAST_LOOKS){
+      LANGS[lang].cast[look] = C[look].map(([, n]) => n);
+      LANGS[lang].helloCast[look] = C[look].map(([a, n], i) => C.say(C.open[i], a, n));
+    }
     if (!ready.includes(lang)) continue;
     Object.assign(LANGS[lang].g, V[lang].g, MORE[lang].g);
     Object.assign(LANGS[lang].per, V[lang].per, MORE[lang].per);

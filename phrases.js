@@ -152,6 +152,7 @@ const spoken = s => s.replace(/\{[^}]*\}/g, '');
 // File names are ASCII: letters and words are referred to by index.
 function clipList(lang, voiceIdx) {
   const T = LANGS[lang], out = [['hello', T.hello[voiceIdx]]];
+  for (const [look, said] of Object.entries(T.helloCast || {})) out.push([`hello_${look}`, said[voiceIdx]]); // the voice as the look's figure
   for (const [key, val] of Object.entries(T.g)) {
     if (Array.isArray(val)) val.forEach((s, i) => out.push([`${key}_${i}`, spoken(s)]));
     else out.push([key, spoken(val)]);

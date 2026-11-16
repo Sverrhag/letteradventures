@@ -1883,5 +1883,9 @@
  "say_398": "fr-FR-Chirp3-HD-Charon|1|Aubergine.",
  "word_399": "fr-FR-Chirp3-HD-Charon|1|Écris le mot concombre.",
  "wrote_399": "fr-FR-Chirp3-HD-Charon|1|Tu as écrit concombre !",
- "say_399": "fr-FR-Chirp3-HD-Charon|1|Concombre."
+ "say_399": "fr-FR-Chirp3-HD-Charon|1|Concombre.",
+ "hello_adventure": "fr-FR-Chirp3-HD-Charon|1|Bonjour ! Je suis l'ours. On joue avec les lettres ?",
+ "hello_space": "fr-FR-Chirp3-HD-Charon|1|Bonjour ! Je suis le robot. On joue avec les lettres ?",
+ "hello_jungle": "fr-FR-Chirp3-HD-Charon|1|Bonjour ! Je suis le dinosaure. On joue avec les lettres ?",
+ "hello_ocean": "fr-FR-Chirp3-HD-Charon|1|Bonjour ! Je suis la baleine. On joue avec les lettres ?"
 }

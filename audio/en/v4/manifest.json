@@ -1886,5 +1886,9 @@
  "wrote_399": "en-US-Chirp3-HD-Charon|1|You spelled squirrel!",
  "say_399": "en-US-Chirp3-HD-Charon|1|Squirrel.",
  "hi": "en-US-Chirp3-HD-Charon|1|Hi,",
- "greetRest": "en-US-Chirp3-HD-Charon|1|Welcome to Letter Adventures! What would you like to play?"
+ "greetRest": "en-US-Chirp3-HD-Charon|1|Welcome to Letter Adventures! What would you like to play?",
+ "hello_adventure": "en-US-Chirp3-HD-Charon|1|Hello! I am the bear. Shall we play with letters?",
+ "hello_space": "en-US-Chirp3-HD-Charon|1|Hello! I am the robot. Shall we play with letters?",
+ "hello_jungle": "en-US-Chirp3-HD-Charon|1|Hello! I am the dinosaur. Shall we play with letters?",
+ "hello_ocean": "en-US-Chirp3-HD-Charon|1|Hello! I am the whale. Shall we play with letters?"
 }

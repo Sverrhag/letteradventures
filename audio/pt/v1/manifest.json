@@ -1880,5 +1880,9 @@
  "say_398": "pt-BR-Chirp3-HD-Aoede|1|Hospital.",
  "word_399": "pt-BR-Chirp3-HD-Aoede|1|Escreva a palavra basquete.",
  "wrote_399": "pt-BR-Chirp3-HD-Aoede|1|Você escreveu basquete!",
- "say_399": "pt-BR-Chirp3-HD-Aoede|1|Basquete."
+ "say_399": "pt-BR-Chirp3-HD-Aoede|1|Basquete.",
+ "hello_adventure": "pt-BR-Chirp3-HD-Aoede|1|Oi! Eu sou o esquilo. Vamos brincar com as letras?",
+ "hello_space": "pt-BR-Chirp3-HD-Aoede|1|Oi! Eu sou a astronauta. Vamos brincar com as letras?",
+ "hello_jungle": "pt-BR-Chirp3-HD-Aoede|1|Oi! Eu sou o papagaio. Vamos brincar com as letras?",
+ "hello_ocean": "pt-BR-Chirp3-HD-Aoede|1|Oi! Eu sou o golfinho. Vamos brincar com as letras?"
 }

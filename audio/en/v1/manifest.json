@@ -1886,5 +1886,9 @@
  "findL2_25": "en-US-Chirp3-HD-Aoede|1|Where is small Z?",
  "findL3_25": "en-US-Chirp3-HD-Aoede|1|Can you press small Z?",
  "hi": "en-US-Chirp3-HD-Aoede|1|Hi,",
- "greetRest": "en-US-Chirp3-HD-Aoede|1|Welcome to Letter Adventures! What would you like to play?"
+ "greetRest": "en-US-Chirp3-HD-Aoede|1|Welcome to Letter Adventures! What would you like to play?",
+ "hello_adventure": "en-US-Chirp3-HD-Aoede|1|Hi! I am the squirrel. Shall we play with letters?",
+ "hello_space": "en-US-Chirp3-HD-Aoede|1|Hi! I am the astronaut. Shall we play with letters?",
+ "hello_jungle": "en-US-Chirp3-HD-Aoede|1|Hi! I am the parrot. Shall we play with letters?",
+ "hello_ocean": "en-US-Chirp3-HD-Aoede|1|Hi! I am the dolphin. Shall we play with letters?"
 }

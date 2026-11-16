@@ -1872,5 +1872,9 @@
  "say_398": "de-DE-Chirp3-HD-Kore|1|Blaubeere.",
  "word_399": "de-DE-Chirp3-HD-Kore|1|Schreib das Wort Kokosnuss.",
  "wrote_399": "de-DE-Chirp3-HD-Kore|1|Du hast Kokosnuss geschrieben!",
- "say_399": "de-DE-Chirp3-HD-Kore|1|Kokosnuss."
+ "say_399": "de-DE-Chirp3-HD-Kore|1|Kokosnuss.",
+ "hello_adventure": "de-DE-Chirp3-HD-Kore|1|Hallo! Ich bin die Eule. Wollen wir mit Buchstaben spielen?",
+ "hello_space": "de-DE-Chirp3-HD-Kore|1|Hallo! Ich bin der Mond. Wollen wir mit Buchstaben spielen?",
+ "hello_jungle": "de-DE-Chirp3-HD-Kore|1|Hallo! Ich bin der Tiger. Wollen wir mit Buchstaben spielen?",
+ "hello_ocean": "de-DE-Chirp3-HD-Kore|1|Hallo! Ich bin die Schildkröte. Wollen wir mit Buchstaben spielen?"
 }

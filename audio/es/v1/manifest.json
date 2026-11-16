@@ -1900,5 +1900,9 @@
  "wrote_399": "es-ES-Chirp3-HD-Aoede|1|¡Has escrito carrusel!",
  "say_399": "es-ES-Chirp3-HD-Aoede|1|Carrusel.",
  "hi": "es-ES-Chirp3-HD-Aoede|1|Hola,",
- "greetRest": "es-ES-Chirp3-HD-Aoede|1|¡Te doy la bienvenida a Letter Adventures! ¿A qué quieres jugar?"
+ "greetRest": "es-ES-Chirp3-HD-Aoede|1|¡Te doy la bienvenida a Letter Adventures! ¿A qué quieres jugar?",
+ "hello_adventure": "es-ES-Chirp3-HD-Aoede|1|¡Hola! Soy la ardilla. ¿Jugamos con las letras?",
+ "hello_space": "es-ES-Chirp3-HD-Aoede|1|¡Hola! Soy la astronauta. ¿Jugamos con las letras?",
+ "hello_jungle": "es-ES-Chirp3-HD-Aoede|1|¡Hola! Soy el loro. ¿Jugamos con las letras?",
+ "hello_ocean": "es-ES-Chirp3-HD-Aoede|1|¡Hola! Soy el delfín. ¿Jugamos con las letras?"
 }
