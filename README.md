@@ -118,3 +118,15 @@ the recogniser cannot judge a bare one-syllable word. Two tools deal with that:
 check the sentence, and saves what comes after the pause as the clip. A clip made that way is
 replaced by an ordinary recording if `generate-voices.mjs --force` is run, so run it again then.
 
+## Reports of clips that sound wrong
+
+The feedback dialog (settings) lists the last things the voice said. A grown-up ticks what sounded
+wrong, and the email they send, with the subject "Letter Adventures: pronunciation", gets one line
+per sound clip: `clip sv v4 jungle word_5` (language, voice, look, clip). The phrase itself is not
+sent, since it can hold the child's name. Those lines go to
+
+    python tools/fix-reported.py "clip sv v4 jungle word_5"
+
+which records the clips again until the speech recogniser hears their text, and says which ones it
+already heard right; for those, look at the spelling and at `tools/pronunciations.json`. Only lines
+of that exact shape, naming a clip that exists, are acted on. Nothing else in an email is.

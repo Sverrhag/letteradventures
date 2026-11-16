@@ -284,11 +284,22 @@ async function preloadLetters(){
   }));
 }
 const clipUrl = id => clipCache[id] || `audio/${S.lang}/v${S.voiceChar+1}/${id}.mp3`;
+// The last things the voice said, so that a grown-up can report one that sounded wrong (see the
+// feedback dialog). Kept only while the page is open: [{at: 'sv v4 jungle', ids, text}], newest first.
+const heard = [];
+function remember(p){
+  if (!p.id || !p.text) return;
+  const at = `${S.lang} v${S.voiceChar+1} ${look().id}`, i = heard.findIndex(h => h.at === at && h.ids[0] === p.id);
+  if (i >= 0) heard.splice(i, 1);
+  heard.unshift({at, ids: (p.join || [p.id]).filter(Boolean), text: p.text});
+  heard.length = Math.min(heard.length, 8);
+}
 function say(parts, then){
   parts = [].concat(parts).filter(Boolean);
   if (nameClip) parts = parts.map(p => p.named ? {...p, join: [p.id, null]} : p); // "Well done," + "Moa!"
   const text = parts.map(p => p.text).filter(Boolean).join(' ');
   $$('.say').forEach(e => e.textContent = text);
+  if (S.voice) parts.forEach(remember);
   const my = ++tok; let done = false, tm, i = 0;
   const fin = () => { if (done) return; done = true; clearTimeout(tm); if (then && my===tok) then(); };
   player.pause();
@@ -794,12 +805,21 @@ $('#closeBoard').onclick = () => boardDlg.close();
 
 // Feedback goes by ordinary email from the visitor's own mail app; the page itself sends nothing.
 const fbDlg = $('#feedbackDlg'), FEEDBACK_TO = 'hello@letteradventures.com';
-$('#openFeedback').onclick = () => { dlg.close(); $('#fbText').placeholder = T.ui.fbPh; $('#fbCopy').textContent = T.ui.fbCopy; fbDlg.showModal(); $('#fbText').focus(); };
+$('#openFeedback').onclick = () => {
+  dlg.close(); $('#fbText').placeholder = T.ui.fbPh; $('#fbCopy').textContent = T.ui.fbCopy;
+  // What the voice said last, to tick if it sounded wrong.
+  $('#fbHeard').hidden = !heard.length;
+  $('#fbHeardList').replaceChildren(...heard.map((h, i) => { const l = document.createElement('label'), c = document.createElement('input'); c.type = 'checkbox'; c.value = i; l.append(c, h.text); return l; }));
+  fbDlg.showModal(); $('#fbText').focus();
+};
 $('#fbClose').onclick = () => fbDlg.close();
 $('#fbSend').onclick = () => {
   // The child's name is deliberately left out; only language and difficulty are added, to help answer.
-  const body = `${$('#fbText').value.trim()}\n\n--\nLetter Adventures · ${S.lang} · ${T.ui.levelChip(S.level)}`;
-  location.href = `mailto:${FEEDBACK_TO}?subject=${encodeURIComponent('Letter Adventures: feedback')}&body=${encodeURIComponent(body)}`;
+  // A ticked phrase is sent as the name of its sound clip, never as its text, which can hold the child's name.
+  const clips = $$('#fbHeardList input:checked').flatMap(c => heard[c.value].ids.map(id => `clip ${heard[c.value].at} ${id}`));
+  const body = `${$('#fbText').value.trim()}\n\n--\nLetter Adventures · ${S.lang} · ${T.ui.levelChip(S.level)}` + (clips.length ? '\n' + clips.join('\n') : '');
+  const subject = clips.length ? 'Letter Adventures: pronunciation' : 'Letter Adventures: feedback';
+  location.href = `mailto:${FEEDBACK_TO}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 };
 $('#fbCopy').onclick = async e => {
   try { await navigator.clipboard.writeText(FEEDBACK_TO); e.target.textContent = T.ui.fbCopied; }
