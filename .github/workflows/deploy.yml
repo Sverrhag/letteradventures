@@ -30,3 +30,10 @@ jobs:
           path: .
       - id: deployment
         uses: actions/deploy-pages@v4
+      # Tells Bing and the other IndexNow search engines which pages there are, so that changes are
+      # read soon. The key is public: it is the name and the content of a file at the top of the site.
+      - name: IndexNow
+        continue-on-error: true
+        run: |
+          urls=$(grep -o '<loc>[^<]*' sitemap.xml | sed 's/<loc>//' | sed 's/.*/"&"/' | paste -sd, -)
+          curl -sS -m 30 -o /dev/null -w '%{http_code}\n' -H 'Content-Type: application/json; charset=utf-8'             -d "{\"host\":\"letteradventures.com\",\"key\":\"494f58756f192585731a20fdab7f0f7e\",\"keyLocation\":\"https://letteradventures.com/494f58756f192585731a20fdab7f0f7e.txt\",\"urlList\":[$urls]}"             https://api.indexnow.org/indexnow
