@@ -91,20 +91,22 @@ const NEW_PLAYER = () => ({age:null, level:2, letterCase:'upper', look:'adventur
 const playerKey = n => (n || '').trim().toLocaleLowerCase();
 const cleanName = v => v.trim().replace(/\s+/g,' ').slice(0,16);
 const copy = o => JSON.parse(JSON.stringify(o));
-function stashPlayer(){ S.profiles[playerKey(S.name)] = copy(Object.fromEntries(PLAYER_FIELDS.map(f => [f, S[f]]))); }
-function switchPlayer(name){
-  stashPlayer();
-  const saved = S.profiles[playerKey(name)];
-  Object.assign(S, saved ? copy(saved) : NEW_PLAYER(), {name});
-}
+// A name that is being typed on the start screen is a draft: it becomes a saved player when the
+// game is started, not for every letter typed.
+let draft = !S.profiles[playerKey(S.name)];
+function stashPlayer(){ if (playerKey(S.name) && !draft) S.profiles[playerKey(S.name)] = copy(Object.fromEntries(PLAYER_FIELDS.map(f => [f, S[f]]))); }
 // Makes the name in the name field the active player; a new name starts from zero.
 function syncName(){
-  const n = cleanName($('#name').value);
-  if (playerKey(n) !== playerKey(S.name)) switchPlayer(n); else S.name = n;
+  const n = cleanName($('#name').value), saved = S.profiles[playerKey(n)];
+  delete S.profiles[''];
+  if (playerKey(n) === playerKey(S.name)){ S.name = n; return; }
+  stashPlayer();
+  if (saved){ Object.assign(S, copy(saved), {name: n}); draft = false; }
+  else if (draft) S.name = n;                       // still typing: keep the age and look chosen so far
+  else { Object.assign(S, NEW_PLAYER(), {name: n}); draft = true; }
 }
 function renderPlayers(){
   const names = Object.values(S.profiles).map(p => p.name).filter(Boolean);
-  if (S.name && !names.some(n => playerKey(n) === playerKey(S.name))) names.push(S.name);
   names.sort((a, b) => a.localeCompare(b));
   const fill = (box, list) => {
     box.innerHTML = '';
@@ -384,7 +386,7 @@ function goHome(first){
   else say(g(first ? 'greet' : 'homeAgain'));
 }
 function begin(){
-  syncName(); save();
+  syncName(); draft = false; save();
   try { ac = ac || new (window.AudioContext||window.webkitAudioContext)(); ac.resume?.(); } catch {}
   // Wait briefly for the name clip, so the very first greeting can use it.
   Promise.race([loadNameClip(), new Promise(r => setTimeout(r, 1500))]).then(() => goHome(true));
@@ -830,9 +832,12 @@ $('#players').addEventListener('click', e => {
   const b = e.target.closest('[data-player]'); if (!b) return;
   choosePlayer(b.dataset.player);
 });
-$('#name').addEventListener('change', () => {
-  const n = cleanName($('#name').value);
-  if (S.profiles[playerKey(n)]) choosePlayer(n);
+// While a name is typed, the player it names is the one chosen: a saved player when the name is
+// one, otherwise a new player (so no saved name stays marked above the field).
+$('#name').addEventListener('input', () => {
+  const lang = S.lang;
+  syncName(); save();
+  if (S.lang !== lang) applyLang(); else refresh();
 });
 // On the home screen a tap on another name switches straight to that player and greets them.
 $('#homePlayers').addEventListener('click', e => {
@@ -852,7 +857,7 @@ $('#removePlayer').onclick = e => {
   if (!removeArmed){ removeArmed = true; e.target.textContent = T.ui.setRemoveArm; setTimeout(() => { if (removeArmed){ removeArmed = false; e.target.textContent = T.ui.setRemove(S.name); } }, 4000); return; }
   removeArmed = false;
   const key = playerKey(S.name);
-  Object.assign(S, NEW_PLAYER(), {name: ''});
+  Object.assign(S, NEW_PLAYER(), {name: ''}); draft = true;
   delete S.profiles[key];
   save(); dlg.close(); G = null; stopClock(); tok++; player.pause();
   $('#name').value = ''; show('start'); refresh();
