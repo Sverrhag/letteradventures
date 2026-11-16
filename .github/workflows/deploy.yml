@@ -23,6 +23,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
+      # The page of each language (/sv/, /es/ ...) and sitemap.xml.
+      - run: node tools/build-pages.mjs
       - uses: actions/upload-pages-artifact@v3
         with:
           path: .

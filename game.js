@@ -1,5 +1,5 @@
 (() => {
-const { LANGS } = window.LA;
+const { LANGS, SEO, PAGE_LANGS, pagePath } = window.LA;
 const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
 const COLORS = ['--r1','--r2','--r3','--r4','--r5','--r6'];
 const GAME_META = [
@@ -49,6 +49,14 @@ const KEY = 'letter-adventure-v1';
 const S = {name:'', lang:'en', letterCase:'upper', voice:true, voiceChar:0, speed:1, sfx:true, kb:true, stars:0, stickers:[], age:null, level:2, look:'adventure', boards:{}, prog:{}, profiles:{}};
 try { Object.assign(S, JSON.parse(localStorage.getItem(KEY)) || {}); } catch {}
 if (!LANGS[S.lang]) S.lang = 'en';
+// Each language has a page of its own (/sv/, /es/ ...; see seo.js). Such a page starts in its language;
+// the English one, at the top, keeps the language that was chosen last. The address then follows the language.
+const PAGE_LANG = document.documentElement.lang;
+if (PAGE_LANG !== 'en' && LANGS[PAGE_LANG]) S.lang = PAGE_LANG;
+function syncAddress(){
+  if (!/^https?:$/.test(location.protocol) || !/^\/(?:[a-z]{2}\/)?(?:index\.html)?$/.test(location.pathname)) return;
+  if (location.pathname !== pagePath(S.lang)) try { history.replaceState(null, '', pagePath(S.lang) + location.hash); } catch {}
+}
 if (!VOICE_EM[S.voiceChar]) S.voiceChar = 0;
 delete S.counted; // left over from the play counter that has been removed
 
@@ -363,7 +371,7 @@ function show(id){
 }
 function applyLang(){
   T = LANGS[S.lang]; ALPHA = [...T.alpha];
-  document.documentElement.lang = S.lang; document.title = T.title;
+  document.documentElement.lang = S.lang; document.title = SEO[S.lang].title; syncAddress();
   $('#gameTitle').textContent = T.title;
   $$('[data-t]').forEach(e => e.textContent = T.ui[e.dataset.t]);
   $('#installSteps').innerHTML = T.ui.installSteps.map(([who, how]) => `<li><b>${who}:</b> ${how}</li>`).join('');
@@ -371,6 +379,8 @@ function applyLang(){
   $('#name').placeholder = T.ui.namePh;
   $('#privacyLink').href = 'privacy.html#' + S.lang;
   $('#langSeg').innerHTML = ['en','es','fr','pt','de','sv'].map(k => [k, LANGS[k]]).map(([k, L]) => `<button data-lang="${k}" aria-pressed="${k===S.lang}">${L.label || {sv:'Svenska', en:'English'}[k]}</button>`).join('');
+  $('#seoH').textContent = SEO[S.lang].h; $('#seoP').textContent = SEO[S.lang].p;
+  $('#seoAlso').replaceChildren(SEO[S.lang].also + ' ', ...PAGE_LANGS.filter(l => l !== S.lang).flatMap((l, i) => { const a = document.createElement('a'); a.href = pagePath(l); a.lang = a.hreflang = l; a.dataset.lang = l; a.textContent = LANGS[l].label || {sv:'Svenska', en:'English'}[l]; return i ? [' · ', a] : [a]; }));
   $('#aboutList').innerHTML = GAME_META.map((gm,i)=> !T.games[i] ? '' : `<li>${gm.em} <b>${T.games[i][0]}</b> – ${T.games[i][1]}</li>`).join('');
   refresh();
 }
@@ -837,6 +847,8 @@ $('#installBtn').onclick = async () => {
 };
 showInstallState();
 matchMedia('(display-mode: fullscreen), (display-mode: standalone)').addEventListener?.('change', showInstallState);
+// The links to the other languages at the end of the about text change language the same way, without loading the page again.
+$('#seoAlso').addEventListener('click', e => { const a = e.target.closest('[data-lang]'); if (!a) return; e.preventDefault(); syncName(); S.lang = a.dataset.lang; save(); applyLang(); loadNameClip(); scrollTo(0, 0); });
 $('#langSeg').addEventListener('click', e => { const b = e.target.closest('[data-lang]'); if (!b) return; syncName(); S.lang = b.dataset.lang; save(); applyLang(); loadNameClip(); });
 
 const dlg = $('#settings');

@@ -1,2 +1,8 @@
 .DS_Store
 .cache/
+# The pages of the other languages are built by tools/build-pages.mjs when the site is deployed.
+/sv/
+/es/
+/fr/
+/pt/
+/de/

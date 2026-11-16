@@ -2,17 +2,32 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<!-- Every language has its own address (/sv/, /es/ ...) but the same files: all paths start at the top. -->
+<base href="/">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Letter Adventures</title>
-<meta name="description" content="A playful letter and word game for children, in six languages. Twelve small games with a cheerful voice guide, unicorns and ladybugs.">
-<meta property="og:title" content="Letter Adventures">
-<meta property="og:description" content="A playful game for children to learn letters and words, in six languages.">
+<title>Alphabet and letter games for kids – free, no ads | Letter Adventures</title>
+<meta name="description" content="A free letter and word game for children: learn the alphabet, find letters, spell and read first words in twelve small games with a friendly voice. No ads, no account.">
+<meta property="og:title" content="Alphabet and letter games for kids – free, no ads | Letter Adventures">
+<meta property="og:description" content="A free letter and word game for children: learn the alphabet, find letters, spell and read first words in twelve small games with a friendly voice. No ads, no account.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://letteradventures.com/">
 <meta property="og:image" content="https://letteradventures.com/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="627">
 <meta property="og:image:alt" content="Letter Adventures: twelve small games with letters and words">
+<!-- Written by tools/build-pages.mjs, like the title, the description and the texts of the start screen. -->
+<!-- pages:head -->
+<link rel="canonical" href="https://letteradventures.com/">
+<link rel="alternate" hreflang="en" href="https://letteradventures.com/">
+<link rel="alternate" hreflang="es" href="https://letteradventures.com/es/">
+<link rel="alternate" hreflang="fr" href="https://letteradventures.com/fr/">
+<link rel="alternate" hreflang="pt" href="https://letteradventures.com/pt/">
+<link rel="alternate" hreflang="de" href="https://letteradventures.com/de/">
+<link rel="alternate" hreflang="sv" href="https://letteradventures.com/sv/">
+<link rel="alternate" hreflang="x-default" href="https://letteradventures.com/">
+<meta property="og:locale" content="en_US">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Letter Adventures","url":"https://letteradventures.com/","description":"A free letter and word game for children: learn the alphabet, find letters, spell and read first words in twelve small games with a friendly voice. No ads, no account.","inLanguage":"en","applicationCategory":"EducationalApplication","genre":"Educational game","operatingSystem":"Any","browserRequirements":"Requires JavaScript","isAccessibleForFree":true,"isFamilyFriendly":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"audience":{"@type":"PeopleAudience","audienceType":"Children"},"image":"https://letteradventures.com/og-image.png","publisher":{"@type":"Organization","name":"Sverrhag Consulting AB","url":"https://sverrhag.com"}}</script>
+<!-- /pages:head -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://letteradventures.com/og-image.png">
 <meta name="mobile-web-app-capable" content="yes">
@@ -110,6 +125,7 @@ h1{font-size:clamp(38px,9vh,84px); margin:0; line-height:1; color:var(--pink-dee
 .about h2{margin:0 0 4px; font-size:20px}
 .about p{margin:0 0 8px}
 .about ul{margin:0 0 8px; padding:0; list-style:none; display:grid; gap:2px}
+.about #seoH{margin-top:12px} .about a{color:inherit}
 .about .tip{color:var(--ink-soft); font-size:15px; margin:0}.back{font-size:15px; color:var(--ink-soft); text-decoration:none; font-weight:600}
 .back:hover{text-decoration:underline}
 
@@ -278,38 +294,42 @@ dialog .seg button{font-size:18px; padding:6px 14px}
   <div class="startbox">
     <div class="hero" id="hero">🦊</div>
     <h1 id="gameTitle">Letter Adventures</h1>
-    <p class="tagline" data-t="tagline"></p>
+    <p class="tagline" data-t="tagline">Learn letters and words with your animal friends</p>
     <div class="seg" id="langSeg" role="group" aria-label="Språk / Language">
       <button data-lang="sv">Svenska</button><button data-lang="en">English</button>
     </div>
-    <div class="vlabel" id="playersLabel" data-t="playersLabel" hidden></div>
+    <div class="vlabel" id="playersLabel" data-t="playersLabel" hidden>Who is playing?</div>
     <div class="voices" id="players" hidden></div>
     <div class="namebox">
-      <label for="name" data-t="nameLabel"></label>
+      <label for="name" data-t="nameLabel">What is your name?</label>
       <input id="name" type="text" maxlength="16" autocomplete="off" autocapitalize="words" spellcheck="false" enterkeyhint="go">
     </div>
-    <div class="vlabel" data-t="ageLabel"></div>
+    <div class="vlabel" data-t="ageLabel">How old are you?</div>
     <div class="seg nums" id="ageSeg" role="group" data-ta="ageLabel">
       <button data-age="3">3</button><button data-age="4">4</button><button data-age="5">5</button><button data-age="6">6</button><button data-age="7">7+</button>
     </div>
-    <div class="vlabel" data-t="lookLabel"></div>
+    <div class="vlabel" data-t="lookLabel">Choose a look</div>
     <div class="voices looks" role="group" data-ta="lookLabel"></div>
-    <div class="vlabel" data-t="setVoiceName"></div>
+    <div class="vlabel" data-t="setVoiceName">Choose a voice</div>
     <div class="voices" role="group" data-ta="setVoiceName"></div>
-    <button class="big" id="go" data-t="start"></button>
+    <button class="big" id="go" data-t="start">Start playing 🐞</button>
     <div class="about">
-      <h2 data-t="aboutH"></h2>
-      <p data-t="about"></p>
-      <ul id="aboutList"></ul>
-      <p class="tip" data-t="tip"></p>
-      <p class="tip"><a href="privacy.html" id="privacyLink" data-t="privacyLink"></a></p>
+      <h2 data-t="aboutH">About the game</h2>
+      <p data-t="about">A letter game for children. Your child practises recognising and typing letters, with a keyboard or a touch screen, and reading and building words, in twelve small games. A cheerful voice guides the way, praises every right answer and gently helps after a mistake. Choose between five voices, and between big letters, small letters or both. The difficulty follows the child’s age in five levels and can be changed in the settings. On the hardest levels the letters are hidden. The alphabet game is timed, with a top list.</p>
+      <ul id="aboutList"><li>🌈 <b>The alphabet</b> – A to Z in the right order</li><li>🐞 <b>Find the letter</b> – Press the right key</li><li>👂 <b>Listen</b> – Which letter do you hear?</li><li>🦋 <b>Big and small</b> – Which ones match?</li><li>🦄 <b>Spell words</b> – Letter by letter</li><li>🖼️ <b>Picture and word</b> – Which word fits?</li><li>📖 <b>Read the word</b> – Which picture fits?</li><li>🔤 <b>First letter</b> – What does the word start with?</li><li>🧩 <b>Missing letter</b> – Which letter is missing?</li><li>☔ <b>Catch the letter</b> – Press before it lands</li><li>🃏 <b>Memory</b> – Find two that match</li><li>🎵 <b>Rhyme</b> – Which words sound alike?</li></ul>
+      <p class="tip" data-t="tip">Works in the browser on tablets, computers and phones. No account and no ads. Stars and stickers are saved only in this browser.</p>
+      <p class="tip"><a href="privacy.html" id="privacyLink" data-t="privacyLink">Privacy, publisher and licences</a></p>
       <div id="install">
-        <h2 data-t="installH"></h2>
-        <p data-t="installIntro"></p>
-        <button class="pill" id="installBtn" data-t="installBtn" hidden></button>
+        <h2 data-t="installH">Install and play in full screen</h2>
+        <p data-t="installIntro">Install the game on your tablet to get its own icon on the home screen and open it in full screen, without the address bar. It still needs the internet for the voices.</p>
+        <button class="pill" id="installBtn" data-t="installBtn" hidden>📲 Install the game</button>
         <ul id="installSteps"></ul>
       </div>
-      <p id="installed" data-t="installed" hidden></p>    </div>
+      <p id="installed" data-t="installed" hidden>✅ The game is installed and running in full screen.</p>
+      <h2 id="seoH">Free alphabet games in the browser</h2>
+      <p id="seoP">Letter Adventures is a free learning game for children who are getting to know the alphabet and starting to spell and read. It runs straight in the browser with nothing to install, and a friendly voice says every letter and word aloud. There are no ads, no account and no tracking: what your child does stays on the device.</p>
+      <p class="tip" id="seoAlso">The game in other languages: <a href="/es/" hreflang="es" lang="es" data-lang="es">Español</a> · <a href="/fr/" hreflang="fr" lang="fr" data-lang="fr">Français</a> · <a href="/pt/" hreflang="pt" lang="pt" data-lang="pt">Português</a> · <a href="/de/" hreflang="de" lang="de" data-lang="de">Deutsch</a> · <a href="/sv/" hreflang="sv" lang="sv" data-lang="sv">Svenska</a></p>
+    </div>
     <a class="back" href="https://sverrhag.com/#projects">← sverrhag.com</a>
   </div>
 </section>
@@ -323,9 +343,9 @@ dialog .seg button{font-size:18px; padding:6px 14px}
     <button class="round" id="openSettings" data-ta="setH">⚙️</button>
   </div>
   <div class="top"><div class="bubble"><span class="who">🦄</span><span class="say"></span></div></div>
-  <p class="sec" data-t="secLetters"></p>
+  <p class="sec" data-t="secLetters">Letters</p>
   <div class="games" id="games"></div>
-  <p class="sec" data-t="secWords"></p>
+  <p class="sec" data-t="secWords">Words</p>
   <div class="games" id="games2"></div>
   <div class="homebar">
     <div class="seg" id="caseSeg" role="group" data-ta="setLetters">
@@ -360,59 +380,60 @@ dialog .seg button{font-size:18px; padding:6px 14px}
     <p id="yourTime"></p>
     <ol id="winBoard"></ol>
   </div>
-  <div class="row"><button class="big" id="replay" data-t="replay"></button><button class="big alt" id="winHome" data-t="winHome"></button><button class="round flag" data-report data-ta="setFeedback">🚩</button></div>
+  <div class="row"><button class="big" id="replay" data-t="replay">Play again</button><button class="big alt" id="winHome" data-t="winHome">🏠 Home</button><button class="round flag" data-report data-ta="setFeedback">🚩</button></div>
 </section>
 
 <div id="fx"></div>
 
 <dialog id="settings">
-  <h2 data-t="setH"></h2>
-  <div class="opt"><label data-t="setLetters"></label>
+  <h2 data-t="setH">Settings for grown-ups</h2>
+  <div class="opt"><label data-t="setLetters">Letters</label>
     <div class="seg" role="group">
-      <button data-case="upper" data-t="caseU"></button><button data-case="lower" data-t="caseL"></button><button data-case="both" data-t="caseB"></button>
+      <button data-case="upper" data-t="caseU">BIG</button><button data-case="lower" data-t="caseL">small</button><button data-case="both" data-t="caseB">Both</button>
     </div></div>
-  <div class="opt"><label data-t="setLevel"></label>
+  <div class="opt"><label data-t="setLevel">Difficulty (1 = age 3, 5 = age 7)</label>
     <div class="seg nums" role="group" data-ta="setLevel">
       <button data-level="1">1</button><button data-level="2">2</button><button data-level="3">3</button><button data-level="4">4</button><button data-level="5">5</button>
     </div></div>
-  <div class="opt"><label for="optVoice" data-t="setVoice"></label><input type="checkbox" id="optVoice"></div>
-  <div class="opt"><label data-t="lookLabel"></label><div class="voices looks" role="group" data-ta="lookLabel"></div></div>
-  <div class="opt"><label data-t="setVoiceName"></label><div class="voices" role="group" data-ta="setVoiceName"></div></div>
-  <div class="opt"><label for="optRate" data-t="setRate"></label><input type="range" id="optRate" min="0.8" max="1.2" step="0.05"></div>
-  <div class="opt"><label for="optSfx" data-t="setSfx"></label><input type="checkbox" id="optSfx"></div>
-  <div class="opt"><span></span><button class="pill" id="reload" data-t="setReload"></button></div>
-  <div class="opt"><label for="optKb" data-t="setKb"></label><input type="checkbox" id="optKb"></div>
-  <div class="opt"><button class="pill" id="fullscreen" data-t="setFull"></button><button class="pill" id="reset" data-t="setReset"></button></div>
-  <div class="opt"><button class="pill" id="openFeedback" data-t="setFeedback"></button><button class="pill" id="wipe" data-t="setWipe"></button></div>
-  <div class="opt" id="removeRow"><span data-t="setRemoveLabel"></span><div id="removeList"></div></div>
-  <div id="removeGate" hidden><p id="removeAsk"></p><div class="opt"><input id="removeName" type="text" autocomplete="off" autocapitalize="words" spellcheck="false" maxlength="16"><button class="pill" id="removeGo" data-t="setRemoveGo" disabled></button></div></div>
-  <div class="opt"><button class="pill" id="changeName" data-t="setChange"></button><button class="big" id="closeSettings" style="font-size:20px" data-t="setDone"></button></div>
+  <div class="opt"><label for="optVoice" data-t="setVoice">Voice guide</label><input type="checkbox" id="optVoice"></div>
+  <div class="opt"><label data-t="lookLabel">Choose a look</label><div class="voices looks" role="group" data-ta="lookLabel"></div></div>
+  <div class="opt"><label data-t="setVoiceName">Choose a voice</label><div class="voices" role="group" data-ta="setVoiceName"></div></div>
+  <div class="opt"><label for="optRate" data-t="setRate">Voice speed</label><input type="range" id="optRate" min="0.8" max="1.2" step="0.05"></div>
+  <div class="opt"><label for="optSfx" data-t="setSfx">Sound effects</label><input type="checkbox" id="optSfx"></div>
+  <div class="opt"><span></span><button class="pill" id="reload" data-t="setReload">🔄 Get the latest version</button></div>
+  <div class="opt"><label for="optKb" data-t="setKb">On-screen keyboard</label><input type="checkbox" id="optKb"></div>
+  <div class="opt"><button class="pill" id="fullscreen" data-t="setFull">⛶ Full screen</button><button class="pill" id="reset" data-t="setReset">Reset stars</button></div>
+  <div class="opt"><button class="pill" id="openFeedback" data-t="setFeedback">💬 Send feedback</button><button class="pill" id="wipe" data-t="setWipe">Delete everything saved</button></div>
+  <div class="opt" id="removeRow"><span data-t="setRemoveLabel">Remove a player</span><div id="removeList"></div></div>
+  <div id="removeGate" hidden><p id="removeAsk"></p><div class="opt"><input id="removeName" type="text" autocomplete="off" autocapitalize="words" spellcheck="false" maxlength="16"><button class="pill" id="removeGo" data-t="setRemoveGo" disabled>Remove for good</button></div></div>
+  <div class="opt"><button class="pill" id="changeName" data-t="setChange">Change name or language</button><button class="big" id="closeSettings" style="font-size:20px" data-t="setDone">Done</button></div>
 </dialog>
 
 <dialog id="feedbackDlg">
-  <h2 data-t="fbH"></h2>
-  <p class="note" data-t="fbIntro"></p>
+  <h2 data-t="fbH">Feedback</h2>
+  <p class="note" data-t="fbIntro">Tell us what works well and what could be better. The message is sent as an ordinary email from your own email app. Do not write anything about your child that you do not want to share.</p>
   <textarea id="fbText" rows="6"></textarea>
-  <div id="fbHeard" hidden><p class="note" data-t="fbHeardH"></p><div id="fbHeardList"></div></div>
+  <div id="fbHeard" hidden><p class="note" data-t="fbHeardH">Did something sound wrong? Tick it:</p><div id="fbHeardList"></div></div>
   <p class="addr">hello@letteradventures.com</p>
-  <div class="opt"><button class="pill" id="fbCopy" data-t="fbCopy"></button><button class="big" id="fbSend" style="font-size:20px" data-t="fbSend"></button></div>
-  <div class="opt" style="justify-content:flex-end"><button class="pill" id="fbClose" data-t="close"></button></div>
+  <div class="opt"><button class="pill" id="fbCopy" data-t="fbCopy">Copy the address</button><button class="big" id="fbSend" style="font-size:20px" data-t="fbSend">Open the email app</button></div>
+  <div class="opt" style="justify-content:flex-end"><button class="pill" id="fbClose" data-t="close">Close</button></div>
 </dialog>
 
 <dialog id="boardDlg">
   <h2 id="boardTitle"></h2>
   <div class="board">
     <ol id="boardList"></ol>
-    <p class="note" id="boardEmpty" data-t="boardEmpty"></p>
+    <p class="note" id="boardEmpty" data-t="boardEmpty">Nobody has typed the whole alphabet on this level yet. Be the first!</p>
   </div>
-  <p class="note" data-t="boardNote"></p>
-  <div class="opt" style="justify-content:flex-end"><button class="big" id="closeBoard" style="font-size:20px" data-t="close"></button></div>
+  <p class="note" data-t="boardNote">The clock runs from the first letter to the last. Each mistake costs 5 seconds. The list is for this device.</p>
+  <div class="opt" style="justify-content:flex-end"><button class="big" id="closeBoard" style="font-size:20px" data-t="close">Close</button></div>
 </dialog>
 
 <script src="phrases.js"></script>
 <script src="phrases-more.js"></script>
 <script src="words.js"></script>
 <script src="variants.js"></script>
+<script src="seo.js"></script>
 <script src="more-games.js"></script>
 <script src="game.js"></script>
 </body>

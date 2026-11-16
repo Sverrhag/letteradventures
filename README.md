@@ -130,3 +130,17 @@ sent, since it can hold the child's name. Those lines go to
 which records the clips again until the speech recogniser hears their text, and says which ones it
 already heard right; for those, look at the spelling and at `tools/pronunciations.json`. Only lines
 of that exact shape, naming a clip that exists, are acted on. Nothing else in an email is.
+
+## Search engines and the page of each language
+
+Each language has its own address: `/` is English, and `/sv/`, `/es/`, `/fr/`, `/pt/` and `/de/`
+are copies of `index.html` in that language. They are built by `node tools/build-pages.mjs`,
+which the deploy workflow runs, so the language folders are not kept in git. The script writes the
+title and description (`seo.js`), the links between the language versions (`hreflang`), the
+structured data and the texts of the start screen into every page, `index.html` included, and
+writes `sitemap.xml`. Run it after changing those texts if you want `index.html` in git to match;
+the published site is built fresh either way.
+
+A language page starts the game in its language. The English page keeps the language chosen
+last, and the address follows the language when it is changed. All paths in `index.html` start at
+the top of the site (`<base href="/">`), so the site must be served from the root of its domain.
