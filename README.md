@@ -69,7 +69,9 @@ Common first names are recorded once per voice with `node tools/generate-names.m
 from the list in `tools/names/<lang>.txt`. The clips are published as packs per first letter
 (`audio/<lang>/v<n>/names/<letter>.bin` + `.json`). The game downloads the whole pack for the
 first letter and cuts the name out on the device, so the host only learns the first letter –
-keep it that way, and keep `privacy.html` in step. A name that is not in the list is not said.
+keep it that way, and keep `privacy.html` in step. A name that is not in the list of the language
+being played is taken from another language's packs, where the same voice says it (a Swedish child
+playing in English hears the Swedish recording of the name). A name in no list is not said.
 
 The game joins the name to the phrase before it ("Well done," + "Moa!") into one sound. The voice
 puts up to a second of silence around every clip, so after recording names, cut it off and pack

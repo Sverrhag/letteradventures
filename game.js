@@ -219,21 +219,30 @@ const player = new Audio();
    the first letter. A name that is not in the pack is simply not said. */
 let nameClip = null, nameFor = '';
 const plainText = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-async function loadNameClip(){
+let nameLoading = null; // the fetch that is under way, so that a second caller waits for the same one
+function loadNameClip(){
   const k = playerKey(S.name), want = `${S.lang}/v${S.voiceChar+1}/${k}`;
-  if (nameFor === want) return;
+  if (nameFor === want) return nameLoading;
   nameFor = want;
   nameClip = null;
+  return nameLoading = fetchNameClip(k, want);
+}
+async function fetchNameClip(k, want){
   if (!k) return;
-  const first = plainText(k)[0], pack = `audio/${S.lang}/v${S.voiceChar+1}/names/${/^[a-z]$/.test(first) ? first : '0'}`;
-  try {
-    const index = await (await fetch(pack + '.json')).json();
-    const hit = index[k] || index[plainText(k)];
-    if (!hit) return;
-    const bytes = await (await fetch(pack + '.bin')).arrayBuffer();
-    if (nameFor !== want) return;
-    nameClip = bytes.slice(hit[0], hit[0] + hit[1]);
-  } catch {}
+  // A name that has not been recorded in the language being played is taken from another
+  // language, where the same voice says it (a Swedish name while playing in English).
+  const first = plainText(k)[0], file = /^[a-z]$/.test(first) ? first : '0';
+  for (const lang of [S.lang, ...Object.keys(LANGS).filter(l => l !== S.lang)]){
+    const pack = `audio/${lang}/v${S.voiceChar+1}/names/${file}`;
+    try {
+      const r = await fetch(pack + '.json'); if (!r.ok) continue;
+      const index = await r.json(), hit = index[k] || index[plainText(k)];
+      if (!hit) continue;
+      const bytes = await (await fetch(pack + '.bin')).arrayBuffer();
+      if (nameFor === want) nameClip = bytes.slice(hit[0], hit[0] + hit[1]);
+      return;
+    } catch {}
+  }
 }
 // The name is joined to the phrase before it (and after it) into one sound, so that it is said
 // in one breath: "Well done," + "Moa!". The clips have had their silence trimmed for this.
