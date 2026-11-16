@@ -13,6 +13,7 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
+import { createHash } from 'node:crypto';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = f => readFileSync(join(root, f), 'utf8');
@@ -59,6 +60,9 @@ function page(tpl, lang, game) {
     `<meta property="og:locale" content="${OG_LOCALE[lang]}">`,
     `<script type="application/ld+json">${JSON.stringify(data).replace(/</g, '\\u003c')}</script>`].join('\n');
   h = put(h, /(<!-- pages:head -->)[\s\S]*?(<!-- \/pages:head -->)/, `$1\n${head}\n$2`);
+  // Each script is asked for with a mark of its content, so that a browser or cache that kept an older
+  // copy fetches the new one together with the new page.
+  h = h.replace(/<script src="([\w-]+\.js)(?:\?v=\w+)?"><\/script>/g, (all, f) => `<script src="${f}?v=${createHash('sha1').update(read(f)).digest('hex').slice(0, 10)}"></script>`);
   // Every text of the page that the game fills in from its language (data-t), where it is plain text.
   h = h.replace(/(<(\w+)\b[^>]*\sdata-t="(\w+)"[^>]*>)[^<]*(<\/\2>)/g, (all, open, tag, key, close) => typeof T.ui[key] === 'string' ? open + esc(T.ui[key]) + close : all);
   // The game that the page is about, named under the title.
