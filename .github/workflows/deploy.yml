@@ -23,11 +23,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
-      # The page of each language (/sv/, /es/ ...) and sitemap.xml.
+      # The page of each language and game (/sv/, /sv/rimspel/ ...) and sitemap.xml.
       - run: node tools/build-pages.mjs
+      # Only the game is published: not the tools, the README or the files of git.
+      - run: rsync -a --exclude .git --exclude .github --exclude .cache --exclude .gitignore --exclude tools --exclude README.md --exclude _site ./ _site/
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
       - id: deployment
         uses: actions/deploy-pages@v4
       # Tells Bing and the other IndexNow search engines which pages there are, so that changes are

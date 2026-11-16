@@ -19,8 +19,14 @@ import json, os, re, subprocess, sys
 here = os.path.dirname(os.path.abspath(__file__)); root = os.path.join(here, '..')
 LINE = re.compile(r'^(?:clip\s+)?(sv|en|es|fr|pt|de)\s+v([1-5])\s+(?:[a-z]+\s+)?([A-Za-z0-9_]{1,40})$')
 
+# Text that comes from an email is best kept off the command line, where the shell reads it first:
+#   python tools/fix-reported.py --file lines.txt     (one line per clip)
+args = sys.argv[1:]
+if args[:1] == ['--file']:
+    args = [l for l in open(args[1], encoding='utf-8', errors='replace').read().splitlines() if l.strip()][:200]
+
 todo, refused = {}, []
-for arg in sys.argv[1:]:
+for arg in args:
     m = LINE.match(arg.strip())
     if not m: refused.append(arg); continue
     lang, v, clip = m.group(1), m.group(2), m.group(3)

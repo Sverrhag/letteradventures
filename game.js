@@ -48,6 +48,8 @@ const cap = s => s[0].toUpperCase() + s.slice(1);
 const KEY = 'letter-adventure-v1';
 const S = {name:'', lang:'en', letterCase:'upper', voice:true, voiceChar:0, speed:1, sfx:true, kb:true, stars:0, stickers:[], age:null, level:2, look:'adventure', boards:{}, prog:{}, profiles:{}};
 try { Object.assign(S, JSON.parse(localStorage.getItem(KEY)) || {}); } catch {}
+// The players are kept by name: without a prototype, so that a name like "constructor" is just a name.
+S.profiles = Object.assign(Object.create(null), S.profiles);
 if (!LANGS[S.lang]) S.lang = 'en';
 // Each language has a page of its own (/sv/, /es/ ...; see seo.js). Such a page starts in its language;
 // the English one, at the top, keeps the language that was chosen last. The address then follows the language.
@@ -278,12 +280,14 @@ async function joined(ids){
 let tok = 0;
 // The clips that name a letter are fetched all at once, in a fixed order, and kept in memory.
 // Fetched one by one while a child spells their name, their order would show the name to the web host.
-let clipCache = {}, cacheKey = '';
+// `lettersReady` is true only once every one of them is in memory: until then the spelling game leaves
+// the child's name out (see startGame), so that no letter of the name is ever fetched on its own.
+let clipCache = {}, cacheKey = '', lettersReady = false;
 async function preloadLetters(){
   const key = `${S.lang}/v${S.voiceChar+1}`;
   if (cacheKey === key) return;
   Object.values(clipCache).forEach(u => URL.revokeObjectURL(u));
-  cacheKey = key; const mine = clipCache = {};
+  cacheKey = key; lettersReady = false; const mine = clipCache = {};
   const ids = [];
   [...T.alpha].forEach((_, i) => Object.keys(T.per).forEach(k => ids.push(`${k}_${i}`)));
   let next = 0;
@@ -293,6 +297,7 @@ async function preloadLetters(){
       try { const r = await fetch(`audio/${key}/${id}.mp3`); if (r.ok) mine[id] = URL.createObjectURL(await r.blob()); } catch {}
     }
   }));
+  if (cacheKey === key) lettersReady = ids.every(id => mine[id]);
 }
 const clipUrl = id => clipCache[id] || `audio/${S.lang}/v${S.voiceChar+1}/${id}.mp3`;
 // The last things the voice said, so that a grown-up can report one that sounded wrong (see the
@@ -396,7 +401,7 @@ function renderCards(){
   const cards = GAME_META.map((gm,i) => {
     if (!T.games[i]) return ''; // a game this language does not have yet
     const pr = PROG_GAMES.includes(gm.id) ? prog(gm.id) : null;
-    return `<button class="game" data-g="${gm.id}" style="background:var(${gm.c})"><span class="num">${order.indexOf(gm.id)+1}</span><span class="em">${gm.em}</span>${T.games[i][0]}<small>${T.games[i][1]}</small>${pr ? `<small class="lv">${T.ui.wordLevel(pr.lv, pr.done.length)}</small>` : ''}</button>`;
+    return `<button class="game" data-g="${gm.id}" style="background:var(${gm.c})"><span class="num">${order.indexOf(gm.id)+1}</span><span class="em">${gm.em}</span>${T.games[i][0]}<small>${T.games[i][1]}</small>${pr ? `<small class="lv">${T.ui.wordLevel(Number(pr.lv) || 1, pr.done.length)}</small>` : ''}</button>`;
   });
   $('#games').innerHTML = cards.filter((_,i) => !WORD_GROUP.includes(GAME_META[i].id)).join('');
   $('#games2').innerHTML = cards.filter((_,i) => WORD_GROUP.includes(GAME_META[i].id)).join('');
@@ -489,7 +494,9 @@ function startGame(id){
   if (id==='fanga') return startFanga();
   if (id==='alfabet') G.items = ALPHA.map(L=>({L}));
   else if (id==='ord'){
-    const me = nameWord();
+    // The name is spelled only when all the letter clips are in memory, or with the voice off: otherwise
+    // the clips of its letters would be fetched one by one, in the order of the name.
+    const me = lettersReady || !S.voice ? nameWord() : null;
     const ws = [...(me ? [{w:me, e:'💖', isName:true}] : []), ...pickWords(id, ORD_WORDS[S.level])];
     G.items = ws.map(x=>({...x, c:pickCase()}));
   } else if (WORD_GAMES.includes(id)){
