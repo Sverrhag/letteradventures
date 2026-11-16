@@ -130,6 +130,9 @@ sent, since it can hold the child's name. Those lines go to
 which records the clips again until the speech recogniser hears their text, and says which ones it
 already heard right; for those, look at the spelling and at `tools/pronunciations.json`. Only lines
 of that exact shape, naming a clip that exists, are acted on. Nothing else in an email is.
+Text from an email is kept off the command line: write the lines to a file and give it with
+`--file lines.txt`. Clips recorded again for a report are not published on their own: they go on
+a branch of their own, in a pull request, and reach the site when a person merges it.
 
 ## Search engines and the page of each language
 
