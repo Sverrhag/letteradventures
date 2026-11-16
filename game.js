@@ -199,8 +199,10 @@ function g(key){
   const v = T.g[key];
   if (v === undefined) return null; // a phrase this language does not have yet
   const named = raw => /\{[^}]*n\}[^\p{L}]*$/u.test(raw); // the phrase has a place for the player's name
-  if (Array.isArray(v)){ const i = vary(key, v.length); return {id:`${key}_${i}`, text:shown(v[i]), named:named(v[i])}; }
-  return {id:key, text:shown(v), named:named(v)};
+  // A phrase that names a figure has its own wording, and clip, in each look (THEMED in variants.js).
+  const inLook = (id, raw) => { const o = T.gLook && T.gLook[look().id] && T.gLook[look().id][id]; return o ? {id:`${id}_${look().id}`, text:shown(o), named:named(o)} : {id, text:shown(raw), named:named(raw)}; };
+  if (Array.isArray(v)){ const i = vary(key, v.length); return inLook(`${key}_${i}`, v[i]); }
+  return inLook(key, v);
 }
 // The caption must not give away what the screen hides: the letter in the listening
 // game, and on the levels without visible letters, until the answer has been revealed.
@@ -383,10 +385,11 @@ function refresh(){
   $('#winTitle').textContent = shown(T.g.hurra);
   $$('.starcount').forEach(e => e.textContent = S.stars);
   $$('[data-case]').forEach(b => b.setAttribute('aria-pressed', b.dataset.case===S.letterCase));
-  $$('.voices:not(#looks):not(#players)').forEach(box => box.innerHTML = VOICE_EM.map((_,i)=>`<button class="voice" data-voice="${i}" aria-pressed="${i===S.voiceChar}"><span>${voiceEm(i)}</span>${voiceName(i)}</button>`).join(''));
+  $$('.voices:not(.looks):not(#players)').forEach(box => box.innerHTML = VOICE_EM.map((_,i)=>`<button class="voice" data-voice="${i}" aria-pressed="${i===S.voiceChar}"><span>${voiceEm(i)}</span>${voiceName(i)}</button>`).join(''));
   $$('[data-level]').forEach(b => b.setAttribute('aria-pressed', +b.dataset.level===S.level));
   $$('[data-age]').forEach(b => b.setAttribute('aria-pressed', +b.dataset.age===S.age));
-  $('#looks').innerHTML = LOOKS.map((l,i) => `<button class="voice" data-look="${l.id}" aria-pressed="${l.id===look().id}"><span>${l.em}</span>${T.ui.looks[i]}</button>`).join('');
+  const lookButtons = LOOKS.map((l,i) => `<button class="voice" data-look="${l.id}" aria-pressed="${l.id===look().id}"><span>${l.em}</span>${T.ui.looks[i]}</button>`).join('');
+  $$('.looks').forEach(box => box.innerHTML = lookButtons);
   applyLook();
   $('#levelChip').textContent = T.ui.levelChip(S.level);
   $$('.who').forEach(e => e.textContent = voiceEm(S.voiceChar));
@@ -822,8 +825,8 @@ document.addEventListener('click', e => {
   if (c){ S.letterCase = c.dataset.case; save(); refresh(); if (!dlg.open) say(g('case'+cap(S.letterCase))); return; }
   const lv = e.target.closest('[data-level]');
   if (lv){ S.level = +lv.dataset.level; save(); refresh(); say({id:`level_${S.level-1}`, text:T.g.level[S.level-1]}); return; }
-  const lk = e.target.closest('#looks [data-look]');
-  if (lk){ syncName(); S.look = lk.dataset.look; save(); refresh(); say(voiceHello(S.voiceChar)); return; }
+  const lk = e.target.closest('.looks [data-look]');
+  if (lk){ if (screen==='start') syncName(); S.look = lk.dataset.look; save(); refresh(); say(voiceHello(S.voiceChar)); return; }
   const ag = e.target.closest('[data-age]');
   if (ag){ syncName(); S.age = +ag.dataset.age; S.level = S.age - 2; save(); refresh(); return; }
   const v = e.target.closest('[data-voice]');

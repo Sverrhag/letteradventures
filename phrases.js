@@ -153,6 +153,7 @@ const spoken = s => s.replace(/\{[^}]*\}/g, '');
 function clipList(lang, voiceIdx) {
   const T = LANGS[lang], out = [['hello', T.hello[voiceIdx]]];
   for (const [look, said] of Object.entries(T.helloCast || {})) out.push([`hello_${look}`, said[voiceIdx]]); // the voice as the look's figure
+  for (const [look, map] of Object.entries(T.gLook || {})) for (const [id, s] of Object.entries(map)) out.push([`${id}_${look}`, spoken(s)]); // praise that names the look's figures
   for (const [key, val] of Object.entries(T.g)) {
     if (Array.isArray(val)) val.forEach((s, i) => out.push([`${key}_${i}`, spoken(s)]));
     else out.push([key, spoken(val)]);

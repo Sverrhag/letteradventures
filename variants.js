@@ -265,6 +265,51 @@ const CAST = {
 };
 const CAST_LOOKS = ['adventure', 'space', 'jungle', 'ocean'];
 
+// Praise that names a figure ("The unicorn is dancing with joy!") follows the look: in the Jungle
+// it is the monkey that dances and the parrot that is proud. `a` and `b` are the two figures in the
+// phrases of the Rainbow look; each other look gives its own two, [name, is it masculine], and its
+// own word for "Rainbow-tastic!". `masc` rewrites the adjectives that follow the figure's gender.
+// In French the figure must not begin with L': at the start of a sentence the voice reads it as the letter L.
+const THEMED = {
+  sv: { a: 'Enhörningen', b: 'Nyckelpigan', masc: [],
+    adventure: { a: 'Räven', b: ['Ekorren'], top: 'Vilket äventyr{, n}!' }, space: { a: 'Roboten', b: ['Astronauten'], top: 'Galaktiskt bra{, n}!' },
+    jungle: { a: 'Apan', b: ['Papegojan'], top: 'Djungelbra{, n}!' }, ocean: { a: 'Bläckfisken', b: ['Delfinen'], top: 'Havsbra{, n}!' } },
+  en: { a: 'The unicorn', b: 'The ladybug', masc: [],
+    adventure: { a: 'The fox', b: ['The squirrel'], top: 'What an adventure{, n}!' }, space: { a: 'The robot', b: ['The astronaut'], top: 'Out of this world{, n}!' },
+    jungle: { a: 'The monkey', b: ['The parrot'], top: 'Jungle-tastic{, n}!' }, ocean: { a: 'The octopus', b: ['The dolphin'], top: 'Ocean-tastic{, n}!' } },
+  es: { a: 'El unicornio', b: 'La mariquita', masc: [['orgullosa', 'orgulloso'], ['orgullosísima', 'orgullosísimo']],
+    adventure: { a: 'El zorro', b: ['La ardilla'], top: '¡Qué aventura{, n}!' }, space: { a: 'El robot', b: ['La astronauta'], top: '¡De otro planeta{, n}!' },
+    jungle: { a: 'El mono', b: ['El loro', true], top: '¡Un rugido de aplausos{, n}!' }, ocean: { a: 'El pulpo', b: ['El delfín', true], top: '¡Una ola de aplausos{, n}!' } },
+  fr: { a: 'La licorne', b: 'La coccinelle', masc: [['fière', 'fier']],
+    adventure: { a: 'Le renard', b: ['Le lapin', true], top: 'Quelle aventure{, n} !' }, space: { a: 'Le robot', b: ["L'astronaute"], top: 'Un bravo étoilé{, n} !' },
+    jungle: { a: 'Le singe', b: ['Le perroquet', true], top: 'Un bravo de la jungle{, n} !' }, ocean: { a: 'La pieuvre', b: ['Le dauphin', true], top: 'Une vague de bravos{, n} !' } },
+  pt: { a: 'O unicórnio', b: 'A joaninha', masc: [['orgulhosa', 'orgulhoso']],
+    adventure: { a: 'A raposa', b: ['O esquilo', true], top: 'Que aventura{, n}!' }, space: { a: 'O robô', b: ['A astronauta'], top: 'De outro planeta{, n}!' },
+    jungle: { a: 'O macaco', b: ['O papagaio', true], top: 'Um rugido de parabéns{, n}!' }, ocean: { a: 'O polvo', b: ['O golfinho', true], top: 'Uma onda de parabéns{, n}!' } },
+  de: { a: 'Das Einhorn', b: 'Der Marienkäfer', masc: [],
+    adventure: { a: 'Der Fuchs', b: ['Das Eichhörnchen'], top: 'Was für ein Abenteuer{, n}!' }, space: { a: 'Der Roboter', b: ['Die Astronautin'], top: 'Galaktisch gut{, n}!' },
+    jungle: { a: 'Der Affe', b: ['Der Papagei'], top: 'Dschungelstark{, n}!' }, ocean: { a: 'Der Tintenfisch', b: ['Der Delfin'], top: 'Meeresstark{, n}!' } },
+};
+const TOP = 'long_15'; // "Rainbow-tastic!"
+// The phrases of one language that change with the look: {look: {clip id: phrase}}.
+function themed(lang, g) {
+  const T = THEMED[lang], out = {};
+  for (const look of CAST_LOOKS) {
+    const L = T[look], map = out[look] = {};
+    const swap = (id, s) => {
+      if (!s.includes(T.a) && !s.includes(T.b)) return;
+      let t = s.split(T.a).join(L.a);
+      if (t.includes(T.b)) { t = t.split(T.b).join(L.b[0]); if (L.b[1]) for (const [f, m] of T.masc) t = t.split(f).join(m); }
+      map[id] = t;
+    };
+    for (const [key, val] of Object.entries(g)) {
+      if (Array.isArray(val)) val.forEach((s, i) => swap(`${key}_${i}`, s)); else if (typeof val === 'string') swap(key, val);
+    }
+    map[TOP] = L.top;
+  }
+  return out;
+}
+
 // Only languages whose clips are recorded get the alternative wordings (see READY in words.js);
 // `all` is set by the recording script.
 function apply(LANGS, all) {
@@ -281,6 +326,7 @@ function apply(LANGS, all) {
     if (!ready.includes(lang)) continue;
     Object.assign(LANGS[lang].g, V[lang].g, MORE[lang].g);
     Object.assign(LANGS[lang].per, V[lang].per, MORE[lang].per);
+    LANGS[lang].gLook = themed(lang, LANGS[lang].g);
   }
   return LANGS;
 }
