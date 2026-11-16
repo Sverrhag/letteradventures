@@ -1,7 +1,7 @@
 {
   "name": "Letter Adventures",
   "short_name": "Letter Adventures",
-  "description": "A playful letter and word game for children aged 3 to 7, in Swedish and English.",
+  "description": "A playful letter and word game for children, in six languages.",
   "id": "/",
   "start_url": "./",
   "scope": "./",
