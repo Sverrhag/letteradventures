@@ -419,3 +419,8 @@ s c486ac662l "Ordtjuven ropar: Sluta jaga mig! Men vi ger oss inte förrän Poll
 s 395a5ad12u "En koala berättar en hemlighet: Ordtjuven kan inte ett enda ord engelska. Det är därför han stjäl dem!" heard as "En koala berättar en hemlighet. Ordkjuven kan inte ett enda ord engelska. Det är därför han skäl dem."
 s 624111d12w "Ordtjuven har slut på bananer, slut på ballong och slut på gömställen. Nu finns det bara ett stopp kvar." heard as "Ordkjuven har slut på bananer, slut på ballong och slut på gömställen. Nu finns det bara ett stopp kvar."
 a 9e10ce113 "too" heard as "The word is two."
+s 849705e118 "Hjälmen ger dig ett extra liv i Känguruhopp." heard as "Hjälmen ger dig ett extra liv i kängor och hopp."
+s 9bda5f791n "Med solglasögonen tittar djuren upp längre i Pricka djuren." heard as "Med solglasögonen tittar djuren upp längre i prickardjuren."
+s e40d026b1o "Nu dyker det upp gyllene bananer. Varje banan ger fem poäng!" heard as "Nu dyker det upp gyllene bananer. Varje banan ger 5 poäng."
+s 96e677381x "Med fjärilsvingarna kan du hoppa en gång till i luften i Känguruhopp." heard as "Med fjärilsvingarna kan du hoppa en gång till i luften i kängor och hopp."
+s a3a533181o "Med trollkarlshatten börjar du varje pausspel med tio poäng." heard as "Med Trollkarlshatten börjar du varje pausspel med 10 poäng."

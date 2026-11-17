@@ -11,6 +11,7 @@
 #   f swedish                     a funny fact about an animal, told when a stage is done
 #   e swedish                     a chapter of the tale, told before each level, in order
 #   n key|swedish                 the start of something said to the player by name: the name is joined on after it
+#   x key|swedish                 what a thing from the shop does in the break games, said when it is bought
 # tools/adventure/build.mjs checks that every sentence only uses words that have been taught.
 
 p Well done!|Bra jobbat!
@@ -91,10 +92,21 @@ u chest|Vad finns i paketet? Tryck på det!
 u boss|Se upp! Här kommer bossen. Varje rätt svar ger bossen en smäll!
 u bosswin|Du besegrade bossen! Hurra!
 u poor|Du behöver fler mynt. Svara rätt så får du fler!
-u shop|Välkommen till hattaffären! Här kan du köpa tokiga hattar för dina mynt.
-u shop|Hattaffären är öppen! Vilken hatt vill du ha?
-u bought|Vilken snygg hatt! Den passar dig perfekt.
-u bought|Oj, vad fin! Nu är den din.
+u shop|Välkommen till affären! Allt du köper här hjälper dig i pausspelen.
+u shop|Affären är öppen! Här finns prylar som gör dig bättre i pausspelen.
+u bought|Bra köp! Nu är den din för alltid.
+u bought|Oj, vad fin! Den passar dig perfekt.
+x life|Hjälmen ger dig ett extra liv i Känguruhopp.
+x slow|Med solglasögonen tittar djuren upp längre i Pricka djuren.
+x time|Med hörlurarna får du tio sekunder längre i alla pausspel.
+x feather|Med fjäderhatten faller djuren långsammare i Djurregn.
+x banana|Nu dyker det upp gyllene bananer. Varje banan ger fem poäng!
+x safe|Lyckoblomman skyddar dig. Bajs och kaktusar ger inga minuspoäng längre.
+x jump2|Med fjärilsvingarna kan du hoppa en gång till i luften i Känguruhopp.
+x head|Med trollkarlshatten börjar du varje pausspel med tio poäng.
+x double|Raketen ger dig dubbla poäng i alla pausspel!
+x poop|Med bajshatten ger bajs och kaktusar pluspoäng. Tryck på allt!
+x ufo|Ufot hjälper dig. Var tionde sekund fångar det allt på skärmen!
 u world0|Det var en gång en papegoja som hette Polly. Hon bodde i Gold Coast i Australien och kunde alla engelska ord i hela världen. Men en natt kom den tokiga Ordtjuven och snodde vartenda ord! Han flög iväg i sin pruttande luftballong och tappade orden längs hela vägen till Lund. Nu behöver Polly din hjälp. Samla orden, res till Australien och ge dem tillbaka!
 u world1|Du har rest genom hela Europa! Nu fortsätter resan mot Indien. Vill du resa genom öknen eller över bergen?
 u world2|Du är framme i Indien, och Australien kommer närmare! Nu ska du genom Asien. Väljer du djungeln eller Kina?
