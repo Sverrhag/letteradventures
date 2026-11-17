@@ -18,7 +18,7 @@ export const clipId = s => { let h = 0x811c9dc5; for (let i = 0; i < s.length; i
 export const svSaid = s => s.replace(/\s*\([^)]*\)/g, '').replace(/\//g, ', ').trim();
 const tokens = s => s.toLowerCase().replace(/[.,!?]/g, '').split(/\s+/).filter(Boolean);
 
-const data = { praise: [], praiseSv: [], streak: {}, worlds: [], levels: [] }, known = new Set(), problems = [];
+const data = { praise: [], praiseSv: [], streak: {}, inst: {}, worlds: [], levels: [] }, known = new Set(), problems = [];
 let level = null;
 const knows = t => known.has(t) || [t.replace(/s$/, ''), t.replace(/es$/, ''), t.replace(/ing$/, ''), t.replace(/ing$/, 'e')].some(b => b !== t && known.has(b));
 for (const raw of readFileSync(join(here, 'content.txt'), 'utf8').split(/\r?\n/)) {
@@ -28,6 +28,7 @@ for (const raw of readFileSync(join(here, 'content.txt'), 'utf8').split(/\r?\n/)
   if (kind === 'p') data.praise.push(cells);
   else if (kind === 'v') data.praiseSv.push(cells[0]);
   else if (kind === 'k') data.streak[cells[0]] = cells.slice(1);
+  else if (kind === 'i') (data.inst[cells[0]] = data.inst[cells[0]] || []).push(cells[1]);
   else if (kind === 'W') data.worlds.push({ name: cells[0], em: cells[1] });
   else if (kind === 'L') data.levels.push(level = { w: data.worlds.length - 1, title: cells[0], words: [], sents: [] });
   else if (kind === 'w') { level.words.push(cells); tokens(cells[0]).forEach(t => known.add(t)); }
@@ -45,7 +46,7 @@ writeFileSync(join(root, GAME, 'data.js'), '// Built by tools/adventure/build.mj
 const clips = new Map();
 const add = (k, text, word) => { const key = k + clipId(text); if (!clips.has(key)) clips.set(key, { k, id: clipId(text), text, word }); };
 for (const [en] of [...data.praise, ...Object.values(data.streak)]) add('en', en, false);
-for (const sv of data.praiseSv) add('sv', sv, false);
+for (const sv of [...data.praiseSv, ...Object.values(data.inst).flat()]) add('sv', sv, false);
 for (const l of data.levels) {
   for (const [en, sv] of l.words) { add('en', en, true); add('sv', svSaid(sv), true); }
   for (const [en, sv] of l.sents) { add('en', en, false); add('sv', sv, false); }

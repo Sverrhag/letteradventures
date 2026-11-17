@@ -91,7 +91,7 @@ function petTrick() {
 const petHtml = () => `<button id="pet" aria-label="Kompis">${S.set.pet}${S.set.hat ? `<span class="hat">${S.set.hat}</span>` : ''}</button>`;
 
 // ---- Screens ----
-let screen = '', stopGame = null, mw = 0;
+let screen = '', stopGame = null, mw = 0, lastKind = '';
 function show(name, html, world) {
   if (stopGame) { stopGame(); stopGame = null; }
   screen = name; app.innerHTML = html;
@@ -147,6 +147,10 @@ function play() {
   const stage = $('#stage'), act = $('#act');
   const ask = `<div class="ask">${st.rev ? '🔁 Repetition · ' : ''}${st.k === 'intro' ? ASK.intro[st.t === 'w' ? 0 : 1] : ASK[st.k]}</div>`;
   const next = () => { R.p++; save(); play(); };
+  // The voice says what to do: always when the kind of question changes, otherwise now and then.
+  const kind = st.k === 'intro' ? (st.t === 'w' ? 'introW' : 'introS') : st.k;
+  const lead = () => { const tell = S.set.sv && (kind !== lastKind || Math.random() < .3); lastKind = kind; return tell ? say('s', pick(D.inst[kind])) : Promise.resolve(); };
+  const here = () => screen === 'play' && S.run === R && R.q[R.p] === st && !$('.fb');
   // After an answer: the right answer is shown and said; a wrong one brings the question back twice.
   function answered(ok, said) {
     const key = statKey(st);
@@ -177,7 +181,7 @@ function play() {
     stage.innerHTML = `${ask}${em ? `<div class="pic">${em}</div>` : ''}<div class="prompt ${st.t === 's' ? 'sm' : ''}">${esc(en)}</div><div class="sub">= ${esc(sv)}</div><div id="sp"></div>`;
     $('#sp').append(spk('', () => sayEn(en)), ' ', Object.assign(spk('', () => saySv(sv)), { textContent: 'Sv' }));
     act.innerHTML = `<button class="btn big" id="bN">Nästa ➜</button>`; $('#bN').onclick = next;
-    sayEn(en);
+    lead().then(() => here() && sayEn(en));
     return;
   }
   // One answer among several: the buttons lock at the first press.
@@ -188,13 +192,13 @@ function play() {
   const others = (list, col, n, not) => shuffle(list.map(x => x[col]).filter((x, i, a) => x !== not && a.indexOf(x) === i)).slice(0, n);
   if (st.k === 'pickSv') {
     stage.innerHTML = `${ask}<div class="prompt">${esc(en)}</div>`; stage.append(spk('', () => sayEn(en)));
-    choose(shuffle([sv, ...others(D.levels[st.li].words, 1, 3, sv)]), sv, true); sayEn(en);
+    choose(shuffle([sv, ...others(D.levels[st.li].words, 1, 3, sv)]), sv, true); lead().then(() => here() && sayEn(en));
   } else if (st.k === 'pickEn') {
     stage.innerHTML = `${ask}<div class="prompt">${esc(sv)}</div>`;
-    choose(shuffle([en, ...others(D.levels[st.li].words, 0, 5, en)]), en, true); if (S.set.sv) saySv(sv);
+    choose(shuffle([en, ...others(D.levels[st.li].words, 0, 5, en)]), en, true); lead().then(() => here() && S.set.sv && saySv(sv));
   } else if (st.k === 'mean') {
     stage.innerHTML = `${ask}<div class="prompt sm">${esc(en)}</div>`; stage.append(spk('', () => sayEn(en)));
-    choose(shuffle([sv, ...others(D.levels[st.li].sents, 1, 3, sv)]), sv, false); sayEn(en);
+    choose(shuffle([sv, ...others(D.levels[st.li].sents, 1, 3, sv)]), sv, false); lead().then(() => here() && sayEn(en));
   } else {
     // Built from tiles: the letters of a word, or the words of a sentence, with tiles that do not belong.
     const words = st.t === 's' || en.includes(' '), answer = words ? toks(en) : [...en];
@@ -215,7 +219,7 @@ function play() {
       on('#slots .tile', el => { if (locked) return; const i = put.splice(+el.dataset.n, 1)[0]; $(`#bank [data-i="${i}"]`).classList.remove('used'); SFX.pop(); draw(); }); };
     on('#bank .tile', el => { if (locked || el.classList.contains('used')) return; el.classList.add('used'); put.push(+el.dataset.i); SFX.pop(); draw(); });
     $('#bC').onclick = () => { locked = true; const good = put.map(i => bank[i]).join(words ? ' ' : '').toLowerCase() === answer.join(words ? ' ' : '').toLowerCase(); $('#slots').classList.add(good ? 'ok' : 'bad'); $('#bank').style.visibility = 'hidden'; answered(good, false); };
-    if (st.k === 'dict') sayEn(en); else if (S.set.sv) saySv(sv);
+    lead().then(() => here() && (st.k === 'dict' ? sayEn(en) : S.set.sv && saySv(sv)));
   }
 }
 
@@ -256,7 +260,7 @@ function settings() {
     ${row('Hatt', HATS.map(h => `<button class="em ${S.set.hat === h ? 'on' : ''}" data-k="hat" data-v="${h}">${h || '🚫'}</button>`).join(''))}
     ${row('Färg', PALS.map((c, i) => `<button data-k="pal" data-v="${i}" class="${S.set.pal === i ? 'on' : ''}" style="background:${c};color:#fff">${S.set.pal === i ? '✔' : '&nbsp;'}</button>`).join(''))}
     ${row('Ljud vid rätt svar', SOUNDS.map(([v, t]) => `<button data-k="snd" data-v="${v}" class="${S.set.snd === v ? 'on' : ''}">${t}</button>`).join(''))}
-    ${row('Tokigheter', onoff('silly'))}${row('Läs upp svenskan', onoff('sv'))}
+    ${row('Tokigheter', onoff('silly'))}${row('Svensk röst', onoff('sv'))}
     ${row('Tokknappen', `<button id="bSilly">🤪 Tryck inte här!</button>`)}
     ${row('Vuxna', `<button id="bAd">🔐 Håll in i 3 sekunder</button>`)}</div><div id="adult"></div></div><div class="foot">${petHtml()}<span></span></div>`);
   $('#bX').onclick = () => map(); $('#pet').onclick = petTrick;

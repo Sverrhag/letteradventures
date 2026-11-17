@@ -6,6 +6,7 @@
 #   p english|swedish             praise, said after a right answer
 #   v swedish                     praise said in Swedish
 #   k number|english|swedish      praise for that many right answers in a row
+#   i kind|swedish                what the voice says before a kind of question, in several wordings
 # tools/adventure/build.mjs checks that every sentence only uses words that have been taught.
 
 p Well done!|Bra jobbat!
@@ -40,6 +41,38 @@ v Jättebra! Du lär dig så snabbt!
 v Precis så! Snyggt!
 v Du är superduktig på engelska!
 v Rätt igen! Vilken hjärna!
+i introW|Här kommer ett nytt ord.
+i introW|Ett nytt ord! Lyssna noga.
+i introW|Nu ska du få lära dig ett nytt ord.
+i introW|Lyssna på det här ordet.
+i introS|Här kommer en ny mening.
+i introS|Lyssna på den här meningen.
+i introS|Nu blir det en hel mening.
+i introS|En ny mening! Lyssna noga.
+i pickSv|Vad betyder ordet?
+i pickSv|Vad betyder det här på svenska?
+i pickSv|Lyssna. Vilket svenskt ord är det?
+i pickSv|Tryck på det som ordet betyder.
+i pickEn|Vilket ord är det på engelska?
+i pickEn|Hitta det engelska ordet.
+i pickEn|Vad heter det här på engelska?
+i pickEn|Tryck på rätt engelskt ord.
+i spell|Skriv ordet på engelska.
+i spell|Stava ordet på engelska.
+i spell|Hur skriver man det på engelska?
+i spell|Sätt bokstäverna i rätt ordning.
+i mean|Vad betyder meningen?
+i mean|Vad säger rösten på svenska?
+i mean|Lyssna. Vad betyder det?
+i mean|Tryck på det som meningen betyder.
+i build|Bygg meningen på engelska.
+i build|Sätt orden i rätt ordning.
+i build|Hur säger man det här på engelska?
+i build|Säg det på engelska med brickorna.
+i dict|Lyssna och bygg meningen.
+i dict|Lyssna noga och sätt ihop det du hör.
+i dict|Vad säger rösten? Bygg meningen.
+i dict|Bygg det du hör.
 k 3|Three in a row!|Tre rätt i rad!
 k 5|Five in a row! You are on fire!|Fem rätt i rad! Du är i toppform!
 k 10|Ten in a row! Unstoppable!|Tio rätt i rad! Ingen kan stoppa dig!
