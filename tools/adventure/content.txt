@@ -4,6 +4,8 @@
 #   w english|swedish|picture     a word or fixed phrase that the level teaches
 #   s english|swedish             a sentence, built only from words taught so far
 #   p english|swedish             praise, said after a right answer
+#   v swedish                     praise said in Swedish
+#   k number|english|swedish      praise for that many right answers in a row
 # tools/adventure/build.mjs checks that every sentence only uses words that have been taught.
 
 p Well done!|Bra jobbat!
@@ -16,6 +18,33 @@ p Excellent!|Utmärkt!
 p Super!|Super!
 p Perfect!|Perfekt!
 p Fantastic!|Fantastiskt!
+p You are so clever!|Vad smart du är!
+p You are a star!|Du är en stjärna!
+p Brilliant!|Lysande!
+p Amazing!|Otroligt!
+p You did it!|Du klarade det!
+p Wow, that was right!|Wow, det var rätt!
+p You are getting so good at English!|Du blir så bra på engelska!
+p Nice work, mate!|Snyggt jobbat, kompis!
+p That was a hard one, well done!|Den var svår, bra jobbat!
+p I am proud of you!|Jag är stolt över dig!
+p You are a champion!|Du är en mästare!
+p Keep going, you are doing great!|Fortsätt så, du är jätteduktig!
+p Yes! Exactly right!|Ja! Precis rätt!
+p What a superstar!|Vilken superstjärna!
+v Vad duktig du är!
+v Helt rätt! Du är en stjärna!
+v Wow, vad du kan!
+v Nu är du grym!
+v Jättebra! Du lär dig så snabbt!
+v Precis så! Snyggt!
+v Du är superduktig på engelska!
+v Rätt igen! Vilken hjärna!
+k 3|Three in a row!|Tre rätt i rad!
+k 5|Five in a row! You are on fire!|Fem rätt i rad! Du är i toppform!
+k 10|Ten in a row! Unstoppable!|Tio rätt i rad! Ingen kan stoppa dig!
+k 15|Fifteen in a row! You are a legend!|Femton rätt i rad! Du är en legend!
+k 20|Twenty in a row! Incredible!|Tjugo rätt i rad! Helt otroligt!
 
 W Bondgården|🐮
 L Hej!

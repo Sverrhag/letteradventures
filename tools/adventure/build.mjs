@@ -18,7 +18,7 @@ export const clipId = s => { let h = 0x811c9dc5; for (let i = 0; i < s.length; i
 export const svSaid = s => s.replace(/\s*\([^)]*\)/g, '').replace(/\//g, ', ').trim();
 const tokens = s => s.toLowerCase().replace(/[.,!?]/g, '').split(/\s+/).filter(Boolean);
 
-const data = { praise: [], worlds: [], levels: [] }, known = new Set(), problems = [];
+const data = { praise: [], praiseSv: [], streak: {}, worlds: [], levels: [] }, known = new Set(), problems = [];
 let level = null;
 const knows = t => known.has(t) || [t.replace(/s$/, ''), t.replace(/es$/, ''), t.replace(/ing$/, ''), t.replace(/ing$/, 'e')].some(b => b !== t && known.has(b));
 for (const raw of readFileSync(join(here, 'content.txt'), 'utf8').split(/\r?\n/)) {
@@ -26,6 +26,8 @@ for (const raw of readFileSync(join(here, 'content.txt'), 'utf8').split(/\r?\n/)
   if (!line || line[0] === '#') continue;
   const kind = line[0], cells = line.slice(2).split('|').map(c => c.trim());
   if (kind === 'p') data.praise.push(cells);
+  else if (kind === 'v') data.praiseSv.push(cells[0]);
+  else if (kind === 'k') data.streak[cells[0]] = cells.slice(1);
   else if (kind === 'W') data.worlds.push({ name: cells[0], em: cells[1] });
   else if (kind === 'L') data.levels.push(level = { w: data.worlds.length - 1, title: cells[0], words: [], sents: [] });
   else if (kind === 'w') { level.words.push(cells); tokens(cells[0]).forEach(t => known.add(t)); }
@@ -42,7 +44,8 @@ if (problems.length) { console.error(problems.join('\n')); process.exit(1); }
 writeFileSync(join(root, GAME, 'data.js'), '// Built by tools/adventure/build.mjs from tools/adventure/content.txt. Do not edit.\nwindow.AA_DATA = ' + JSON.stringify(data) + ';\n');
 const clips = new Map();
 const add = (k, text, word) => { const key = k + clipId(text); if (!clips.has(key)) clips.set(key, { k, id: clipId(text), text, word }); };
-for (const [en, sv] of data.praise) { add('en', en, false); }
+for (const [en] of [...data.praise, ...Object.values(data.streak)]) add('en', en, false);
+for (const sv of data.praiseSv) add('sv', sv, false);
 for (const l of data.levels) {
   for (const [en, sv] of l.words) { add('en', en, true); add('sv', svSaid(sv), true); }
   for (const [en, sv] of l.sents) { add('en', en, false); add('sv', sv, false); }
@@ -50,5 +53,8 @@ for (const l of data.levels) {
 const ids = [...clips.values()];
 if (new Set(ids.map(c => c.k + c.id)).size !== ids.length) throw new Error('two clips with one name');
 writeFileSync(join(here, 'clips.json'), JSON.stringify(ids, null, 0) + '\n');
+// Each script of the page is asked for with a mark of its content, so that a cache that kept an older copy fetches the new one.
+const page = join(root, GAME, 'index.html');
+writeFileSync(page, readFileSync(page, 'utf8').replace(/<script src="([\w-]+\.js)(?:\?v=\w+)?"><\/script>/g, (all, f) => `<script src="${f}?v=${clipId(readFileSync(join(root, GAME, f), 'utf8'))}"></script>`));
 const n = (f) => data.levels.reduce((a, l) => a + l[f].length, 0);
 console.log(`${data.levels.length} levels, ${n('words')} words, ${n('sents')} sentences, ${ids.length} clips per voice set (${ids.filter(c => c.k === 'en').length} English, ${ids.filter(c => c.k === 'sv').length} Swedish)`);

@@ -151,16 +151,19 @@ function play() {
   function answered(ok, said) {
     const key = statKey(st);
     if (ok) {
-      R.ok++; SFX[S.set.snd](); $('#pet').classList.add('hop');
+      R.ok++; R.row = (R.row || 0) + 1; SFX[S.set.snd](); $('#pet').classList.add('hop');
       if (st.rev && S.stat[key]) S.stat[key]--;
-      const pr = Math.random() < .3 ? pick(D.praise) : null;
-      stage.insertAdjacentHTML('beforeend', `<div class="fb ok"><span class="ic">✔</span><span><span class="h">${pr ? `${esc(pr[0])} <i>· ${esc(pr[1])}</i>` : 'Rätt!'}</span><b>${esc(en)}</b><small>= ${esc(sv)}</small></span></div>`);
+      // Praise after every right answer: for some numbers in a row, else in English or now and then in Swedish.
+      const row = D.streak[R.row], svp = !row && Math.random() < .3 ? pick(D.praiseSv) : null, pr = row || (svp ? [svp, ''] : pick(D.praise));
+      const cheer = () => svp ? say('s', svp) : sayEn(pr[0]);
+      if (row && S.set.silly) rain(['⭐', '🔥', '🎉'], 12);
+      stage.insertAdjacentHTML('beforeend', `<div class="fb ok"><span class="ic">✔</span><span><span class="h">${row ? '🔥 ' : ''}${esc(pr[0])}${pr[1] ? ` <i>· ${esc(pr[1])}</i>` : ''}</span><b>${esc(en)}</b><small>= ${esc(sv)}</small></span></div>`);
       if (S.set.silly) { if (Math.random() < .22) bubble(pick(SILLY), 2600); if (R.ok % 12 === 0) (Math.random() < .5 ? parade : () => rain(['🍌', '⭐', '🦘', '🐸']))(); }
       let gone = false; const go = () => { if (!gone) { gone = true; next(); } };
       act.innerHTML = `<button class="btn big" id="bN">Fortsätt ➜</button>`; $('#bN').onclick = go;
-      (said ? (pr ? sayEn(pr[0]) : Promise.resolve()) : sayEn(en)).then(() => setTimeout(() => { if (screen === 'play' && S.run === R && R.q[R.p] === st) go(); }, 700));
+      (said ? cheer() : sayEn(en).then(cheer)).then(() => setTimeout(() => { if (screen === 'play' && S.run === R && R.q[R.p] === st) go(); }, 700));
     } else {
-      R.miss++; S.stat[key] = (S.stat[key] || 0) + 1; SFX.bad();
+      R.miss++; R.row = 0; S.stat[key] = (S.stat[key] || 0) + 1; SFX.bad();
       R.q.splice(Math.min(R.p + 4, R.q.length), 0, Object.assign({}, st, { r: 1 }));
       if (!st.r) R.q.push(Object.assign({}, st, { r: 1 }));
       stage.insertAdjacentHTML('beforeend', `<div class="fb bad"><span class="ic">✖</span><span><span class="h">Inte riktigt. Rätt svar är:</span><b>${esc(en)}</b><small>= ${esc(sv)}</small></span></div>`);
