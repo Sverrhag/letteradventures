@@ -371,7 +371,7 @@ function play() {
       extra = shuffle(CONF.filter(g => g.some(w => low.includes(w.toLowerCase()))).map(g => pick(g.filter(free))).filter(Boolean)).slice(0, 2);
       const pool = shuffle([...TAUGHT.keys()].filter(w => free(w) && !extra.includes(w) && TAUGHT.get(w) >= st.li - 3));
       while (extra.length < 3 && pool.length) extra.push(pool.pop());
-    } else extra = shuffle([...'abdeghiklmnoprstuwy'].filter(c => !en.toLowerCase().includes(c))).slice(0, 3);
+    } else extra = shuffle([...'abdeghiklmnoprstuwy'].filter(c => !en.toLowerCase().includes(c) && !(c === 'l' && en.includes('I')))).slice(0, 3);   // never a small l beside a capital I: they look the same
     const bank = shuffle([...answer, ...extra]), put = [];
     stage.innerHTML = `${ask}${st.k === 'dict' ? '' : `<div class="prompt sm">${esc(sv)}</div>`}`;
     if (st.k === 'dict') stage.append(spk('huge', () => chain(() => sayEn(en))));
