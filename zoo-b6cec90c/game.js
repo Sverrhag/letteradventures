@@ -428,7 +428,7 @@ function album() {
   on('.sticker', el => { if (el.classList.contains('no')) return SFX.bad(); el.classList.remove('wig'); void el.offsetWidth; el.classList.add('wig'); pick([SFX.boing, SFX.kvack, SFX.pling, SFX.prutt])(); });
 }
 
-// The hat shop: hats for the coins that right answers give.
+// The hat shop, a screen of its own: hats for the coins that right answers give.
 function shop(hello) {
   show('shop', `<div class="top"><button class="chip" id="bX">← Kartan</button><h1>🛍️ Hattaffären</h1><span class="chip">🪙 ${S.coins} mynt</span></div>
     <div class="scroll"><div class="center" style="overflow:visible"><div class="try">${petHtml()}</div>
