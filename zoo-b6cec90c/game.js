@@ -271,7 +271,7 @@ function play() {
       const row = D.streak[R.row], svp = !row && Math.random() < .3 ? pick(D.praiseSv) : null, pr = row || (svp ? [svp, ''] : pick(D.praise));
       const cheer = () => svp ? say('s', svp) : sayEn(pr[0]);
       if (row && S.set.silly) rain(['⭐', '🔥', '🎉'], 12);
-      stage.insertAdjacentHTML('beforeend', `<div class="fb ok"><span class="ic">✔</span><span><span class="h">${row ? '🔥 ' : ''}${esc(pr[0])}${pr[1] ? ` <i>· ${esc(pr[1])}</i>` : ''}</span><b>${esc(en)}</b><small>= ${esc(sv)}</small></span></div>`);
+      stage.insertAdjacentHTML('beforeend', `<div class="fb ok"><span class="ic">✔</span><span><span class="h">${row ? '🔥 ' : ''}${esc(pr[0])}${pr[1] ? ` <i>· ${esc(pr[1])}</i>` : ''}</span><b>${esc(en)}</b><small>= ${esc(sv)}</small></span></div>`); stage.lastElementChild.scrollIntoView({ block: 'nearest' });
       if (S.set.silly) { if (Math.random() < .25) bubble(pick(SILLY), 2600); if (R.ok % 8 === 0) pick([parade, () => rain(['🍌', '⭐', '🦘', '🐸']), critter, petTrick])(); }
       let gone = false; const go = () => { if (!gone) { gone = true; next(); } };
       act.innerHTML = `<button class="btn big" id="bN">Fortsätt ➜</button>`; $('#bN').onclick = go;
@@ -280,7 +280,7 @@ function play() {
       R.miss++; R.sm = (R.sm || 0) + 1; R.row = 0; S.stat[key] = (S.stat[key] || 0) + 1; SFX.bad(); if (S.set.silly) bubble(pick(['Hoppsan!', 'Oj då!', 'Det fixar du nästa gång!', 'Ingen fara!']));
       Q.splice(Math.min(R.p + 4, Q.length), 0, Object.assign({}, st, { r: 1 }));
       if (!st.r) Q.push(Object.assign({}, st, { r: 1 }));
-      stage.insertAdjacentHTML('beforeend', `<div class="fb bad"><span class="ic">✖</span><span><span class="h">Inte riktigt. Rätt svar är:</span><b>${esc(en)}</b><small>= ${esc(sv)}</small></span></div>`);
+      stage.insertAdjacentHTML('beforeend', `<div class="fb bad"><span class="ic">✖</span><span><span class="h">Inte riktigt. Rätt svar är:</span><b>${esc(en)}</b><small>= ${esc(sv)}</small></span></div>`); stage.lastElementChild.scrollIntoView({ block: 'nearest' });
       act.innerHTML = `<button class="btn big" id="bN">Jag förstår ➜</button>`; $('#bN').onclick = next;
       chain(() => tell('wrong'), () => sayEn(en), means(st.t, sv));
     }
