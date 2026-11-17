@@ -126,6 +126,10 @@ h1 { text-shadow:0 2px 0 #fff8; } .ask, .prompt, .sub { text-shadow:0 0 .5em #ff
 
 .spk { flex:none; } @media (min-width:1000px) { .opts.one { grid-template-columns:1fr 1fr; width:min(100%, 62em); } .opts.one .opt { font-size:1.1em; } }
 
+.try { font-size:1.6em; padding:.8em 0 .2em; } .try #pet { pointer-events:auto; }
+.ware { width:7.2em; display:flex; flex-direction:column; align-items:center; gap:.2em; padding:.7em .4em; border:.2em solid transparent; } .ware b { font-size:3em; line-height:1.1; } .ware small { font-weight:800; }
+.ware.mine { background:#eefbe8; } .ware.on { border-color:var(--ok); } .ware.dear { opacity:.6; } .ware.no { animation:shake .4s; } .ware:active { transform:scale(.95); }
+
 /* Result, album, settings */
 .stars { font-size:clamp(3em, 12vmin, 6em); letter-spacing:.1em; } .stars span { display:inline-block; animation:pop .5s backwards; } .stars .off { filter:grayscale(1); opacity:.3; }
 @keyframes pop { from { transform:scale(0) rotate(-180deg); } }
@@ -161,7 +165,7 @@ table { border-collapse:collapse; margin:0 auto; font-size:.8em; } td, th { padd
 <div id="app"></div>
 <script src="land.js?v=0f649ed84ie"></script>
 <script src="journey.js?v=94db7c4b13qi"></script>
-<script src="data.js?v=70f3d910zqn"></script>
-<script src="game.js?v=d88c910116h0"></script>
+<script src="data.js?v=1071e08ezwp"></script>
+<script src="game.js?v=f07fec19177r"></script>
 </body>
 </html>

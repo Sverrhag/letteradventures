@@ -91,6 +91,10 @@ u chest|Vad finns i paketet? Tryck på det!
 u boss|Se upp! Här kommer bossen. Varje rätt svar ger bossen en smäll!
 u bosswin|Du besegrade bossen! Hurra!
 u poor|Du behöver fler mynt. Svara rätt så får du fler!
+u shop|Välkommen till hattaffären! Här kan du köpa tokiga hattar för dina mynt.
+u shop|Hattaffären är öppen! Vilken hatt vill du ha?
+u bought|Vilken snygg hatt! Den passar dig perfekt.
+u bought|Oj, vad fin! Nu är den din.
 u world0|Det var en gång en papegoja som hette Polly. Hon bodde i Gold Coast i Australien och kunde alla engelska ord i hela världen. Men en natt kom den tokiga Ordtjuven och snodde vartenda ord! Han flög iväg i sin pruttande luftballong och tappade orden längs hela vägen till Lund. Nu behöver Polly din hjälp. Samla orden, res till Australien och ge dem tillbaka!
 u world1|Du har rest genom hela Europa! Nu fortsätter resan mot Indien. Vill du resa genom öknen eller över bergen?
 u world2|Du är framme i Indien, och Australien kommer närmare! Nu ska du genom Asien. Väljer du djungeln eller Kina?

@@ -184,7 +184,7 @@ let mv = 0;
 function map(view) {
   const nx = nextLevel(), allDone = !!S.done[D.levels.length - 1];
   mv = view ?? Math.floor(nx / 10);
-  show('map', `<div class="top"><h1>${S.set.pet} ${esc(S.name || 'Djuräventyret')}</h1><span class="chip">⭐ ${stars()}</span><span class="chip">🪙 ${S.coins}</span><span class="chip">🦜 ${Object.keys(S.done).reduce((n, li) => n + D.levels[li].words.length, 0)} ord</span><button class="chip" id="bMini">🎮 Pausspel ${S.tix}</button><button class="chip" id="bAlbum">📒 Klistermärken</button><button class="chip" id="bSet">⚙️</button></div>
+  show('map', `<div class="top"><h1>${S.set.pet} ${esc(S.name || 'Djuräventyret')}</h1><span class="chip">⭐ ${stars()}</span><button class="chip" id="bShop">🛍️ Affär · 🪙 ${S.coins}</button><span class="chip">🦜 ${Object.keys(S.done).reduce((n, li) => n + D.levels[li].words.length, 0)} ord</span><button class="chip" id="bMini">🎮 Pausspel ${S.tix}</button><button class="chip" id="bAlbum">📒 Klistermärken</button><button class="chip" id="bSet">⚙️</button></div>
     <div class="worlds">${D.worlds.map((x, i) => `<button data-w="${i}" class="${i === mv ? 'on' : ''}"><b>${open(i * 10) ? x.em : '🔒'}</b>${esc(x.name)}</button>`).join('')}<button data-w="all" class="${mv === 'all' ? 'on' : ''}"><b>🌍</b>Hela resan</button></div>
     <div class="mapbox" id="mapbox"></div>`, 'map');
   on('[data-w]', el => { SFX.pop(); map(el.dataset.w === 'all' ? 'all' : +el.dataset.w); });
@@ -223,7 +223,7 @@ function map(view) {
   box.innerHTML = html;
   on('[data-li]', el => { const li = +el.dataset.li; if (!open(li)) { SFX.bad(); return; } go(li); });
   $('#bGo').onclick = () => allDone ? diploma() : go(nx);
-  $('#bMini').onclick = mini; $('#bAlbum').onclick = album; $('#bSet').onclick = settings;
+  $('#bMini').onclick = mini; $('#bAlbum').onclick = album; $('#bSet').onclick = settings; $('#bShop').onclick = () => shop(true);
   if (touched && !mapTold) { mapTold = true; chain(() => Promise.race([nameLoading, new Promise(r => setTimeout(r, 1500))]).then(() => sayNamed('hi')), () => tell('map')); }
 }
 // How far it is left, as the voice last said it.
@@ -428,13 +428,26 @@ function album() {
   on('.sticker', el => { if (el.classList.contains('no')) return SFX.bad(); el.classList.remove('wig'); void el.offsetWidth; el.classList.add('wig'); pick([SFX.boing, SFX.kvack, SFX.pling, SFX.prutt])(); });
 }
 
+// The hat shop: hats for the coins that right answers give.
+function shop(hello) {
+  show('shop', `<div class="top"><button class="chip" id="bX">← Kartan</button><h1>🛍️ Hattaffären</h1><span class="chip">🪙 ${S.coins} mynt</span></div>
+    <div class="scroll"><div class="center" style="overflow:visible"><div class="try">${petHtml()}</div>
+    <div class="grid">${SHOP.map(([h, c]) => { const mine = S.own.includes(h), on = S.set.hat === h; return `<button class="card ware ${mine ? 'mine' : S.coins >= c ? '' : 'dear'} ${on ? 'on' : ''}" data-h="${h}" data-c="${c}"><b>${h}</b><small>${on ? '✔ Har på sig' : mine ? 'Sätt på' : `🪙 ${c}`}</small></button>`; }).join('')}</div>
+    <p>Du får mynt för varje rätt svar, och fler i paketen efter varje etapp.</p></div></div>`);
+  $('#bX').onclick = () => map(); $('#pet').onclick = petTrick;
+  if (hello) chain(() => tell('shop'));
+  on('[data-h]', el => { const h = el.dataset.h, c = +el.dataset.c;
+    if (S.own.includes(h)) { S.set.hat = S.set.hat === h ? '' : h; save(); SFX.pop(); return shop(); }
+    if (S.coins < c) { SFX.bad(); el.classList.add('no'); setTimeout(() => el.classList.remove('no'), 500); bubble(`Du behöver ${c - S.coins} mynt till!`, 2600); chain(() => tell('poor')); return; }
+    S.coins -= c; S.own.push(h); S.set.hat = h; save(); shop(); SFX.fanfare(); rain([h, '🪙'], 16); $('#pet').classList.add('spin'); chain(() => tell('bought')); });
+}
+
 function settings() {
   const have = PETS.slice(0, worldsDone() + 1).flat(), row = (label, html) => `<b>${label}</b><div class="pick">${html}</div>`, onoff = (k) => [[true, 'På'], [false, 'Av']].map(([v, t]) => `<button data-k="${k}" data-v="${v}" class="${S.set[k] === v ? 'on' : ''}">${t}</button>`).join('');
   show('settings', `<div class="top"><button class="chip" id="bX">← Kartan</button><h1>⚙️ Gör spelet till ditt</h1></div><div class="scroll"><div class="set card">
     ${row('Röst', VOICES.map(([v, t]) => `<button data-k="voice" data-v="${v}" class="${S.set.voice === v ? 'on' : ''}">${t}</button>`).join(''))}
     ${row('Kompis', PETS.flat().map(p => `<button class="em ${S.set.pet === p ? 'on' : ''}" data-k="pet" data-v="${p}" ${have.includes(p) ? '' : 'disabled'}>${have.includes(p) ? p : '🔒'}</button>`).join(''))}
     ${row('Hatt', [...HATS, ...S.own].map(h => `<button class="em ${S.set.hat === h ? 'on' : ''}" data-k="hat" data-v="${h}">${h || '🚫'}</button>`).join(''))}
-    ${row(`Hattaffär<br>🪙 ${S.coins}`, SHOP.filter(([h]) => !S.own.includes(h)).map(([h, c]) => `<button class="em buy" data-buy="${h}" data-c="${c}">${h}<small>🪙${c}</small></button>`).join('') || 'Du har köpt alla hattar!')}
     ${row('Färg', PALS.map((c, i) => `<button data-k="pal" data-v="${i}" class="${S.set.pal === i ? 'on' : ''}" style="background:${c};color:#fff">${S.set.pal === i ? '✔' : '&nbsp;'}</button>`).join(''))}
     ${row('Ljud vid rätt svar', SOUNDS.map(([v, t]) => `<button data-k="snd" data-v="${v}" class="${S.set.snd === v ? 'on' : ''}">${t}</button>`).join(''))}
     ${row('Tokigheter', onoff('silly'))}${row('Svensk röst', onoff('sv'))}
@@ -444,7 +457,6 @@ function settings() {
   $('#bX').onclick = () => map(); $('#pet').onclick = petTrick;
   on('[data-k]', el => { const k = el.dataset.k, v = el.dataset.v; S.set[k] = k === 'pal' ? +v : v === 'true' ? true : v === 'false' ? false : v; save();
     settings(); if (k === 'voice') sayEn('Hello!'); else if (k === 'snd') SFX[S.set.snd](); else SFX.pop(); });
-  on('[data-buy]', el => { const c = +el.dataset.c; if (S.coins < c) { SFX.bad(); bubble('Du behöver fler mynt!'); chain(() => tell('poor')); return; } S.coins -= c; S.own.push(el.dataset.buy); S.set.hat = el.dataset.buy; save(); settings(); SFX.fanfare(); rain([el.dataset.buy, '🪙'], 14); });
   $('#bName').onclick = () => { S.name = null; save(); start(); };
   $('#bSilly').onclick = () => { pick([parade, () => rain(['💩', '🍌', '🦆', '🧦']), SFX.prutt, petTrick])(); if (Math.random() < .4) SFX.kvack(); };
   let t; const b = $('#bAd'); b.onpointerdown = () => { t = setTimeout(adult, 3000); }; b.onpointerup = b.onpointerleave = () => clearTimeout(t);
