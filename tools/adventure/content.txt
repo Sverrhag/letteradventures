@@ -1,0 +1,1021 @@
+# The course of the animal adventure: Swedish to English, 5 worlds of 10 levels.
+#   W name|picture      a world
+#   L title             a level
+#   w english|swedish|picture     a word or fixed phrase that the level teaches
+#   s english|swedish             a sentence, built only from words taught so far
+#   p english|swedish             praise, said after a right answer
+# tools/adventure/build.mjs checks that every sentence only uses words that have been taught.
+
+p Well done!|Bra jobbat!
+p Great!|Jättebra!
+p Good job!|Bra gjort!
+p Awesome!|Grymt!
+p Too easy!|Lätt som en plätt!
+p You little ripper!|Vilken stjärna du är!
+p Excellent!|Utmärkt!
+p Super!|Super!
+p Perfect!|Perfekt!
+p Fantastic!|Fantastiskt!
+
+W Bondgården|🐮
+L Hej!
+w hello|hej|👋
+w goodbye|hej då
+w yes|ja
+w no|nej
+w I|jag
+w am|är (jag är)
+w happy|glad|😀
+w sad|ledsen|😢
+s Hello!|Hej!
+s Goodbye!|Hej då!
+s I am happy.|Jag är glad.
+s I am sad.|Jag är ledsen.
+s Yes, I am happy.|Ja, jag är glad.
+s No, I am sad.|Nej, jag är ledsen.
+s Hello, I am happy.|Hej, jag är glad.
+s No, I am happy.|Nej, jag är glad.
+
+L Djuren på gården
+w a|en/ett
+w the|den/det (the dog = hunden)
+w is|är (den är)
+w dog|hund|🐶
+w cat|katt|🐱
+w cow|ko|🐮
+w pig|gris|🐷
+w horse|häst|🐴
+s A dog.|En hund.
+s A cat.|En katt.
+s The dog is happy.|Hunden är glad.
+s The cat is sad.|Katten är ledsen.
+s The cow is happy.|Kon är glad.
+s The pig is sad.|Grisen är ledsen.
+s The horse is happy.|Hästen är glad.
+s The dog is sad.|Hunden är ledsen.
+s A horse.|En häst.
+s The pig is happy.|Grisen är glad.
+
+L Stor och liten
+w big|stor
+w small|liten
+w and|och
+w it|den/det
+w you|du
+w are|är (du är)
+w my|min/mitt
+w your|din/ditt
+s The horse is big.|Hästen är stor.
+s The cat is small.|Katten är liten.
+s It is big.|Den är stor.
+s You are happy.|Du är glad.
+s My dog is small.|Min hund är liten.
+s Your cat is big.|Din katt är stor.
+s The cow and the pig.|Kon och grisen.
+s I am small and you are big.|Jag är liten och du är stor.
+s My horse is happy.|Min häst är glad.
+s You are sad.|Du är ledsen.
+
+L Färger
+w red|röd|🔴
+w blue|blå|🔵
+w green|grön|🟢
+w yellow|gul|🟡
+w black|svart|⚫
+w white|vit|⚪
+w not|inte
+w sheep|får|🐑
+s The sheep is white.|Fåret är vitt.
+s My cat is black.|Min katt är svart.
+s The pig is not blue.|Grisen är inte blå.
+s It is not red.|Den är inte röd.
+s I am not sad.|Jag är inte ledsen.
+s You are not small.|Du är inte liten.
+s The horse is black and white.|Hästen är svart och vit.
+s The dog is not green.|Hunden är inte grön.
+s Is it yellow?|Är den gul?
+s Is the cow big?|Är kon stor?
+
+L Fler djur
+w hen|höna|🐔
+w duck|anka|🦆
+w rabbit|kanin|🐰
+w mouse|mus|🐭
+w this|den här/det här
+w that|den där/det där
+w what|vad
+w animal|djur
+s This is a hen.|Det här är en höna.
+s That is a duck.|Det där är en anka.
+s What is this?|Vad är det här?
+s What is that?|Vad är det där?
+s This is my rabbit.|Det här är min kanin.
+s The mouse is small.|Musen är liten.
+s That animal is big.|Det där djuret är stort.
+s This is not a dog.|Det här är inte en hund.
+s Is this your cat?|Är det här din katt?
+s This animal is black and white.|Det här djuret är svart och vitt.
+
+L Räkna djur
+w one|ett|1️⃣
+w two|två|2️⃣
+w three|tre|3️⃣
+w four|fyra|4️⃣
+w five|fem|5️⃣
+w have|har
+w many|många
+w how many|hur många
+s I have a dog.|Jag har en hund.
+s I have two cats.|Jag har två katter.
+s You have three horses.|Du har tre hästar.
+s I have five hens.|Jag har fem hönor.
+s How many dogs?|Hur många hundar?
+s I have many animals.|Jag har många djur.
+s You have one rabbit.|Du har en kanin.
+s Four cows and two pigs.|Fyra kor och två grisar.
+s I have a big dog.|Jag har en stor hund.
+s You have a small cat.|Du har en liten katt.
+
+L Han och hon
+w he|han
+w she|hon
+w we|vi
+w they|de
+w has|har (han har, hon har)
+w boy|pojke|👦
+w girl|flicka|👧
+w friend|vän/kompis
+s He is a boy.|Han är en pojke.
+s She is a girl.|Hon är en flicka.
+s We are friends.|Vi är vänner.
+s They are happy.|De är glada.
+s He has a dog.|Han har en hund.
+s She has two cats.|Hon har två katter.
+s The boy has a rabbit.|Pojken har en kanin.
+s The girl is my friend.|Flickan är min vän.
+s They are not sad.|De är inte ledsna.
+s We have many animals.|Vi har många djur.
+
+L Äta och dricka
+w eat|äta
+w drink|dricka
+w like|gilla
+w water|vatten|💧
+w milk|mjölk|🥛
+w apple|äpple|🍎
+w grass|gräs
+w food|mat
+s I eat apples.|Jag äter äpplen.
+s I drink water.|Jag dricker vatten.
+s The cow eats grass.|Kon äter gräs.
+s The cat drinks milk.|Katten dricker mjölk.
+s I like milk.|Jag gillar mjölk.
+s You like apples.|Du gillar äpplen.
+s He likes animals.|Han gillar djur.
+s We eat food.|Vi äter mat.
+s They drink water.|De dricker vatten.
+s She likes my dog.|Hon gillar min hund.
+
+L Var är djuren?
+w where|var
+w in|i
+w on|på
+w under|under
+w house|hus|🏠
+w farm|bondgård
+w here|här
+w there|där
+s Where is the cat?|Var är katten?
+s The cat is in the house.|Katten är i huset.
+s The hen is on the house.|Hönan är på huset.
+s The mouse is under the house.|Musen är under huset.
+s The dog is here.|Hunden är här.
+s The cow is there.|Kon är där.
+s Where are you?|Var är du?
+s I am here.|Jag är här.
+s The animals are on the farm.|Djuren är på bondgården.
+s We are in the house.|Vi är i huset.
+
+L Bondgårdens stora prov
+w want|vill ha
+w please|snälla (tack)
+w thank you|tack
+w do|gör (do you…? = frågar)
+w don't|inte (gör inte)
+w an|en/ett (före a, e, i, o, u)
+w good|bra
+w bad|dålig
+s I want an apple, please.|Jag vill ha ett äpple, tack.
+s Thank you!|Tack!
+s Do you like dogs?|Gillar du hundar?
+s Yes, I like dogs.|Ja, jag gillar hundar.
+s I don't like milk.|Jag gillar inte mjölk.
+s Do you have a cat?|Har du en katt?
+s No, I don't have a cat.|Nej, jag har inte en katt.
+s That is good.|Det där är bra.
+s This food is bad.|Den här maten är dålig.
+s I want water, please.|Jag vill ha vatten, tack.
+
+W Skogen|🌲
+L Skogens djur
+w bear|björn|🐻
+w fox|räv|🦊
+w deer|rådjur|🦌
+w owl|uggla|🦉
+w bird|fågel|🐦
+w tree|träd|🌳
+w forest|skog|🌲
+w see|se
+s I see a bear.|Jag ser en björn.
+s The fox is in the forest.|Räven är i skogen.
+s The bird is in the tree.|Fågeln är i trädet.
+s Do you see the owl?|Ser du ugglan?
+s I don't see the deer.|Jag ser inte rådjuret.
+s We see many trees.|Vi ser många träd.
+s The bear is big and the fox is small.|Björnen är stor och räven är liten.
+s She sees a bird.|Hon ser en fågel.
+s An owl is in that tree.|En uggla är i det där trädet.
+s The forest is big.|Skogen är stor.
+
+L Vad kan du?
+w can|kan
+w can't|kan inte
+w run|springa
+w jump|hoppa
+w swim|simma
+w fly|flyga
+w climb|klättra
+w fast|snabbt
+s I can run.|Jag kan springa.
+s The bird can fly.|Fågeln kan flyga.
+s A fox can run fast.|En räv kan springa snabbt.
+s Can you swim?|Kan du simma?
+s Yes, I can swim.|Ja, jag kan simma.
+s I can't fly.|Jag kan inte flyga.
+s The bear can climb trees.|Björnen kan klättra i träd.
+s Can a cow jump?|Kan en ko hoppa?
+s He can jump.|Han kan hoppa.
+s They can't climb.|De kan inte klättra.
+
+L Familjen
+w mum|mamma
+w dad|pappa
+w brother|bror
+w sister|syster
+w baby|bebis|👶
+w family|familj
+w name|namn
+w who|vem
+s This is my mum.|Det här är min mamma.
+s That is my dad.|Det där är min pappa.
+s I have a brother.|Jag har en bror.
+s She is my sister.|Hon är min syster.
+s Who is that?|Vem är det där?
+s He is my brother.|Han är min bror.
+s What is your name?|Vad heter du?
+s My family is big.|Min familj är stor.
+s The baby is small.|Bebisen är liten.
+s I like my family.|Jag gillar min familj.
+
+L Kroppen
+w head|huvud
+w eye|öga|👁️
+w ear|öra|👂
+w nose|näsa|👃
+w mouth|mun|👄
+w hand|hand|✋
+w foot|fot|🦶
+w long|lång
+s I have two eyes.|Jag har två ögon.
+s The rabbit has long ears.|Kaninen har långa öron.
+s The owl has big eyes.|Ugglan har stora ögon.
+s This is my nose.|Det här är min näsa.
+s My hand is small.|Min hand är liten.
+s The bear has a big head.|Björnen har ett stort huvud.
+s I have two hands.|Jag har två händer.
+s The fox has a long nose.|Räven har en lång nos.
+s Where is your mouth?|Var är din mun?
+s My foot is small.|Min fot är liten.
+
+L Vad gör de nu?
+w running|springer (just nu)
+w eating|äter (just nu)
+w sleeping|sover (just nu)
+w playing|leker (just nu)
+w now|nu
+w sleep|sova
+w play|leka/spela
+w with|med
+s I am running.|Jag springer.
+s The bear is sleeping.|Björnen sover.
+s The fox is eating.|Räven äter.
+s We are playing.|Vi leker.
+s She is playing with the dog.|Hon leker med hunden.
+s He is sleeping now.|Han sover nu.
+s Are you sleeping?|Sover du?
+s The birds are eating.|Fåglarna äter.
+s I can sleep here.|Jag kan sova här.
+s I play with my friend.|Jag leker med min kompis.
+
+L Känslor
+w tired|trött|🥱
+w hungry|hungrig
+w thirsty|törstig
+w scared|rädd|😨
+w angry|arg|😠
+w very|väldigt/mycket
+w why|varför
+w because|eftersom/för att
+s I am tired.|Jag är trött.
+s Are you hungry?|Är du hungrig?
+s I am very thirsty.|Jag är väldigt törstig.
+s The deer is scared.|Rådjuret är rädd.
+s The bear is angry.|Björnen är arg.
+s Why are you sad?|Varför är du ledsen?
+s I am sad because I am tired.|Jag är ledsen eftersom jag är trött.
+s She is very happy.|Hon är väldigt glad.
+s He is not scared.|Han är inte rädd.
+s We are hungry and thirsty.|Vi är hungriga och törstiga.
+
+L Hjälp mig!
+w me|mig
+w him|honom
+w her|henne/hennes
+w us|oss
+w to|att/till
+w help|hjälpa/hjälp
+w come|komma
+w go|gå/åka
+s Can you help me?|Kan du hjälpa mig?
+s I want to play.|Jag vill leka.
+s Come here!|Kom hit!
+s Come with me.|Kom med mig.
+s I can help you.|Jag kan hjälpa dig.
+s Do you want to go?|Vill du gå?
+s I want to go to the forest.|Jag vill gå till skogen.
+s Help us, please!|Hjälp oss, snälla!
+s I like her.|Jag gillar henne.
+s I see him.|Jag ser honom.
+
+L Väder
+w sun|sol|☀️
+w rain|regn|🌧️
+w snow|snö|❄️
+w wind|vind|💨
+w hot|varm
+w cold|kall
+w today|idag
+w it's|det är
+s It's hot today.|Det är varmt idag.
+s It's cold.|Det är kallt.
+s The sun is hot.|Solen är varm.
+s I like snow.|Jag gillar snö.
+s I don't like rain.|Jag gillar inte regn.
+s Is it cold today?|Är det kallt idag?
+s The water is cold.|Vattnet är kallt.
+s It's very hot in the sun.|Det är väldigt varmt i solen.
+s The wind is cold.|Vinden är kall.
+s Today I want to swim.|Idag vill jag simma.
+
+L Dag och natt
+w day|dag
+w night|natt|🌙
+w morning|morgon
+w good morning|god morgon
+w good night|god natt
+w when|när
+w at|på/vid
+w wake up|vakna
+s Good morning!|God morgon!
+s Good night!|God natt!
+s The owl sleeps in the day.|Ugglan sover på dagen.
+s The owl can see at night.|Ugglan kan se på natten.
+s I sleep at night.|Jag sover på natten.
+s When do you sleep?|När sover du?
+s I wake up in the morning.|Jag vaknar på morgonen.
+s It's cold at night.|Det är kallt på natten.
+s The fox runs at night.|Räven springer på natten.
+s Good morning, are you hungry?|God morgon, är du hungrig?
+
+L Skogens stora prov
+w his|hans
+w their|deras
+w our|vår/vårt
+w little|liten
+w look|titta
+w listen|lyssna
+w stop|stanna/sluta
+w wait|vänta
+s Look at the bear!|Titta på björnen!
+s Listen to me.|Lyssna på mig.
+s Stop, please!|Sluta, snälla!
+s Wait here.|Vänta här.
+s His dog is big.|Hans hund är stor.
+s Her cat is little.|Hennes katt är liten.
+s Our family has a dog.|Vår familj har en hund.
+s Their house is in the forest.|Deras hus är i skogen.
+s Look, a little fox!|Titta, en liten räv!
+s Listen to the bird.|Lyssna på fågeln.
+
+W Savannen|🦁
+L Savannens djur
+w lion|lejon|🦁
+w elephant|elefant|🐘
+w giraffe|giraff|🦒
+w zebra|zebra|🦓
+w monkey|apa|🐵
+w tall|lång (hög)
+w strong|stark|💪
+w funny|rolig
+s The lion is strong.|Lejonet är starkt.
+s The giraffe is very tall.|Giraffen är väldigt lång.
+s The elephant is big and strong.|Elefanten är stor och stark.
+s The monkey is funny.|Apan är rolig.
+s A zebra is black and white.|En zebra är svart och vit.
+s Can a lion climb trees?|Kan ett lejon klättra i träd?
+s The monkeys are playing in the tree.|Aporna leker i trädet.
+s I see an elephant.|Jag ser en elefant.
+s The lion is sleeping under the tree.|Lejonet sover under trädet.
+s That monkey is very funny.|Den där apan är väldigt rolig.
+
+L Mat
+w bread|bröd|🍞
+w cheese|ost|🧀
+w banana|banan|🍌
+w egg|ägg|🥚
+w fish|fisk|🐟
+w juice|juice|🧃
+w some|lite/några
+w more|mer
+s Can I have some water, please?|Kan jag få lite vatten, tack?
+s I want more bread.|Jag vill ha mer bröd.
+s The monkey eats a banana.|Apan äter en banan.
+s I like cheese.|Jag gillar ost.
+s I don't like fish.|Jag gillar inte fisk.
+s Do you want some juice?|Vill du ha lite juice?
+s I am eating an egg.|Jag äter ett ägg.
+s Can I have more, please?|Kan jag få mer, tack?
+s We have some bananas.|Vi har några bananer.
+s She likes bread and cheese.|Hon gillar bröd och ost.
+
+L Kläder
+w shoes|skor|👟
+w hat|hatt/keps|👒
+w jacket|jacka|🧥
+w pants|byxor|👖
+w shorts|shorts|🩳
+w wearing|har på sig (just nu)
+w new|ny
+w old|gammal
+s I am wearing a hat.|Jag har på mig en hatt.
+s Where are my shoes?|Var är mina skor?
+s Your jacket is new.|Din jacka är ny.
+s My shoes are old.|Mina skor är gamla.
+s He is wearing blue shorts.|Han har på sig blå shorts.
+s I have a new hat.|Jag har en ny hatt.
+s Her pants are black.|Hennes byxor är svarta.
+s I want my jacket.|Jag vill ha min jacka.
+s The monkey is wearing a hat!|Apan har på sig en hatt!
+s My hat is on my head.|Min hatt är på mitt huvud.
+
+L Hemma
+w room|rum
+w bed|säng|🛏️
+w table|bord
+w chair|stol|🪑
+w door|dörr|🚪
+w window|fönster|🪟
+w open|öppna/öppen
+w close|stänga
+s Open the door, please.|Öppna dörren, tack.
+s Close the window.|Stäng fönstret.
+s The cat is on the bed.|Katten är på sängen.
+s The dog is under the table.|Hunden är under bordet.
+s My room is small.|Mitt rum är litet.
+s I sleep in my bed.|Jag sover i min säng.
+s The chair is at the table.|Stolen är vid bordet.
+s Can you open the window?|Kan du öppna fönstret?
+s This is my room.|Det här är mitt rum.
+s The door is open.|Dörren är öppen.
+
+L Bredvid och bakom
+w next to|bredvid
+w behind|bakom
+w in front of|framför
+w between|mellan
+w up|upp
+w down|ner
+w left|vänster
+w right|höger
+s The lion is behind the tree.|Lejonet är bakom trädet.
+s The zebra is next to the giraffe.|Zebran är bredvid giraffen.
+s I am in front of the house.|Jag är framför huset.
+s The monkey is between the trees.|Apan är mellan träden.
+s Look up!|Titta upp!
+s Come down!|Kom ner!
+s Go left.|Gå till vänster.
+s Go right.|Gå till höger.
+s The chair is next to the bed.|Stolen är bredvid sängen.
+s The monkey climbs up the tree.|Apan klättrar upp i trädet.
+
+L Jag behöver
+w need|behöva
+w have to|måste
+w toilet|toalett|🚽
+w wash|tvätta
+w sit|sitta
+w stand|stå
+w let's|nu ska vi/låt oss
+w okay|okej|👌
+s I need to go to the toilet.|Jag behöver gå på toaletten.
+s Can I go to the toilet, please?|Får jag gå på toaletten?
+s I need help.|Jag behöver hjälp.
+s I have to go now.|Jag måste gå nu.
+s Let's play!|Nu leker vi!
+s Let's go!|Nu går vi!
+s Sit down, please.|Sätt dig, tack.
+s Stand up!|Ställ dig upp!
+s I have to wash my hands.|Jag måste tvätta händerna.
+s Okay, let's eat.|Okej, nu äter vi.
+
+L Igår
+w was|var (jag var, den var)
+w were|var (du var, vi var, de var)
+w had|hade
+w went|gick/åkte
+w saw|såg
+w ate|åt
+w yesterday|igår
+w then|sedan
+s I was tired yesterday.|Jag var trött igår.
+s We were at the farm.|Vi var på bondgården.
+s I saw a lion.|Jag såg ett lejon.
+s She went to the forest.|Hon gick till skogen.
+s He ate a banana.|Han åt en banan.
+s I had a dog.|Jag hade en hund.
+s Yesterday I saw an elephant.|Igår såg jag en elefant.
+s They were happy.|De var glada.
+s It was very hot.|Det var väldigt varmt.
+s Then we ate.|Sedan åt vi.
+
+L Hur gammal är du?
+w six|sex|6️⃣
+w seven|sju|7️⃣
+w eight|åtta|8️⃣
+w nine|nio|9️⃣
+w ten|tio|🔟
+w how|hur
+w years|år
+w fine|bra (jag mår bra)
+s How are you?|Hur mår du?
+s I am fine, thank you.|Jag mår bra, tack.
+s How old are you?|Hur gammal är du?
+s I am six years old.|Jag är sex år gammal.
+s My brother is nine years old.|Min bror är nio år gammal.
+s I have ten bananas.|Jag har tio bananer.
+s How many monkeys can you see?|Hur många apor kan du se?
+s I can see seven monkeys.|Jag kan se sju apor.
+s How is your mum?|Hur mår din mamma?
+s Eight zebras are running.|Åtta zebror springer.
+
+L Jag förstår inte
+w love|älska
+w think|tro/tycka
+w know|veta
+w understand|förstå
+w say|säga
+w again|igen
+w slowly|långsamt
+w don't know|vet inte
+s I don't understand.|Jag förstår inte.
+s Can you say that again, please?|Kan du säga det igen, tack?
+s I don't know.|Jag vet inte.
+s I love animals.|Jag älskar djur.
+s I think it is funny.|Jag tycker det är roligt.
+s Do you understand?|Förstår du?
+s Yes, I understand.|Ja, jag förstår.
+s Can you say it slowly, please?|Kan du säga det långsamt, tack?
+s I know that animal.|Jag känner till det där djuret.
+s I love my family.|Jag älskar min familj.
+
+L Savannens stora prov
+w but|men
+w or|eller
+w too|också
+w all|alla
+w every|varje
+w always|alltid
+w never|aldrig
+w sometimes|ibland
+s I like cats but I love dogs.|Jag gillar katter men jag älskar hundar.
+s Do you want milk or juice?|Vill du ha mjölk eller juice?
+s I am hungry too.|Jag är också hungrig.
+s All the animals are sleeping.|Alla djuren sover.
+s I always eat bread in the morning.|Jag äter alltid bröd på morgonen.
+s The lion never eats grass.|Lejonet äter aldrig gräs.
+s Sometimes I am tired.|Ibland är jag trött.
+s Me too!|Jag också!
+s I play every day.|Jag leker varje dag.
+s Is it a boy or a girl?|Är det en pojke eller en flicka?
+
+W Havet|🐬
+L Havets djur
+w sea|hav|🌊
+w beach|strand|🏖️
+w shark|haj|🦈
+w whale|val|🐋
+w dolphin|delfin|🐬
+w turtle|sköldpadda|🐢
+w crab|krabba|🦀
+w sand|sand
+s The whale is in the sea.|Valen är i havet.
+s I saw a dolphin yesterday.|Jag såg en delfin igår.
+s The crab is on the sand.|Krabban är på sanden.
+s Sharks can swim very fast.|Hajar kan simma väldigt snabbt.
+s I love the beach.|Jag älskar stranden.
+s The turtle swims slowly.|Sköldpaddan simmar långsamt.
+s Let's go to the beach!|Nu åker vi till stranden!
+s The whale is very big.|Valen är väldigt stor.
+s Dolphins are funny.|Delfiner är roliga.
+s We play in the sand.|Vi leker i sanden.
+
+L Det finns
+w there is|det finns (en sak)
+w there are|det finns (flera saker)
+w of|av/för
+w lots of|massor av
+w shell|snäcka|🐚
+w wave|våg
+w boat|båt|⛵
+w for|till/för
+s There is a crab on the beach.|Det finns en krabba på stranden.
+s There are many fish in the sea.|Det finns många fiskar i havet.
+s There are lots of shells.|Det finns massor av snäckor.
+s There is a boat on the sea.|Det finns en båt på havet.
+s This is for you.|Den här är till dig.
+s I am scared of sharks.|Jag är rädd för hajar.
+s The waves are big today.|Vågorna är stora idag.
+s Is there a shark?|Finns det en haj?
+s There are two dolphins next to the boat.|Det finns två delfiner bredvid båten.
+s I have lots of shells.|Jag har massor av snäckor.
+
+L Leka tillsammans
+w build|bygga
+w find|hitta
+w catch|fånga
+w throw|kasta
+w ball|boll|⚽
+w game|spel/lek
+w fun|kul/roligt
+w together|tillsammans
+s Let's play together!|Nu leker vi tillsammans!
+s Do you want to play with us?|Vill du leka med oss?
+s Can I play with you?|Får jag leka med dig?
+s This game is fun.|Den här leken är kul.
+s Throw the ball to me!|Kasta bollen till mig!
+s I can catch the ball.|Jag kan fånga bollen.
+s Let's build a boat.|Nu bygger vi en båt.
+s I can't find my ball.|Jag kan inte hitta min boll.
+s We have fun together.|Vi har kul tillsammans.
+s Catch me!|Fånga mig!
+
+L Imorgon
+w will|ska/kommer att
+w going to|ska (har tänkt)
+w tomorrow|imorgon
+w soon|snart
+w later|senare
+w after|efter
+w before|innan/före
+w school|skola|🏫
+s I am going to swim.|Jag ska simma.
+s We are going to the beach tomorrow.|Vi ska åka till stranden imorgon.
+s I will help you.|Jag ska hjälpa dig.
+s See you tomorrow!|Vi ses imorgon!
+s See you later!|Vi ses senare!
+s We will eat soon.|Vi ska äta snart.
+s I go to school in the morning.|Jag går till skolan på morgonen.
+s After school I play.|Efter skolan leker jag.
+s I wash my hands before I eat.|Jag tvättar händerna innan jag äter.
+s Tomorrow I am going to school.|Imorgon ska jag gå till skolan.
+
+L Hur är den?
+w beautiful|vacker
+w dirty|smutsig
+w clean|ren
+w wet|blöt
+w dry|torr
+w heavy|tung
+w soft|mjuk
+w hard|hård/svår
+s My hands are dirty.|Mina händer är smutsiga.
+s The sand is wet.|Sanden är blöt.
+s The whale is heavy.|Valen är tung.
+s The beach is beautiful.|Stranden är vacker.
+s My shoes are wet.|Mina skor är blöta.
+s The shell is hard.|Snäckan är hård.
+s My bed is soft.|Min säng är mjuk.
+s Now my hands are clean.|Nu är mina händer rena.
+s This is very hard.|Det här är väldigt svårt.
+s The sand is hot and dry.|Sanden är varm och torr.
+
+L Läsa och rita
+w read|läsa
+w write|skriva
+w draw|rita
+w count|räkna
+w sing|sjunga
+w book|bok|📖
+w picture|bild|🖼️
+w song|sång|🎵
+s I can read.|Jag kan läsa.
+s I can write my name.|Jag kan skriva mitt namn.
+s Let's draw a shark.|Nu ritar vi en haj.
+s Can you count to ten?|Kan du räkna till tio?
+s I like to sing.|Jag gillar att sjunga.
+s I am reading a book.|Jag läser en bok.
+s She is drawing a picture.|Hon ritar en bild.
+s Let's sing a song.|Nu sjunger vi en sång.
+s I can read and write.|Jag kan läsa och skriva.
+s Look at my picture!|Titta på min bild!
+
+L Större och snabbare
+w bigger|större
+w smaller|mindre
+w faster|snabbare
+w than|än
+w biggest|störst
+w best|bäst
+w same|samma
+w different|olika
+s The whale is bigger than the shark.|Valen är större än hajen.
+s A crab is smaller than a turtle.|En krabba är mindre än en sköldpadda.
+s The dolphin is faster than the turtle.|Delfinen är snabbare än sköldpaddan.
+s The whale is the biggest animal.|Valen är det största djuret.
+s You are my best friend.|Du är min bästa vän.
+s We have the same hat.|Vi har samma hatt.
+s They are different.|De är olika.
+s I am faster than you!|Jag är snabbare än du!
+s My dog is bigger than your cat.|Min hund är större än din katt.
+s This is the best game.|Det här är den bästa leken.
+
+L Klockan
+w time|tid
+w what time is it|vad är klockan
+w o'clock|klockan (hel timme)
+w week|vecka
+w weekend|helg
+w late|sen
+w early|tidigt
+w minutes|minuter
+s What time is it?|Vad är klockan?
+s It is three o'clock.|Klockan är tre.
+s I am late.|Jag är sen.
+s We wake up early.|Vi vaknar tidigt.
+s It is time to go.|Det är dags att gå.
+s It is time to eat.|Det är dags att äta.
+s I love the weekend.|Jag älskar helgen.
+s School is at nine o'clock.|Skolan börjar klockan nio.
+s It is late now.|Det är sent nu.
+s We have five minutes.|Vi har fem minuter.
+
+L Aj!
+w hurts|gör ont
+w sick|sjuk|🤒
+w feel|känna sig/må
+w better|bättre
+w sorry|förlåt
+w careful|försiktig
+w be|vara
+w fell|ramlade
+s My head hurts.|Jag har ont i huvudet.
+s I feel sick.|Jag mår dåligt.
+s I am sorry.|Förlåt.
+s Be careful!|Var försiktig!
+s I fell.|Jag ramlade.
+s Are you okay?|Är du okej?
+s I feel better now.|Jag mår bättre nu.
+s It hurts here.|Det gör ont här.
+s She is sick today.|Hon är sjuk idag.
+s Do you feel better?|Mår du bättre?
+
+L Havets stora prov
+w something|något
+w nothing|ingenting
+w someone|någon
+w everyone|alla (alla personer)
+w here you are|varsågod (när man ger något)
+w you're welcome|varsågod (svar på tack)
+w excuse me|ursäkta
+w of course|självklart
+s Excuse me, can you help me?|Ursäkta, kan du hjälpa mig?
+s Here you are.|Varsågod, här får du.
+s You're welcome.|Ingen orsak, varsågod.
+s Of course!|Självklart!
+s I want something to eat.|Jag vill ha något att äta.
+s Someone is at the door.|Någon är vid dörren.
+s Everyone is happy.|Alla är glada.
+s I see something in the water.|Jag ser något i vattnet.
+s Hello everyone!|Hej allihopa!
+s There is nothing here.|Det finns ingenting här.
+
+W Australien|🦘
+L Australiens djur
+w kangaroo|känguru|🦘
+w koala|koala|🐨
+w wombat|vombat
+w crocodile|krokodil|🐊
+w snake|orm|🐍
+w spider|spindel|🕷️
+w parrot|papegoja|🦜
+w emu|emu
+s Kangaroos can jump very fast.|Kängurur kan hoppa väldigt snabbt.
+s The koala is sleeping in the tree.|Koalan sover i trädet.
+s The crocodile has a big mouth.|Krokodilen har en stor mun.
+s I am scared of snakes.|Jag är rädd för ormar.
+s The parrot is red, blue and green.|Papegojan är röd, blå och grön.
+s There is a spider on the window!|Det finns en spindel på fönstret!
+s The wombat is funny.|Vombaten är rolig.
+s An emu can't fly.|En emu kan inte flyga.
+s Kangaroos are faster than wombats.|Kängurur är snabbare än vombater.
+s The koala sleeps all day.|Koalan sover hela dagen.
+
+L I skolan
+w teacher|lärare|🧑‍🏫
+w class|klass
+w classroom|klassrum
+w pencil|blyertspenna|✏️
+w paper|papper|📄
+w bag|väska|🎒
+w lunch|lunch
+w recess|rast
+s This is my teacher.|Det här är min lärare.
+s My bag is under the chair.|Min väska är under stolen.
+s Can I have a pencil, please?|Kan jag få en penna, tack?
+s I need some paper.|Jag behöver lite papper.
+s It is time for lunch.|Det är dags för lunch.
+s We play at recess.|Vi leker på rasten.
+s Where is the classroom?|Var är klassrummet?
+s I have a new teacher.|Jag har en ny lärare.
+s My pencil is in my bag.|Min penna är i min väska.
+s I eat my lunch at school.|Jag äter min lunch i skolan.
+
+L Läraren säger
+w line up|ställ er på led
+w put|lägga/ställa
+w away|undan/bort
+w take|ta
+w give|ge
+w show|visa
+w finished|klar/färdig
+w turn|tur
+s Line up, please!|Ställ er på led, tack!
+s Put your bag away.|Ställ undan din väska.
+s Take a pencil.|Ta en penna.
+s Give me the book, please.|Ge mig boken, tack.
+s Show me your picture.|Visa mig din bild.
+s I am finished!|Jag är klar!
+s It is my turn.|Det är min tur.
+s It is your turn.|Det är din tur.
+s Are you finished?|Är du klar?
+s Can you show me?|Kan du visa mig?
+
+L På lekplatsen
+w playground|lekplats|🛝
+w swing|gunga
+w slide|rutschkana
+w hide|gömma sig
+w chase|jaga
+w share|dela
+w push|knuffa/putta
+w kick|sparka
+s Let's go to the playground!|Nu går vi till lekplatsen!
+s I want to go on the swing.|Jag vill åka gunga.
+s Can I go on the slide?|Får jag åka rutschkana?
+s You hide and I count.|Du gömmer dig och jag räknar.
+s Chase me!|Jaga mig!
+s Can we share?|Kan vi dela?
+s Don't push me!|Knuffa mig inte!
+s Kick the ball to me.|Sparka bollen till mig.
+s Do you want to play on the swing?|Vill du leka på gungan?
+s Let's play together at recess.|Nu leker vi tillsammans på rasten.
+
+L Säga ifrån
+w mine|min (den är min)
+w yours|din (den är din)
+w nice|snäll/trevlig
+w silly|tramsig/fånig|🤪
+w tell|säga till/berätta
+w true|sant
+w alone|ensam
+w kind|snäll
+s Stop it, I don't like it!|Sluta, jag gillar inte det!
+s That is mine.|Den där är min.
+s Is this yours?|Är den här din?
+s You are nice.|Du är snäll.
+s That is not nice.|Det där är inte snällt.
+s I will tell the teacher.|Jag säger till läraren.
+s Can I sit with you?|Får jag sitta med dig?
+s Be kind.|Var snäll.
+s I don't want to play alone.|Jag vill inte leka ensam.
+s You are very silly!|Du är väldigt tramsig!
+
+L Veckans dagar
+w Monday|måndag
+w Tuesday|tisdag
+w Wednesday|onsdag
+w Thursday|torsdag
+w Friday|fredag
+w Saturday|lördag
+w Sunday|söndag
+w next|nästa
+s Today is Monday.|Idag är det måndag.
+s Tomorrow is Tuesday.|Imorgon är det tisdag.
+s We have school on Wednesday.|Vi har skola på onsdag.
+s I swim on Thursday.|Jag simmar på torsdag.
+s Friday is the best day.|Fredag är den bästa dagen.
+s On Saturday we go to the beach.|På lördag åker vi till stranden.
+s I sleep late on Sunday.|Jag sover länge på söndag.
+s Yesterday was Friday.|Igår var det fredag.
+s See you on Monday!|Vi ses på måndag!
+s See you next week!|Vi ses nästa vecka!
+
+L Mitt nya hem
+w home|hem/hemma
+w live|bo
+w Australia|Australien|🇦🇺
+w city|stad|🏙️
+w car|bil|🚗
+w bus|buss|🚌
+w far|långt
+w near|nära
+s I live in Australia.|Jag bor i Australien.
+s I live near the beach.|Jag bor nära stranden.
+s We go to school in the car.|Vi åker till skolan i bilen.
+s I take the bus.|Jag tar bussen.
+s Is it far?|Är det långt?
+s The school is near my home.|Skolan är nära mitt hem.
+s I want to go home.|Jag vill gå hem.
+s This city is big.|Den här staden är stor.
+s My home is in Australia.|Mitt hem är i Australien.
+s The beach is not far.|Stranden är inte långt bort.
+
+L Jag pratar svenska
+w speak|prata
+w English|engelska
+w Swedish|svenska
+w Sweden|Sverige|🇸🇪
+w from|från
+w a little|lite
+w does|gör (does he…? = frågar)
+w mean|betyda
+s I am from Sweden.|Jag är från Sverige.
+s I speak Swedish.|Jag pratar svenska.
+s I speak a little English.|Jag pratar lite engelska.
+s What does that mean?|Vad betyder det?
+s Do you speak English?|Pratar du engelska?
+s Can you speak slowly, please?|Kan du prata långsamt, tack?
+s I don't understand, I am from Sweden.|Jag förstår inte, jag är från Sverige.
+s Does he speak Swedish?|Pratar han svenska?
+s My friend is from Australia.|Min kompis är från Australien.
+s I can read English.|Jag kan läsa engelska.
+
+L Skolväskan
+w sunscreen|solkräm|🧴
+w water bottle|vattenflaska
+w lunch box|matlåda|🍱
+w uniform|skoluniform
+w forgot|glömde
+w lost|tappade bort
+w found|hittade
+w where's|var är
+s I forgot my hat.|Jag glömde min hatt.
+s I lost my water bottle.|Jag tappade bort min vattenflaska.
+s I found your pencil.|Jag hittade din penna.
+s Where's my lunch box?|Var är min matlåda?
+s Put on your sunscreen.|Ta på dig solkräm.
+s I am wearing my school uniform.|Jag har på mig min skoluniform.
+s I need my water bottle.|Jag behöver min vattenflaska.
+s No hat, no play!|Ingen hatt, ingen lek!
+s I found it!|Jag hittade den!
+s My lunch box is in my bag.|Min matlåda är i min väska.
+
+L Det stora slutprovet
+w welcome|välkommen
+w ready|redo
+w great|jättebra
+w well done|bra jobbat
+w g'day|hej (australiskt)
+w everything|allt
+w adventure|äventyr
+w mate|kompis (australiskt)
+s Welcome to Australia!|Välkommen till Australien!
+s I am ready.|Jag är redo.
+s Well done!|Bra jobbat!
+s You are great.|Du är jättebra.
+s I am ready for school.|Jag är redo för skolan.
+s G'day mate!|Hej kompis!
+s This is a great adventure.|Det här är ett jättebra äventyr.
+s I understand everything.|Jag förstår allt.
+s I can speak English now.|Jag kan prata engelska nu.
+s Welcome to our school.|Välkommen till vår skola.
