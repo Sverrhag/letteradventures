@@ -149,7 +149,8 @@ table { border-collapse:collapse; margin:0 auto; font-size:.8em; } td, th { padd
 .holes { position:absolute; inset:0; display:grid; grid-template-columns:repeat(4, 1fr); grid-template-rows:repeat(3, 1fr); padding:2vmin; gap:2vmin; }
 .hole { background:#0000001a; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11vmin; }
 .hole span { animation:pop .15s; } .fall { position:absolute; top:-14vmin; font-size:11vmin; background:none; padding:0; animation:fall linear forwards; } @keyframes fall { to { transform:translateY(120vh); } }
-#roo { position:absolute; left:8%; bottom:12%; font-size:14vmin; line-height:1; transform:scaleX(-1); } .cactus { position:absolute; bottom:12%; font-size:11vmin; line-height:1; } #ground { position:absolute; left:0; right:0; bottom:0; height:12%; background:#c98b4a; }
+#roo { position:absolute; left:8%; bottom:12%; font-size:14vmin; line-height:1; transform:scaleX(-1); } .cactus { position:absolute; bottom:12%; font-size:11vmin; line-height:1; } .cactus.wing { animation:float .5s ease-in-out infinite; } #roo.ouch { animation:shake .25s 2; filter:brightness(1.6); }
+#ground { position:absolute; left:0; right:0; bottom:0; height:12%; background:#c98b4a; }
 /* Narrow screens: a phone held upright. */
 @media (max-width:700px) { .opts { grid-template-columns:1fr 1fr; } .opts.one { grid-template-columns:1fr; } .opt { font-size:1.1em; padding:.6em .4em; } .pairs { grid-template-columns:1fr 1fr; } .tile { font-size:1.15em; } .tile.l { font-size:1.35em; min-width:2em; }
   .worlds button { min-width:5.2em; font-size:.85em; } .worlds b { font-size:1.5em; } .set { grid-template-columns:1fr; gap:.3em; } .forkc { width:100%; } .cta { font-size:1em; max-width:94%; white-space:normal; } .chip.left { bottom:auto; top:.6em; }
@@ -166,7 +167,7 @@ table { border-collapse:collapse; margin:0 auto; font-size:.8em; } td, th { padd
 <div id="app"></div>
 <script src="land.js?v=0f649ed84ie"></script>
 <script src="journey.js?v=94db7c4b13qi"></script>
-<script src="data.js?v=c608981910im"></script>
-<script src="game.js?v=caecd4691abh"></script>
+<script src="data.js?v=975712ca10jt"></script>
+<script src="game.js?v=57de30db1b3o"></script>
 </body>
 </html>

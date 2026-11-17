@@ -476,7 +476,7 @@ function adult() {
 }
 
 // ---- Break games: one go for every finished stage ----
-const GAMES = [['whack', '🐹', 'Pricka djuren', 'Tryck på djuren som tittar upp. Akta bajset!'], ['rain', '🌧️', 'Djurregn', 'Fånga djuren som faller. Rör inte kaktusen!'], ['roo', '🦘', 'Känguruhopp', 'Tryck för att hoppa över kaktusarna.']];
+const GAMES = [['whack', '🐹', 'Pricka djuren', 'Tryck på djuren som tittar upp. Akta bajset!'], ['rain', '🌧️', 'Djurregn', 'Fånga djuren som faller. Rör inte kaktusen!'], ['roo', '🦘', 'Känguruhopp', 'Hoppa över kaktusarna och ta stjärnorna. Men stå kvar på marken när fåglarna kommer!']];
 function mini() {
   show('mini', `<div class="top"><button class="chip" id="bX">← Kartan</button><h1>🎮 Pausspel</h1><span class="chip">🎟️ ${S.tix} kvar</span></div>
     <div class="center">${S.tix ? '<p>Välj ett spel. Varje spel kostar en biljett.</p>' : '<p><b>Biljetterna är slut!</b> Klara en etapp till så får du en ny.</p>'}
@@ -523,19 +523,29 @@ function game(id) {
     timers.push(setInterval(() => { const b = document.createElement('button'), bad = Math.random() < .18; b.className = 'fall'; if (bad) b.dataset.bad = 1; b.textContent = bad ? '🌵' : golden() ? '🍌' : pick(ANIMALS); b.style.left = rnd(88) + '%'; b.style.animationDuration = 2 + Math.random() * 2 + left / 25 + (P.feather ? 1.5 : 0) + 's';
       b.onpointerdown = () => pop(b); b.onanimationend = () => { if (!bad) { combo = 0; hud(); } b.remove(); }; field.append(b); }, 480));
   } else {
+    // Jump over what stands on the ground, stay down when a bird comes, and jump for the stars.
+    // Jumping all the time does not work: a bird flies at the height of a jump. It gets faster all the while.
     field.innerHTML = `<div id="ground"></div><div id="roo">🦘</div>`;
-    const roo = $('#roo'); let y = 0, vy = 0, jumps = 0, obs = [], t0 = performance.now(), spawn = 1;
-    field.onpointerdown = () => { if (y === 0 || (P.jump2 && jumps < 2)) { vy = 2.5; jumps = y === 0 ? 1 : 2; SFX.boing(); } };
-    sweep = () => { obs.forEach(o => { if (!o.hit) { o.el.textContent = '✨'; o.hit = o.safe = true; hit(1, roo); } }); };
-    timers.push(setInterval(() => { const t = performance.now(), dt = Math.min(.05, (t - t0) / 1000); t0 = t;
-      vy -= 6.5 * dt; y = Math.max(0, y + vy * dt); if (y === 0) { vy = 0; jumps = 0; } roo.style.bottom = 12 + y * 55 + '%';
-      spawn -= dt; if (spawn <= 0) { const el = document.createElement('div'), prize = golden(); el.className = 'cactus'; el.textContent = prize ? '🍌' : pick(['🌵', '🌵', '🪨', '🐊']); if (prize) el.style.bottom = '38%'; field.append(el); obs.push({ x: 105, el, prize }); spawn = .9 + Math.random() * 1.3; }
-      const speed = 55 + (40 - Math.min(40, left)) * 1.2;
+    const roo = $('#roo'), T0 = left; let y = 0, vy = 0, jumps = 0, obs = [], t0 = performance.now(), spawn = 1.2, lastKind = '';
+    field.onpointerdown = () => { if (y === 0 || (P.jump2 && jumps < 2)) { vy = 2.9; jumps = y === 0 ? 1 : 2; SFX.boing(); } };
+    sweep = () => { obs.forEach(o => { if (!o.hit && o.kind !== 'star') { o.el.textContent = '✨'; o.hit = true; hit(1, roo); } }); };
+    const hurt = o => { o.hit = true; o.el.textContent = '💥'; combo = 0; lives--; SFX.prutt(); roo.classList.add('ouch'); setTimeout(() => roo.classList.remove('ouch'), 500); hud(); if (lives <= 0) end(); };
+    timers.push(setInterval(() => { const t = performance.now(), dt = Math.min(.05, (t - t0) / 1000), hard = Math.min(1, (T0 - left) / 35); t0 = t;
+      vy -= 9 * dt; y = Math.max(0, y + vy * dt); if (y === 0) { vy = 0; jumps = 0; } roo.style.bottom = 12 + y * 55 + '%';
+      spawn -= dt;
+      if (spawn <= 0) {
+        // Never two birds in a row, so that there is always something to jump over or a moment to land.
+        const r = Math.random(), kind = golden() ? 'banana' : r < .3 && lastKind !== 'bird' ? 'bird' : r < .45 ? 'star' : 'ground', el = document.createElement('div'); lastKind = kind;
+        el.className = 'cactus'; el.textContent = kind === 'bird' ? pick(['🦅', '🐝', '🦇']) : kind === 'star' ? '⭐' : kind === 'banana' ? '🍌' : pick(['🌵', '🌵', '🪨', '🐊', '🦂']);
+        if (kind !== 'ground') el.style.bottom = kind === 'bird' ? '33%' : '36%'; if (kind === 'bird') el.classList.add('wing');
+        field.append(el); obs.push({ x: 105, el, kind }); spawn = (1.25 - hard * .45) * (.8 + Math.random() * .5);
+      }
+      const speed = 62 + hard * 55;
       obs = obs.filter(o => { if (over) return false; o.x -= speed * dt; o.el.style.left = o.x + '%';
         if (!o.hit && o.x < 17 && o.x > 5) {
-          if (o.prize) { if (y > .2) { o.hit = true; o.el.textContent = '✨'; hit(5, roo); } }
-          else if (y < .22) { o.hit = true; o.el.textContent = '💥'; combo = 0; lives--; SFX.prutt(); hud(); if (lives <= 0) { end(); return false; } } }
-        if (o.x < -10) { o.el.remove(); if (!o.hit && !o.prize) hit(1, roo); return false; } return true; });
+          if (o.kind === 'star' || o.kind === 'banana') { if (y > .18) { o.hit = true; o.el.textContent = '✨'; hit(o.kind === 'banana' ? 5 : 2, roo); } }
+          else if (o.kind === 'bird' ? y > .16 : y < .2) { hurt(o); if (over) return false; } }
+        if (o.x < -10) { o.el.remove(); if (!o.hit && (o.kind === 'ground' || o.kind === 'bird')) hit(1, roo); return false; } return true; });
     }, 16));
   }
 }

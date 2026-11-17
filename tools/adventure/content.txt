@@ -131,7 +131,7 @@ u fact|Visste du det här?
 u fact|Lyssna på det här tokiga!
 u whack|Tryck på djuren som tittar upp. Men akta dig för bajset!
 u rain|Fånga djuren som faller. Rör inte kaktusen!
-u roo|Tryck på skärmen för att hoppa över kaktusarna.
+u roo|Tryck för att hoppa över kaktusarna och ta stjärnorna. Men hoppa inte när fåglarna kommer!
 u notix|Biljetterna är slut. Klara en etapp till, så får du en ny.
 u diploma|Grattis! Du har rest hela vägen från Lund till Gold Coast, och du har lärt dig engelska på vägen. Nu är du redo för Australien!
 u ending|Ordtjuven började gråta. Jag ville bara lära mig engelska, snyftade han. Då lärde du honom alla ord du hade samlat. Polly fick tillbaka sin röst, och alla åt tårta tillsammans. Snipp, snapp, snut, så var sagan slut!
