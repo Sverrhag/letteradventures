@@ -85,6 +85,27 @@ const SFX = {
   fanfare: () => [523, 659, 784, 1047].forEach((f, i) => tone(f, f, .22, 'triangle', i * .15, .2)),
 };
 
+// The player's name is said by the Swedish voice. Its recording comes from the name packs of the main game
+// (/audio/sv/v3/names/, the same voice): the whole pack of the first letter is fetched and the name is cut
+// out here, so that the web host only learns the first letter. A name that is not in the packs is not said.
+let nameClip = null, nameOf = null, nameLoading = Promise.resolve();
+async function loadName() {
+  const k = (S.name || '').trim().toLocaleLowerCase('sv'); if (nameOf === k) return; nameOf = k; nameClip = null;
+  const flat = k.normalize('NFD').replace(/[\u0300-\u036f]/g, ''), file = /^[a-z]/.test(flat) ? flat[0] : '0';
+  try { const index = await (await fetch(`../audio/sv/v3/names/${file}.json`)).json(), hit = index[k] || index[flat]; if (!hit) return;
+    const bytes = await (await fetch(`../audio/sv/v3/names/${file}.bin`)).arrayBuffer(); if (nameOf === k) nameClip = bytes.slice(hit[0], hit[0] + hit[1]); } catch {}
+}
+// "Bra jobbat," and the name, joined into one sound. Without a recorded name, nothing is said and false comes back.
+let joinedUrl = null;
+async function sayNamed(key, text) {
+  if (!S.set.sv || !nameClip) return false;
+  text = text || pick(D.named[key]);
+  try { const r = await fetch(`audio/s/${clipId(text)}.mp3?r=${REC}`); if (!r.ok) return false;
+    if (joinedUrl) URL.revokeObjectURL(joinedUrl); joinedUrl = URL.createObjectURL(new Blob([await r.arrayBuffer(), nameClip], { type: 'audio/mpeg' }));
+    await new Promise(res => { au.pause(); au.onended = au.onerror = res; au.src = joinedUrl; au.play().catch(res); }); return true; } catch { return false; }
+}
+const withName = text => `${text} ${S.name}!`;
+
 // Things said one after the other; a new chain, or a new screen, ends the one before.
 let chainId = 0;
 const chain = (...fns) => { const id = ++chainId; return (async () => { for (const f of fns) { if (id !== chainId) return false; await f(); } return id === chainId; })(); };
@@ -141,8 +162,8 @@ const on = (sel, fn) => app.querySelectorAll(sel).forEach(el => el.onclick = ev 
 
 function start() {
   if (S.name == null) {
-    show('start', `<div class="center"><div class="pic">⛪ ➜ 🦘</div><h1>Djuräventyret</h1><p><b>Sagan om Polly och Ordtjuven</b> 🦜🧙‍♂️</p><div class="card"><p>Vad heter du?</p><input type="text" id="nm" maxlength="20" autocomplete="off"><p><button class="btn big" id="go">Starta äventyret ➜</button></p></div></div>`);
-    $('#go').onclick = () => { S.name = $('#nm').value.trim(); save(); SFX.fanfare(); map(); };
+    show('start', `<div class="center"><div class="pic">⛪ ➜ 🦘</div><h1>Djuräventyret</h1><p><b>Sagan om Polly och Ordtjuven</b> 🦜🧙‍♂️</p><div class="card"><p>Vad heter du? Skriv ditt förnamn, så säger rösten det.</p><input type="text" id="nm" maxlength="20" autocomplete="off"><p><button class="btn big" id="go">${Object.keys(S.done).length || S.run ? 'Fortsätt äventyret ➜' : 'Starta äventyret ➜'}</button></p></div></div>`);
+    $('#go').onclick = () => { S.name = $('#nm').value.trim(); save(); SFX.fanfare(); nameLoading = loadName(); mapTold = false; map(); };
   } else map();
 }
 
@@ -196,7 +217,7 @@ function map(view) {
   on('[data-li]', el => { const li = +el.dataset.li; if (!open(li)) { SFX.bad(); return; } go(li); });
   $('#bGo').onclick = () => allDone ? diploma() : go(nx);
   $('#bMini').onclick = mini; $('#bAlbum').onclick = album; $('#bSet').onclick = settings;
-  if (touched && !mapTold) { mapTold = true; chain(() => tell('map')); }
+  if (touched && !mapTold) { mapTold = true; chain(() => Promise.race([nameLoading, new Promise(r => setTimeout(r, 1500))]).then(() => sayNamed('hi')), () => tell('map')); }
 }
 // How far it is left, as the voice last said it.
 const leftKm = li => { const s = stopOf(li), n = S.run && S.run.li === li ? S.run.s : 0, text = n ? s.st[n - 1] : li ? fromOf(li).ar || '' : ''; const m = /(\d[\d ]*) kilometer/.exec(text); return m ? m[1] : J.total; };
@@ -216,7 +237,7 @@ function depart(li) {
   show('story', `<div class="center"><div class="pic dance"><span>${a.e}</span><span>${S.set.pet}</span><span>➜</span><span>${b.e}</span></div><h1>${esc(a.n)} ➜ ${esc(b.n)}</h1>
     ${intro ? `<div class="card" style="max-width:40em">📖 ${esc(D.ui.world0[0])}</div>` : ''}<div class="card" style="max-width:40em;font-size:1.1em"><b>📖 Kapitel ${li + 1}</b><br>${esc(D.saga[li])}</div><div class="card" style="max-width:40em">${esc(b.go)}</div>
     ${boss ? `<p style="font-size:1.3em">${BOSS[r][0]} <b>${BOSS[r][1]}</b> väntar på sista etappen!</p>` : ''}<button class="btn big" id="bN">Starta ➜</button></div>`, a.sc);
-  SFX.fanfare(); chain(...(intro ? [() => tell('world0')] : []), () => S.set.sv ? say('s', D.saga[li]) : 0, () => S.set.sv ? say('s', b.go) : 0); $('#bN').onclick = play;
+  SFX.fanfare(); chain(...(intro ? [() => tell('world0')] : []), () => S.set.sv ? say('s', D.saga[li]) : 0, () => sayNamed('go'), () => S.set.sv ? say('s', b.go) : 0); $('#bN').onclick = play;
 }
 
 // ---- A level: four short stages of questions ----
@@ -268,8 +289,10 @@ function play() {
       R.ok++; R.row = (R.row || 0) + 1; SFX[S.set.snd](); $('#pet').classList.add('hop'); $('#rn').classList.add(pick(['loop', 'hop', 'loop'])); coin(R.row >= 5 ? 2 : 1); if (boss) { $('.goal').classList.add('hit'); SFX.boing(); }
       if (st.rev && S.stat[key]) S.stat[key]--;
       // Praise after every right answer: for some numbers in a row, else in English or now and then in Swedish.
-      const row = D.streak[R.row], svp = !row && Math.random() < .3 ? pick(D.praiseSv) : null, pr = row || (svp ? [svp, ''] : pick(D.praise));
-      const cheer = () => svp ? say('s', svp) : sayEn(pr[0]);
+      const row = D.streak[R.row], svp = !row && Math.random() < .3 ? pick(D.praiseSv) : null;
+      let pr = row || (svp ? [svp, ''] : pick(D.praise));
+      const named = !row && nameClip && S.set.sv && Math.random() < .2 ? pick(D.named.good) : null; if (named) pr = [withName(named), ''];
+      const cheer = () => named ? sayNamed('good', named) : svp ? say('s', svp) : sayEn(pr[0]);
       if (row && S.set.silly) rain(['⭐', '🔥', '🎉'], 12);
       stage.insertAdjacentHTML('beforeend', `<div class="fb ok"><span class="ic">✔</span><span><span class="h">${row ? '🔥 ' : ''}${esc(pr[0])}${pr[1] ? ` <i>· ${esc(pr[1])}</i>` : ''}</span><b>${esc(en)}</b><small>= ${esc(sv)}</small></span></div>`); stage.lastElementChild.scrollIntoView({ block: 'nearest' });
       if (S.set.silly) { if (Math.random() < .25) bubble(pick(SILLY), 2600); if (R.ok % 8 === 0) pick([parade, () => rain(['🍌', '⭐', '🦘', '🐸']), critter, petTrick])(); }
@@ -282,7 +305,7 @@ function play() {
       if (!st.r) Q.push(Object.assign({}, st, { r: 1 }));
       stage.insertAdjacentHTML('beforeend', `<div class="fb bad"><span class="ic">✖</span><span><span class="h">Inte riktigt. Rätt svar är:</span><b>${esc(en)}</b><small>= ${esc(sv)}</small></span></div>`); stage.lastElementChild.scrollIntoView({ block: 'nearest' });
       act.innerHTML = `<button class="btn big" id="bN">Jag förstår ➜</button>`; $('#bN').onclick = next;
-      chain(() => tell('wrong'), () => sayEn(en), means(st.t, sv));
+      chain(() => Math.random() < .4 ? sayNamed('oops').then(ok => ok || tell('wrong')) : tell('wrong'), () => sayEn(en), means(st.t, sv));
     }
     save();
   }
@@ -363,7 +386,7 @@ function stageDone() {
     <button class="chest ${perfect ? 'gold' : ''}" id="bG">🎁</button><div class="card" id="cF" style="max-width:36em" hidden><b id="cW"></b><p style="margin:.4em 0 0">🤪 ${esc(fact)}</p></div>
     <p><button class="btn big" id="bN">Nästa etapp ➜</button> ${S.tix ? `<button class="btn big ghost" id="bM">🎮 Pausspel (${S.tix})</button> ` : ''}<button class="btn ghost" id="bK">Kartan</button></p></div>`, b.sc);
   SFX.fanfare(); rain(['⭐', '🎉', STICKERS[R.li][0]], 16); if (S.set.silly) setTimeout(critter, 700);
-  chain(() => S.set.sv ? say('s', closer) : 0, ...(perfect ? [() => tell('perfect')] : []), () => tell('chest'));
+  chain(() => sayNamed('good'), () => S.set.sv ? say('s', closer) : 0, ...(perfect ? [() => tell('perfect')] : []), () => tell('chest'));
   $('#bG').onclick = () => { const n = perfect ? 20 + rnd(16) : 5 + rnd(11), bonus = perfect || Math.random() < .15; S.coins += n; if (bonus) S.tix++; save(); $('#bG').classList.add('open'); $('#bG').textContent = '🪙'; $('#bG').disabled = true;
     $('#cW').textContent = `Du fick ${n} mynt!${bonus ? ' Och ett extra pausspel! 🎮' : ''}`; $('#cF').hidden = false; SFX.fanfare(); rain(['🪙', '⭐'], 18); chain(() => tell('fact'), () => S.set.sv ? say('s', fact) : 0); };
   $('#bN').onclick = play; if ($('#bM')) $('#bM').onclick = mini; $('#bK').onclick = () => map();
@@ -378,7 +401,7 @@ function finish() {
     <div class="card" style="max-width:42em"><p>${esc(dest.ar)}</p>${gold ? '<p>👑 <b>Guldkrona!</b> Hela vägen utan ett enda fel: +50 mynt.</p>' : ''}${first ? `<p><b>Nytt klistermärke!</b></p><p><span class="sticker wig"><b>${em}</b><small>${en}</small></span></p><p>${en} = ${sv} · 🎮 Du får ett pausspel!</p>` : `<p>Du har redan klistermärket <b>${em}</b>.</p>`}
     ${first && worldEnd ? `<p>🏆 <b>Du har klarat hela ${esc(D.worlds[w].name)}!</b> Nya kompisar väntar under ⚙️: ${PETS[w + 1].join(' ')}</p>` : ''}</div>
     <p>${S.tix ? `<button class="btn big" id="bM">🎮 Pausspel (${S.tix})</button> ` : ''}<button class="btn big ghost" id="bK">${last && first ? 'Till diplomet 🏆' : 'Till kartan ➜'}</button></p></div>`, dest.sc);
-  SFX.fanfare(); rain(['⭐', em, '🎉', '🎈'], 24); chain(...(worldEnd ? [() => tell('bosswin')] : []), () => S.set.sv ? say('s', dest.ar) : 0, ...(gold ? [() => tell('gold')] : []), ...(first ? [() => tell('level')] : []), () => sayEn(pick(D.praise)[0]));
+  SFX.fanfare(); rain(['⭐', em, '🎉', '🎈'], 24); chain(...(worldEnd ? [() => tell('bosswin')] : []), () => sayNamed('good'), () => S.set.sv ? say('s', dest.ar) : 0, ...(gold ? [() => tell('gold')] : []), ...(first ? [() => tell('level')] : []), () => sayEn(pick(D.praise)[0]));
   if (first && worldEnd) setTimeout(parade, 900);
   if ($('#bM')) $('#bM').onclick = mini;
   $('#bK').onclick = () => last && first ? diploma() : map();
@@ -408,12 +431,14 @@ function settings() {
     ${row('Färg', PALS.map((c, i) => `<button data-k="pal" data-v="${i}" class="${S.set.pal === i ? 'on' : ''}" style="background:${c};color:#fff">${S.set.pal === i ? '✔' : '&nbsp;'}</button>`).join(''))}
     ${row('Ljud vid rätt svar', SOUNDS.map(([v, t]) => `<button data-k="snd" data-v="${v}" class="${S.set.snd === v ? 'on' : ''}">${t}</button>`).join(''))}
     ${row('Tokigheter', onoff('silly'))}${row('Svensk röst', onoff('sv'))}
+    ${row('Namn', `<span style="align-self:center">${esc(S.name || '(inget)')}</span><button id="bName">✏️ Byt namn</button>`)}
     ${row('Tokknappen', `<button id="bSilly">🤪 Tryck inte här!</button>`)}
     ${row('Vuxna', `<button id="bAd">🔐 Håll in i 3 sekunder</button>`)}</div><div id="adult"></div></div><div class="foot">${petHtml()}<span></span></div>`);
   $('#bX').onclick = () => map(); $('#pet').onclick = petTrick;
   on('[data-k]', el => { const k = el.dataset.k, v = el.dataset.v; S.set[k] = k === 'pal' ? +v : v === 'true' ? true : v === 'false' ? false : v; save();
     settings(); if (k === 'voice') sayEn('Hello!'); else if (k === 'snd') SFX[S.set.snd](); else SFX.pop(); });
   on('[data-buy]', el => { const c = +el.dataset.c; if (S.coins < c) { SFX.bad(); bubble('Du behöver fler mynt!'); chain(() => tell('poor')); return; } S.coins -= c; S.own.push(el.dataset.buy); S.set.hat = el.dataset.buy; save(); settings(); SFX.fanfare(); rain([el.dataset.buy, '🪙'], 14); });
+  $('#bName').onclick = () => { S.name = null; save(); start(); };
   $('#bSilly').onclick = () => { pick([parade, () => rain(['💩', '🍌', '🦆', '🧦']), SFX.prutt, petTrick])(); if (Math.random() < .4) SFX.kvack(); };
   let t; const b = $('#bAd'); b.onpointerdown = () => { t = setTimeout(adult, 3000); }; b.onpointerup = b.onpointerleave = () => clearTimeout(t);
 }
@@ -476,5 +501,6 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catc
 window.addEventListener('contextmenu', e => e.preventDefault());
 window.addEventListener('pointerdown', () => { touched = true; }, true);
 setInterval(() => { if (S.set.silly && screen !== 'game' && !document.hidden && Math.random() < .5) critter(); }, 30000);
+nameLoading = loadName();
 start();
 })();

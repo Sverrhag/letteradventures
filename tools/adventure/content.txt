@@ -10,6 +10,7 @@
 #   u key|swedish                 other things the voice says, in several wordings
 #   f swedish                     a funny fact about an animal, told when a stage is done
 #   e swedish                     a chapter of the tale, told before each level, in order
+#   n key|swedish                 the start of something said to the player by name: the name is joined on after it
 # tools/adventure/build.mjs checks that every sentence only uses words that have been taught.
 
 p Well done!|Bra jobbat!
@@ -192,6 +193,23 @@ e Nu syns havet igen. Gold Coast ligger alldeles nära!
 e En koala berättar en hemlighet: Ordtjuven kan inte ett enda ord engelska. Det är därför han stjäl dem!
 e Ordtjuven har slut på bananer, slut på ballong och slut på gömställen. Nu finns det bara ett stopp kvar.
 e Här är han: Ordtjuven själv! Han håller de sista orden hårt. Svara rätt på allt, så får Polly tillbaka sina ord!
+n hi|Hej,
+n hi|Välkommen tillbaka,
+n hi|Hallå där,
+n good|Bra jobbat,
+n good|Snyggt,
+n good|Jättebra,
+n good|Helt rätt,
+n good|Vad duktig du är,
+n good|Du är en stjärna,
+n good|Grymt gjort,
+n good|Precis så,
+n oops|Nästan,
+n oops|Inte riktigt,
+n oops|Oj då,
+n go|Kom igen,
+n go|Nu kör vi,
+n go|Är du redo,
 k 3|Three in a row!|Tre rätt i rad!
 k 5|Five in a row! You are on fire!|Fem rätt i rad! Du är i toppform!
 k 10|Ten in a row! Unstoppable!|Tio rätt i rad! Ingen kan stoppa dig!
