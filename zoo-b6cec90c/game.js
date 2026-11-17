@@ -105,6 +105,13 @@ async function sayNamed(key, text) {
     await new Promise(res => { au.pause(); au.onended = au.onerror = res; au.src = joinedUrl; au.play().catch(res); }); return true; } catch { return false; }
 }
 const withName = text => `${text} ${S.name}!`;
+async function nameThen(v, text) {
+  if (!nameClip) return say(v, text);
+  try { const r = await fetch(`audio/${v}/${clipId(text)}.mp3?r=${REC}`); if (!r.ok) return say(v, text);
+    if (joinedUrl) URL.revokeObjectURL(joinedUrl); joinedUrl = URL.createObjectURL(new Blob([nameClip, await r.arrayBuffer()], { type: 'audio/mpeg' }));
+    await new Promise(res => { au.pause(); au.onended = au.onerror = res; au.src = joinedUrl; au.play().catch(res); }); } catch { return say(v, text); }
+}
+const hasName = () => !!(nameClip && S.set.sv);
 
 // Things said one after the other; a new chain, or a new screen, ends the one before.
 let chainId = 0;
@@ -225,9 +232,9 @@ function go(li) { SFX.pop(); const r = Math.floor(li / 10); if (!routeOf(r)) ret
 // Two ways to the same place: the lessons are the same, the places are not.
 function fork(r, li) {
   const hub = fromOf(li);
-  show('fork', `<div class="center"><h1>🔀 Välj väg från ${esc(hub.n)}!</h1><div class="card" style="max-width:40em">${esc(D.ui['world' + r][0])}</div>
+  show('fork', `<div class="center"><h1>🔀 ${S.name ? esc(S.name) + ', välj' : 'Välj'} väg från ${esc(hub.n)}!</h1><div class="card" style="max-width:40em">${esc(D.ui['world' + r][0])}</div>
     <div class="grid">${['A', 'B'].map(x => { const p = J.parts[r][x]; return `<button class="card forkc ${x}" data-x="${x}"><div class="pic">${p.em}</div><b>${esc(p.name)}</b><br><small>${esc(p.desc)}</small><div class="few">${p.stops.slice(0, 9).map(s => s.e).join(' ')}</div></button>`; }).join('')}</div></div>`, hub.sc);
-  chain(() => tell('world' + r), () => tell('fork'));
+  chain(() => tell('world' + r), () => sayNamed('choose').then(ok => ok || tell('fork')));
   on('[data-x]', el => { S.route[r] = el.dataset.x; S.told[r] = 1; save(); SFX.fanfare(); rain([J.parts[r][el.dataset.x].em, '⭐'], 14); go(li); });
 }
 // Before a level: where the way goes next.
@@ -235,9 +242,9 @@ function depart(li) {
   const a = fromOf(li), b = stopOf(li), r = Math.floor(li / 10), intro = li === 0 && !S.told[0], boss = li % 10 === 9;
   if (intro) { S.told[0] = 1; save(); }
   show('story', `<div class="center"><div class="pic dance"><span>${a.e}</span><span>${S.set.pet}</span><span>➜</span><span>${b.e}</span></div><h1>${esc(a.n)} ➜ ${esc(b.n)}</h1>
-    ${intro ? `<div class="card" style="max-width:40em">📖 ${esc(D.ui.world0[0])}</div>` : ''}<div class="card" style="max-width:40em;font-size:1.1em"><b>📖 Kapitel ${li + 1}</b><br>${esc(D.saga[li])}</div><div class="card" style="max-width:40em">${esc(b.go)}</div>
+    ${intro ? `<div class="card" style="max-width:40em">📖 ${esc(D.ui.world0[0])}</div>` : ''}<div class="card" style="max-width:40em;font-size:1.1em"><b>📖 Kapitel ${li + 1}${S.name ? ` · Lyssna nu, ${esc(S.name)}!` : ''}</b><br>${esc(D.saga[li])}</div><div class="card" style="max-width:40em">${esc(b.go)}</div>
     ${boss ? `<p style="font-size:1.3em">${BOSS[r][0]} <b>${BOSS[r][1]}</b> väntar på sista etappen!</p>` : ''}<button class="btn big" id="bN">Starta ➜</button></div>`, a.sc);
-  SFX.fanfare(); chain(...(intro ? [() => tell('world0')] : []), () => S.set.sv ? say('s', D.saga[li]) : 0, () => sayNamed('go'), () => S.set.sv ? say('s', b.go) : 0); $('#bN').onclick = play;
+  SFX.fanfare(); chain(...(intro ? [() => tell('world0')] : [() => sayNamed('listen')]), () => S.set.sv ? say('s', D.saga[li]) : 0, () => sayNamed('go'), () => S.set.sv ? say('s', b.go) : 0); $('#bN').onclick = play;
 }
 
 // ---- A level: four short stages of questions ----
@@ -271,7 +278,7 @@ function play() {
   show('play', `<div class="top"><button class="chip" id="bX">✕</button><div class="trail"><span class="goal ${boss ? 'boss' : ''}" style="${boss ? `font-size:${(3.4 - R.p / Q.length * 2).toFixed(2)}em` : ''}">${boss ? BOSS[L.w][0] : dest.e}</span><span class="rn" id="rn" style="left:${trailAt}%"><span>${S.set.pet}</span></span></div><span class="chip" id="cn">🪙 ${S.coins}</span><span class="chip">${boss ? `Boss: ${BOSS[L.w][1]}` : `➜ ${esc(dest.n)}`} · ${R.s + 1}/${R.st.length}</span></div>
     <div class="stage" id="stage"></div><div class="foot">${petHtml()}<div id="act"></div></div>`, dest.sc);
   setTimeout(() => { const r = $('#rn'); if (r && at !== trailAt) { r.style.left = at + '%'; r.classList.add('hop'); } trailAt = at; }, 40);
-  $('#bX').onclick = () => { save(); map(); };
+  $('#bX').onclick = () => { save(); map(); if (hasName() && Math.random() < .5) chain(() => sayNamed('bye')); };
   $('#pet').onclick = petTrick;
   const stage = $('#stage'), act = $('#act');
   const ask = `<div class="ask">${st.rev ? '🔁 Repetition · ' : ''}${st.k === 'intro' ? ASK.intro[st.t === 'w' ? 0 : 1] : ASK[st.k]}</div>`;
@@ -279,7 +286,7 @@ function play() {
   const alive = () => screen === 'play' && S.run === R && Q[R.p] === st;
   // The voice says what to do before every question, in one of several wordings.
   const kind = st.k === 'intro' ? (st.t === 'w' ? 'introW' : 'introS') : st.k;
-  const lead = () => (boss && R.p === 0 && !R.bt ? (R.bt = 1, tell('boss')) : Promise.resolve()).then(() => S.set.sv ? say('s', pick(D.inst[kind])) : 0);
+  const lead = () => (boss && R.p === 0 && !R.bt ? (R.bt = 1, sayNamed('watch').then(() => tell('boss'))) : Promise.resolve()).then(() => !S.set.sv ? 0 : Math.random() < .35 ? nameThen('s', pick(D.inst[kind])) : say('s', pick(D.inst[kind])));
   const coin = n => { S.coins += n; const c = $('#cn'); c.textContent = '🪙 ' + S.coins; c.insertAdjacentHTML('beforeend', `<span class="plus">+${n}</span>`); };
   const svWord = () => S.set.sv ? say('s', `Ordet är ${svSaid(sv)}.`) : Promise.resolve();
   // After an answer: the right answer is shown and said; a wrong one brings the question back twice in this stage.
@@ -291,7 +298,7 @@ function play() {
       // Praise after every right answer: for some numbers in a row, else in English or now and then in Swedish.
       const row = D.streak[R.row], svp = !row && Math.random() < .3 ? pick(D.praiseSv) : null;
       let pr = row || (svp ? [svp, ''] : pick(D.praise));
-      const named = !row && nameClip && S.set.sv && Math.random() < .2 ? pick(D.named.good) : null; if (named) pr = [withName(named), ''];
+      const named = !row && hasName() && Math.random() < .45 ? pick(D.named.good) : null; if (named) pr = [withName(named), ''];
       const cheer = () => named ? sayNamed('good', named) : svp ? say('s', svp) : sayEn(pr[0]);
       if (row && S.set.silly) rain(['⭐', '🔥', '🎉'], 12);
       stage.insertAdjacentHTML('beforeend', `<div class="fb ok"><span class="ic">✔</span><span><span class="h">${row ? '🔥 ' : ''}${esc(pr[0])}${pr[1] ? ` <i>· ${esc(pr[1])}</i>` : ''}</span><b>${esc(en)}</b><small>= ${esc(sv)}</small></span></div>`); stage.lastElementChild.scrollIntoView({ block: 'nearest' });
@@ -303,9 +310,9 @@ function play() {
       R.miss++; R.sm = (R.sm || 0) + 1; R.row = 0; S.stat[key] = (S.stat[key] || 0) + 1; SFX.bad(); if (S.set.silly) bubble(pick(['Hoppsan!', 'Oj då!', 'Det fixar du nästa gång!', 'Ingen fara!']));
       Q.splice(Math.min(R.p + 4, Q.length), 0, Object.assign({}, st, { r: 1 }));
       if (!st.r) Q.push(Object.assign({}, st, { r: 1 }));
-      stage.insertAdjacentHTML('beforeend', `<div class="fb bad"><span class="ic">✖</span><span><span class="h">Inte riktigt. Rätt svar är:</span><b>${esc(en)}</b><small>= ${esc(sv)}</small></span></div>`); stage.lastElementChild.scrollIntoView({ block: 'nearest' });
+      stage.insertAdjacentHTML('beforeend', `<div class="fb bad"><span class="ic">✖</span><span><span class="h">${hasName() ? `Nästan, ${esc(S.name)}! ` : 'Inte riktigt. '}Rätt svar är:</span><b>${esc(en)}</b><small>= ${esc(sv)}</small></span></div>`); stage.lastElementChild.scrollIntoView({ block: 'nearest' });
       act.innerHTML = `<button class="btn big" id="bN">Jag förstår ➜</button>`; $('#bN').onclick = next;
-      chain(() => Math.random() < .4 ? sayNamed('oops').then(ok => ok || tell('wrong')) : tell('wrong'), () => sayEn(en), means(st.t, sv));
+      chain(() => Math.random() < .7 ? sayNamed('oops').then(ok => ok || tell('wrong')) : tell('wrong'), () => sayEn(en), means(st.t, sv));
     }
     save();
   }
@@ -380,7 +387,7 @@ function play() {
 function stageDone() {
   const R = S.run, L = D.levels[R.li], n = R.s + 1, of = R.st.length, fact = pick(D.facts), a = fromOf(R.li), b = stopOf(R.li), closer = b.st[Math.min(n, 3) - 1], perfect = !R.sm;
   R.s++; R.p = 0; R.sm = 0; if (R.first) S.tix++; save();
-  show('stage', `<div class="center"><div class="pic dance"><span>${S.set.pet}</span><span>🎉</span><span>${STICKERS[R.li][0]}</span></div><h1>Etapp ${n} av ${of} klar!${perfect ? ' 🌟 Alla rätt!' : ''}</h1>
+  show('stage', `<div class="center"><div class="pic dance"><span>${S.set.pet}</span><span>🎉</span><span>${STICKERS[R.li][0]}</span></div><h1>${S.name ? `Bra jobbat, ${esc(S.name)}! ` : ''}Etapp ${n} av ${of} klar!${perfect ? ' 🌟 Alla rätt!' : ''}</h1>
     <div class="leg"><span>${a.e}</span><i style="--f:${n / of}"><b>${S.set.pet}</b></i><span>${b.e}</span></div><div class="dots" hidden></div>
     <div class="card" style="max-width:38em">${esc(closer)}</div>
     <button class="chest ${perfect ? 'gold' : ''}" id="bG">🎁</button><div class="card" id="cF" style="max-width:36em" hidden><b id="cW"></b><p style="margin:.4em 0 0">🤪 ${esc(fact)}</p></div>
@@ -388,7 +395,7 @@ function stageDone() {
   SFX.fanfare(); rain(['⭐', '🎉', STICKERS[R.li][0]], 16); if (S.set.silly) setTimeout(critter, 700);
   chain(() => sayNamed('good'), () => S.set.sv ? say('s', closer) : 0, ...(perfect ? [() => tell('perfect')] : []), () => tell('chest'));
   $('#bG').onclick = () => { const n = perfect ? 20 + rnd(16) : 5 + rnd(11), bonus = perfect || Math.random() < .15; S.coins += n; if (bonus) S.tix++; save(); $('#bG').classList.add('open'); $('#bG').textContent = '🪙'; $('#bG').disabled = true;
-    $('#cW').textContent = `Du fick ${n} mynt!${bonus ? ' Och ett extra pausspel! 🎮' : ''}`; $('#cF').hidden = false; SFX.fanfare(); rain(['🪙', '⭐'], 18); chain(() => tell('fact'), () => S.set.sv ? say('s', fact) : 0); };
+    $('#cW').textContent = `Du fick ${n} mynt!${bonus ? ' Och ett extra pausspel! 🎮' : ''}`; $('#cF').hidden = false; SFX.fanfare(); rain(['🪙', '⭐'], 18); chain(() => sayNamed('gift'), () => tell('fact'), () => S.set.sv ? say('s', fact) : 0); };
   $('#bN').onclick = play; if ($('#bM')) $('#bM').onclick = mini; $('#bK').onclick = () => map();
 }
 
@@ -397,11 +404,11 @@ function finish() {
   S.done[li] = Math.max(S.done[li] || 0, n); if (first) S.tix++; if (gold) { S.gold[li] = 1; S.coins += 50; } S.run = null; save();
   const [em, en, sv] = STICKERS[li], last = li === D.levels.length - 1;
   show('result', `<div class="center"><div class="stars">${[1, 2, 3].map(i => `<span class="${i > n ? 'off' : ''}" style="animation-delay:${i * .25}s">⭐</span>`).join('')}</div>
-    <h1>${dest.e} Framme: ${esc(dest.n)}!</h1>
+    <h1>${dest.e} ${S.name ? `${esc(S.name)}, du är framme: ` : 'Framme: '}${esc(dest.n)}!</h1>
     <div class="card" style="max-width:42em"><p>${esc(dest.ar)}</p>${gold ? '<p>👑 <b>Guldkrona!</b> Hela vägen utan ett enda fel: +50 mynt.</p>' : ''}${first ? `<p><b>Nytt klistermärke!</b></p><p><span class="sticker wig"><b>${em}</b><small>${en}</small></span></p><p>${en} = ${sv} · 🎮 Du får ett pausspel!</p>` : `<p>Du har redan klistermärket <b>${em}</b>.</p>`}
     ${first && worldEnd ? `<p>🏆 <b>Du har klarat hela ${esc(D.worlds[w].name)}!</b> Nya kompisar väntar under ⚙️: ${PETS[w + 1].join(' ')}</p>` : ''}</div>
     <p>${S.tix ? `<button class="btn big" id="bM">🎮 Pausspel (${S.tix})</button> ` : ''}<button class="btn big ghost" id="bK">${last && first ? 'Till diplomet 🏆' : 'Till kartan ➜'}</button></p></div>`, dest.sc);
-  SFX.fanfare(); rain(['⭐', em, '🎉', '🎈'], 24); chain(...(worldEnd ? [() => tell('bosswin')] : []), () => sayNamed('good'), () => S.set.sv ? say('s', dest.ar) : 0, ...(gold ? [() => tell('gold')] : []), ...(first ? [() => tell('level')] : []), () => sayEn(pick(D.praise)[0]));
+  SFX.fanfare(); rain(['⭐', em, '🎉', '🎈'], 24); chain(...(worldEnd ? [() => tell('bosswin')] : []), () => sayNamed('good'), () => S.set.sv ? say('s', dest.ar) : 0, ...(gold ? [() => sayNamed('wow'), () => tell('gold')] : []), ...(first ? [() => tell('level')] : []), () => sayEn(pick(D.praise)[0]));
   if (first && worldEnd) setTimeout(parade, 900);
   if ($('#bM')) $('#bM').onclick = mini;
   $('#bK').onclick = () => last && first ? diploma() : map();
@@ -410,7 +417,7 @@ function finish() {
 function diploma() {
   show('diploma', `<div class="center"><div class="card" style="border:.4em double var(--gold);max-width:44em"><div class="pic">🏆</div><h1>DIPLOM</h1><p style="font-size:1.4em"><b>${esc(S.name || 'Äventyraren')}</b></p>
     <p>har rest hela vägen från Lund till Gold Coast, samlat 400 ord åt Polly och lärt sig 500 meningar på engelska.</p><p>📖 ${esc(D.ui.ending[0])}</p><p style="font-size:1.3em">⭐ ${stars()} stjärnor · Welcome to Australia, mate! 🦘</p></div><button class="btn big" id="bK">Till kartan ➜</button></div>`, 'sea');
-  SFX.fanfare(); rain(['🦘', '🐨', '⭐', '🎉', '🏆'], 40); chain(() => tell('ending'), () => tell('diploma'), () => sayEn('Welcome to Australia!'));
+  SFX.fanfare(); rain(['🦘', '🐨', '⭐', '🎉', '🏆'], 40); chain(() => tell('ending'), () => sayNamed('wow'), () => tell('diploma'), () => sayEn('Welcome to Australia!'));
   $('#bK').onclick = () => map('all');
 }
 
@@ -465,7 +472,7 @@ function mini() {
 function game(id) {
   const ANIMALS = ['🐶', '🐱', '🐰', '🦊', '🐻', '🐨', '🐸', '🐵', '🐷', '🐮', '🦁', '🐧'], g = GAMES.find(x => x[0] === id);
   show('game', `<div class="top"><h1>${g[1]} ${g[2]}</h1><span class="chip" id="gT">⏱️ 40</span><span class="chip" id="gS">⭐ 0</span></div><div id="field"></div>`);
-  chain(() => tell(id));
+  chain(() => tell(id), () => sayNamed('luck'));
   const field = $('#field'), timers = []; let score = 0, left = 40, over = false, raf = 0;
   const add = n => { score = Math.max(0, score + n); $('#gS').textContent = '⭐ ' + score; n > 0 ? SFX.pop() : SFX.prutt(); };
   const end = () => { if (over) return; over = true; stopGame = null; timers.forEach(clearInterval); cancelAnimationFrame(raf);
