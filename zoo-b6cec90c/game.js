@@ -154,7 +154,7 @@ function play() {
       R.ok++; SFX[S.set.snd](); $('#pet').classList.add('hop');
       if (st.rev && S.stat[key]) S.stat[key]--;
       const pr = Math.random() < .3 ? pick(D.praise) : null;
-      stage.insertAdjacentHTML('beforeend', `<div class="fb ok">${pr ? `${esc(pr[0])} <small>${esc(pr[1])}</small>` : '✔ Rätt!'}<b>${esc(en)}</b><small>${esc(sv)}</small></div>`);
+      stage.insertAdjacentHTML('beforeend', `<div class="fb ok"><span class="ic">✔</span><span><span class="h">${pr ? `${esc(pr[0])} <i>· ${esc(pr[1])}</i>` : 'Rätt!'}</span><b>${esc(en)}</b><small>= ${esc(sv)}</small></span></div>`);
       if (S.set.silly) { if (Math.random() < .22) bubble(pick(SILLY), 2600); if (R.ok % 12 === 0) (Math.random() < .5 ? parade : () => rain(['🍌', '⭐', '🦘', '🐸']))(); }
       let gone = false; const go = () => { if (!gone) { gone = true; next(); } };
       act.innerHTML = `<button class="btn big" id="bN">Fortsätt ➜</button>`; $('#bN').onclick = go;
@@ -163,7 +163,7 @@ function play() {
       R.miss++; S.stat[key] = (S.stat[key] || 0) + 1; SFX.bad();
       R.q.splice(Math.min(R.p + 4, R.q.length), 0, Object.assign({}, st, { r: 1 }));
       if (!st.r) R.q.push(Object.assign({}, st, { r: 1 }));
-      stage.insertAdjacentHTML('beforeend', `<div class="fb bad">Inte riktigt. Rätt svar är:<b>${esc(en)}</b><small>= ${esc(sv)}</small></div>`);
+      stage.insertAdjacentHTML('beforeend', `<div class="fb bad"><span class="ic">✖</span><span><span class="h">Inte riktigt. Rätt svar är:</span><b>${esc(en)}</b><small>= ${esc(sv)}</small></span></div>`);
       act.innerHTML = `<button class="btn big" id="bN">Jag förstår ➜</button>`; $('#bN').onclick = next; sayEn(en);
     }
     save();
