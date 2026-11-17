@@ -9,7 +9,9 @@
 # short word the voice service sometimes says something else. Every recording is checked by a
 # speech recogniser and made again when it is not heard right; one that is never heard right is
 # kept anyway and listed in tools/adventure/unverified.txt, for a person to listen to.
-# Afterwards run tools/trim-silence.py on the audio folder.
+# The silence around each recording is cut off here, with a wide margin: a soft first or last sound
+# (h, f, s) is much quieter than the vowels, and a tight cut takes it away. Do not run
+# tools/trim-silence.py on these clips.
 #
 # Needs GOOGLE_TTS_KEY or GOOGLE_TTS_KEY_FILE.
 import base64, glob, json, os, re, sys, time, unicodedata, urllib.request, urllib.error
@@ -59,16 +61,24 @@ def frames(b):
         out.append((i, i + n)); i += n
     return out
 
-def word_part(b, path):
-    """The frames after the pause: from two frames before the word's first sound to just after its last."""
+def cut(b, path, word):
+    """The sound without the silence around it; for a word, only what comes after the pause.
+    150 ms are kept before the first sound and 250 ms after the last, measured at a low level."""
     x = np.abs(decode_audio(path, sampling_rate=24000)); win = 120
     env = x[:len(x) // win * win].reshape(-1, win).max(1)
-    loud = np.nonzero(env > max(env.max() * 0.03, 0.004))[0]
-    gaps = np.nonzero(np.diff(loud) > 80)[0]
-    if not len(gaps): return None
-    first, last = loud[gaps[-1] + 1] * win, (loud[-1] + 1) * win
+    loud = np.nonzero(env > max(env.max() * 0.008, 0.0015))[0]
+    if not len(loud): return None
+    start = loud[0]
+    if word:
+        strong = np.nonzero(env > max(env.max() * 0.03, 0.004))[0]
+        gaps = np.nonzero(np.diff(strong) > 80)[0]                 # the pause: 0.4 s without speech
+        if not len(gaps): return None
+        before, after = strong[gaps[-1]], strong[gaps[-1] + 1]
+        quiet = loud[(loud > before + 20) & (loud <= after)]       # the first faint sound after the pause
+        start = max(quiet[0] if len(quiet) else after, after - 60)
+    first, last = start * win, (loud[-1] + 1) * win
     fr = frames(b)
-    a = max(0, (first - 1105) // 576 - 2); z = min(len(fr), (last - 1105) // 576 + 4)
+    a = max(0, (first - 1105) // 576 - 6); z = min(len(fr), (last - 1105) // 576 + 11)
     return b[fr[a][0]:fr[z - 1][1]]
 
 clips = json.load(open(os.path.join(here, 'clips.json'), encoding='utf-8'))
@@ -88,7 +98,7 @@ with ThreadPoolExecutor(8) as pool:
             segs, _ = model.transcribe(tmp, language=lang, beam_size=5, condition_on_previous_text=False)
             got = ' '.join(s.text.strip() for s in segs)
             want = plain(f"{CARRIER[lang]} {clip['text']}" if clip['word'] else clip['text'])
-            part = word_part(b, tmp) if clip['word'] else b
+            part = cut(b, tmp, clip['word'])
             ok = plain(got) == want and part
             if not ok and t + 1 < TRIES: left.append((job, t + 1)); continue
             if not part: unverified.append(f"{voice} {clip['id']} NOT SAVED (no pause found): {clip['text']}"); continue

@@ -1,0 +1,118 @@
+# The journey of the animal adventure: from Lund to Gold Coast in 5 parts of 10 stops, one stop per level.
+#   R part route|name of the route|picture|what the route is like      (route A or B; part 0 has only A)
+#   S name|longitude|latitude|picture|scenery|-     where the journey starts
+#   P name|longitude|latitude|picture|scenery|what the voice tells about the place
+# Each level is the way to the next stop, in four stages; build.mjs writes what the voice says after
+# each stage (how far it is left to Gold Coast) and on arrival.
+# The stops of a route follow its R line, in order. The last stop of both routes of a part is the same place.
+# Scenery is one of: farm forest city desert mountain jungle savanna sea outback.
+
+S Lund|13.6|56.3|⛪|farm|-
+
+R 0 A|Genom Europa|🏰|Från Lund till Istanbul
+P Köpenhamn|11.0|54.7|🧜‍♀️|city|I Köpenhamn sitter Den lilla sjöjungfrun på en sten i vattnet.
+P Hamburg|8.6|52.6|⚓|sea|Hamburg har en av Europas största hamnar, med tusentals båtar.
+P Berlin|13.8|51.6|🐻|city|Berlins symbol är en björn. Den finns på stadens flagga.
+P Prag|13.2|49.2|🏰|city|I Prag finns ett av världens största slott.
+P Wien|17.6|47.6|🎻|city|Wien är musikens stad. Här bodde Mozart.
+P Venedig|12.3|45.6|🛶|sea|I Venedig finns inga bilar. Man åker båt på kanalerna.
+P Rom|12.6|42.0|🏛️|city|I Rom står Colosseum, där gladiatorer slogs för två tusen år sedan.
+P Dubrovnik|18.1|42.8|🏰|sea|Runt hela gamla staden i Dubrovnik går en tjock mur som man kan gå på.
+P Aten|23.5|38.2|🏺|city|Aten är en av världens äldsta städer. På berget står templet Akropolis.
+P Istanbul|28.8|41.2|🕌|city|Istanbul ligger i två världsdelar samtidigt: Europa och Asien.
+
+R 1 A|Ökenvägen|🐪|Pyramider, sand och kameler
+P Kairo|31.4|30.6|🌇|desert|Kairo är Afrikas största stad, och den ligger vid floden Nilen.
+P Pyramiderna|29.8|28.6|🔺|desert|Pyramiderna är över fyra tusen år gamla. De byggdes åt faraonerna.
+P Luxor|32.6|25.7|🏺|desert|I Luxor ligger faraonernas gravar gömda i bergen.
+P Röda havet|36.5|22.0|🐠|sea|Röda havet är fullt av koraller och färgglada fiskar.
+P Riyadh|46.7|24.7|🏜️|desert|Riyadh ligger mitt i öknen. Här regnar det nästan aldrig.
+P Dubai|55.0|25.4|🏙️|city|I Dubai står världens högsta hus. Det är över åtta hundra meter högt.
+P Muscat|58.6|23.2|🐢|sea|På stränderna nära Muscat lägger havssköldpaddor sina ägg.
+P Karachi|67.0|25.2|🚛|city|I Karachi målar man lastbilarna i alla regnbågens färger.
+P Tharöknen|71.5|27.0|🐪|desert|I Tharöknen rider folk på kameler mellan byarna.
+P Delhi|77.2|28.6|🛺|city|I Delhi kör tusentals små trehjuliga taxibilar som kallas tuk-tuk.
+
+R 1 B|Bergsvägen|⛰️|Höga berg, luftballonger och sidenvägen
+P Ankara|32.9|39.9|🐈|mountain|Ankara är känt för sina fluffiga angorakatter.
+P Kappadokien|35.2|38.2|🎈|mountain|I Kappadokien flyger hundratals luftballonger över klipporna.
+P Tbilisi|44.8|41.9|♨️|mountain|Tbilisi är byggt på varma källor. Vattnet kommer varmt ur marken.
+P Baku|49.6|40.2|🔥|desert|Nära Baku finns en bergssluttning som alltid brinner.
+P Teheran|51.4|35.7|🏔️|mountain|Bakom Teheran reser sig höga berg med snö på toppen.
+P Samarkand|66.6|39.5|🕌|desert|Samarkand låg vid Sidenvägen, där karavaner bar siden från Kina.
+P Tasjkent|69.6|41.6|🍈|city|På marknaden i Tasjkent säljs jättestora meloner.
+P Himalaya|85.3|28.2|🏔️|mountain|Här ligger Mount Everest, världens högsta berg.
+P Agra|79.0|26.6|🕌|city|Taj Mahal i Agra är byggt av skinande vit marmor.
+P Delhi|77.2|28.6|🛺|city|I Delhi kör tusentals små trehjuliga taxibilar som kallas tuk-tuk.
+
+R 2 A|Djungelvägen|🐅|Tigrar, elefanter och gamla tempel
+P Varanasi|83.0|25.3|🪔|city|Varanasi är en av världens äldsta städer. Den ligger vid floden Ganges.
+P Kolkata|87.6|23.2|🚋|city|Kolkata har Asiens äldsta spårvagnar.
+P Sundarbans|90.3|21.6|🐅|jungle|I träskskogen Sundarbans bor tigrar som kan simma.
+P Bagan|94.9|21.2|🛕|jungle|I Bagan står över två tusen gamla tempel.
+P Chiang Mai|99.0|18.8|🐘|jungle|I bergen vid Chiang Mai bor elefanter.
+P Bangkok|100.5|14.2|🛶|city|I Bangkok finns marknader som flyter på vattnet.
+P Angkor Wat|104.2|13.2|🛕|jungle|Angkor Wat är världens största tempel. Träd växer rakt genom murarna.
+P Ho Chi Minh-staden|106.7|10.6|🛵|city|Här åker nästan alla moped. Det finns miljontals mopeder!
+P Kuala Lumpur|101.7|3.6|🏙️|city|I Kuala Lumpur står två tvillingtorn med en bro emellan, högt uppe i luften.
+P Singapore|103.8|1.3|🦁|city|Singapore betyder Lejonstaden.
+
+R 2 B|Kinavägen|🐼|Pandor, drakar och en jättelång mur
+P Lhasa|91.1|29.7|🏔️|mountain|Lhasa ligger så högt upp att luften är tunn.
+P Chengdu|104.0|30.7|🐼|forest|I Chengdu bor jättepandor. De äter bambu nästan hela dagen.
+P Xi'an|109.0|34.3|🗿|city|I Xi'an står tusentals soldater av lera och vaktar en kejsares grav.
+P Kinesiska muren|112.8|40.6|🧱|mountain|Kinesiska muren är så lång att det skulle ta ett och ett halvt år att gå hela.
+P Peking|116.6|39.6|🏯|city|I Peking ligger Förbjudna staden, ett palats med nästan tusen hus.
+P Shanghai|121.3|31.2|🌃|city|Shanghai är en av världens största städer, med skyskrapor som lyser på natten.
+P Hongkong|114.2|22.5|⛴️|sea|I Hongkong åker man färja mellan öarna.
+P Hanoi|105.8|21.0|🍜|city|I Hanoi äter man nudelsoppa till frukost.
+P Bangkok|100.5|14.2|🛶|city|I Bangkok finns marknader som flyter på vattnet.
+P Singapore|103.8|1.3|🦁|city|Singapore betyder Lejonstaden.
+
+R 3 A|Övägen|🌋|Vulkaner, drakar och blått hav
+P Sumatra|101.0|-0.8|🦧|jungle|På Sumatra bor orangutanger. Namnet betyder skogsmänniska.
+P Krakatau|105.2|-6.0|🌋|sea|Krakatau är en vulkan mitt i havet.
+P Jakarta|107.6|-6.4|🏙️|city|Jakarta är en jättestor stad på ön Java.
+P Borobudur|110.4|-7.5|🛕|jungle|Borobudur är ett tempel byggt som ett berg av sten.
+P Bali|115.2|-8.4|🏄|sea|På Bali surfar man på vågorna, och apor bor i templen.
+P Komodo|119.3|-8.6|🦎|savanna|Komodovaranen är världens största ödla. Den blir tre meter lång.
+P Flores|122.0|-8.6|🌈|mountain|På Flores finns en vulkan med tre sjöar i olika färger.
+P Timor|125.5|-9.0|⛵|sea|Från Timor är det bara hav kvar till Australien.
+P Timorsjön|128.6|-10.8|🐋|sea|I Timorsjön simmar valar och delfiner.
+P Darwin|130.9|-12.5|🐊|outback|Runt Darwin simmar stora saltvattenskrokodiler.
+
+R 3 B|Regnskogsvägen|🦧|Orangutanger, kryddor och paradisfåglar
+P Borneo|110.5|1.2|🦧|jungle|I Borneos regnskog svingar sig orangutanger mellan träden.
+P Kinabalu|116.4|5.8|⛰️|mountain|Kinabalu är Borneos högsta berg.
+P Sulawesi|120.5|-2.2|🐒|jungle|På Sulawesi bor svarta apor med tuppkam.
+P Moluckerna|127.8|0.6|🌶️|jungle|Moluckerna kallas Kryddöarna. Härifrån kommer muskot och kryddnejlika.
+P Raja Ampat|130.6|-1.0|🐠|sea|I Raja Ampat finns fler sorters fiskar än någon annanstans.
+P Nya Guinea|138.5|-4.6|🦜|jungle|På Nya Guinea dansar paradisfåglar med långa, färgglada fjädrar.
+P Port Moresby|147.0|-9.2|🛶|sea|Port Moresby ligger vid Korallhavet.
+P Torres sund|142.6|-10.2|🏝️|sea|Torres sund är det smala havet mellan Nya Guinea och Australien.
+P Arafurasjön|136.5|-10.4|🦈|sea|I Arafurasjön simmar hajar och havsormar.
+P Darwin|130.9|-12.5|🐊|outback|Runt Darwin simmar stora saltvattenskrokodiler.
+
+R 4 A|Genom öknen|🏜️|Röd sand, kängurur och en jättesten
+P Kakadu|132.6|-13.6|🎨|outback|I Kakadu finns klippmålningar som är tjugo tusen år gamla.
+P Katherine|131.6|-15.8|🛶|outback|Vid Katherine paddlar man kanot mellan höga klippor.
+P Djävulens kulor|134.3|-20.5|🪨|outback|Här ligger jättelika runda stenar, som kulor en jätte har glömt.
+P Alice Springs|133.9|-23.4|🦘|outback|Alice Springs ligger mitt i Australien. Här hoppar kängurur på gatorna.
+P Uluru|131.0|-25.6|⛰️|outback|Uluru är en enda jättestor röd sten, högre än Eiffeltornet.
+P Coober Pedy|134.7|-29.0|⛏️|outback|I Coober Pedy bor folk under jorden, eftersom det är så varmt.
+P Birdsville|139.3|-26.0|🐪|outback|I Australiens öken lever över en miljon vilda kameler.
+P Longreach|144.2|-23.4|🦕|outback|Nära Longreach finns fotspår från dinosaurier.
+P Brisbane|151.8|-26.2|🐨|city|I Brisbane kan man klappa koalor.
+P Gold Coast|153.4|-28.2|🏄|sea|Framme! Gold Coast har långa stränder, surfare och sol nästan varje dag.
+
+R 4 B|Längs kusten|🐠|Korallrev, sköldpaddor och vita stränder
+P Kakadu|132.6|-13.6|🎨|outback|I Kakadu finns klippmålningar som är tjugo tusen år gamla.
+P Arnhem Land|135.6|-12.6|🪈|outback|Från Arnhem Land kommer instrumentet didgeridoo.
+P Carpentariaviken|139.6|-16.6|🦐|sea|I Carpentariaviken fiskar man jätteräkor.
+P Cairns|145.6|-16.6|🦋|jungle|I regnskogen vid Cairns flyger stora blå fjärilar.
+P Stora barriärrevet|147.6|-18.4|🐠|sea|Stora barriärrevet är världens största korallrev. Det syns från rymden!
+P Whitsundayöarna|149.2|-20.4|🏝️|sea|Här finns en strand med sand som är vit som snö.
+P Sköldpaddsstranden|152.0|-24.2|🐢|sea|På den här stranden kläcks tusentals små sköldpaddor.
+P K'gari|153.4|-25.4|🐕|sea|K'gari är världens största sandö. Här bor vilda dingor.
+P Brisbane|151.8|-26.9|🐨|city|I Brisbane kan man klappa koalor.
+P Gold Coast|153.4|-28.2|🏄|sea|Framme! Gold Coast har långa stränder, surfare och sol nästan varje dag.

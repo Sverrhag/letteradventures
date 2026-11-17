@@ -7,6 +7,9 @@
 #   v swedish                     praise said in Swedish
 #   k number|english|swedish      praise for that many right answers in a row
 #   i kind|swedish                what the voice says before a kind of question, in several wordings
+#   u key|swedish                 other things the voice says, in several wordings
+#   f swedish                     a funny fact about an animal, told when a stage is done
+#   e swedish                     a chapter of the tale, told before each level, in order
 # tools/adventure/build.mjs checks that every sentence only uses words that have been taught.
 
 p Well done!|Bra jobbat!
@@ -73,13 +76,129 @@ i dict|Lyssna och bygg meningen.
 i dict|Lyssna noga och sätt ihop det du hör.
 i dict|Vad säger rösten? Bygg meningen.
 i dict|Bygg det du hör.
+i hear|Vilket ord hör du?
+i hear|Lyssna. Tryck på ordet du hör.
+i hear|Vilket ord säger rösten?
+i hear|Hitta ordet som rösten säger.
+i pairs|Para ihop orden som betyder samma sak.
+i pairs|Vilka ord hör ihop? Tryck på två i taget.
+i pairs|Hitta paren!
+i pairs|Para ihop engelska och svenska.
+u chest|Tryck på paketet och se vad du får!
+u chest|Ett paket! Öppna det!
+u chest|Vad finns i paketet? Tryck på det!
+u boss|Se upp! Här kommer bossen. Varje rätt svar ger bossen en smäll!
+u bosswin|Du besegrade bossen! Hurra!
+u poor|Du behöver fler mynt. Svara rätt så får du fler!
+u world0|Det var en gång en papegoja som hette Polly. Hon bodde i Gold Coast i Australien och kunde alla engelska ord i hela världen. Men en natt kom den tokiga Ordtjuven och snodde vartenda ord! Han flög iväg i sin pruttande luftballong och tappade orden längs hela vägen till Lund. Nu behöver Polly din hjälp. Samla orden, res till Australien och ge dem tillbaka!
+u world1|Du har rest genom hela Europa! Nu fortsätter resan mot Indien. Vill du resa genom öknen eller över bergen?
+u world2|Du är framme i Indien, och Australien kommer närmare! Nu ska du genom Asien. Väljer du djungeln eller Kina?
+u world3|Nu är det bara hav och öar kvar till Australien! Vill du resa förbi vulkanerna eller genom regnskogen?
+u world4|Du är i Australien! Nu är det inte långt kvar till Gold Coast. Vill du resa genom öknen eller längs kusten?
+u wrong|Inte riktigt. Lyssna på rätt svar.
+u wrong|Nästan! Så här ska det vara.
+u wrong|Oj, det blev fel. Lyssna nu.
+u wrong|Inte den här gången. Rätt svar är:
+u means|Det betyder:
+u level|Du får ett nytt klistermärke!
+u level|Här kommer ett nytt klistermärke till ditt album!
+u map|Här är kartan över din resa till Australien. Tryck på Fortsätt resan!
+u map|Australien väntar! Tryck på Fortsätt resan.
+u map|Vart ska vi nu? Tryck på Fortsätt resan, så åker vi vidare.
+u fork|Vilken väg vill du ta? Tryck på den väg du väljer.
+u perfect|Alla rätt på hela etappen! Du får ett guldpaket!
+u perfect|Inte ett enda fel! Här kommer ett guldpaket.
+u gold|Wow! Hela vägen utan ett enda fel. Du får en guldkrona och femtio mynt!
+u fact|Och nu, ett tokigt djurfakta!
+u fact|Visste du det här?
+u fact|Lyssna på det här tokiga!
+u whack|Tryck på djuren som tittar upp. Men akta dig för bajset!
+u rain|Fånga djuren som faller. Rör inte kaktusen!
+u roo|Tryck på skärmen för att hoppa över kaktusarna.
+u notix|Biljetterna är slut. Klara en etapp till, så får du en ny.
+u diploma|Grattis! Du har rest hela vägen från Lund till Gold Coast, och du har lärt dig engelska på vägen. Nu är du redo för Australien!
+u ending|Ordtjuven började gråta. Jag ville bara lära mig engelska, snyftade han. Då lärde du honom alla ord du hade samlat. Polly fick tillbaka sin röst, och alla åt tårta tillsammans. Snipp, snapp, snut, så var sagan slut!
+f En vombat bajsar fyrkantiga bajskorvar. Det är helt sant!
+f En koala sover nästan tjugo timmar om dagen. Vilken sjusovare!
+f En känguru kan inte hoppa baklänges.
+f En bläckfisk har tre hjärtan och blått blod.
+f En giraff har så lång tunga att den kan slicka sig själv i öronen.
+f Kor har bästa kompisar, precis som du.
+f Havsuttrar håller varandra i handen när de sover, så att de inte flyter bort.
+f En snigel kan sova i tre år.
+f Flamingor är rosa för att de äter så mycket räkor.
+f En krokodil kan inte räcka ut tungan.
+f Grisar kan inte titta rakt upp i himlen.
+f Strutsens öga är större än dess hjärna.
+f Delfiner har egna namn och ropar på varandra.
+f En elefant kan inte hoppa.
+f Pingviner ger varandra fina stenar när de är kära.
+f En haj tappar tusentals tänder under sitt liv, och det växer ut nya hela tiden.
+f Apor skrattar när man kittlar dem.
+f Papegojor kan lära sig att dansa till musik.
+f Sengångaren är nästan det enda djuret som aldrig pruttar.
+f En sjöstjärna har ingen hjärna.
+f En groda dricker inte med munnen. Den suger upp vatten genom huden.
+f En kamel kan dricka hundra liter vatten på tio minuter.
+f Bin dansar för att visa sina kompisar var blommorna finns.
+f En uggla kan vrida huvudet nästan hela varvet runt.
+e Titta! De första orden ligger och skräpar precis här. Ordtjuven måste ha haft hål i säcken.
+e Din kompis hittar ett spår av bananskal. Ordtjuven älskar bananer, och han slänger skalen överallt.
+e En duva kommer flygande med ett brev från Polly: Skynda dig! Utan mina ord kan jag bara säga kraxi-fraxi!
+e Ordtjuvens luftballong syns långt borta. Den låter prutt, prutt, prutt när den flyger.
+e Oj! Någon har målat alla får blå. Det måste vara Ordtjuven som har busat igen.
+e Din kompis räknar spåren på marken. Ett, två, tre. Har Ordtjuven tre ben? Nej, det är hans paraply.
+e En gammal uggla viskar: Ordtjuven har hjälpare. Se upp för dem!
+e Ordtjuven har ätit upp all glass i hela staden. Men orden glömde han kvar under bordet.
+e Var är Ordtjuven? Han gömmer sig, men hans stora hatt sticker upp bakom ett hus.
+e Stopp! Här står Morotstjuven, Ordtjuvens kusin, med en säck full av ord. Svara rätt, så tappar han dem!
+e Morotstjuven sprang hem till sin mamma. Nu fortsätter jakten, och spåren leder österut.
+e Ordtjuven har lärt en get att joddla. Den joddlar hela natten, och ingen kan sova.
+e Polly har skickat en bild på sin familj. Alla papegojorna väntar på sina ord.
+e Din kompis nyser så att hatten flyger av. Under hatten låg tre borttappade ord!
+e Ordtjuven har somnat i sin ballong, och han snarkar så att molnen skakar. Smyg förbi och plocka orden!
+e En arg liten krabba vaktar orden här. Den blir glad om man sjunger för den.
+e Hjälp! Ordtjuven har fastnat i ett träd. Ska vi hjälpa honom? Äsch, han tog sig loss själv och pruttade iväg.
+e Det regnar strumpor! Ordtjuven har tappat hela sin tvätt över staden.
+e På natten lyser orden som små stjärnor. Din kompis fångar dem med en håv.
+e Skogstrollet står i vägen! Det har stoppat orden i sina stora öron. Svara rätt, så trillar de ut!
+e Trollet blev så kittligt att det skrattade hela vägen hem. Nu är snart halva resan gjord!
+e Ordtjuven har bytt ut all mat mot bananer. Bananer till frukost, bananer till lunch och bananer till middag!
+e Titta, Ordtjuvens kalsonger hänger på en flaggstång! De är prickiga.
+e Polly ringer: Kraxi-fraxi! Det betyder nog: skynda er!
+e Ordtjuven har gömt ord bakom, under och bredvid allting. Leta överallt!
+e Din kompis måste kissa. Vänta lite. Så! Nu fortsätter vi.
+e Igår såg någon Ordtjuven rida på en struts. Strutsen såg inte glad ut.
+e Ordtjuven fyller år idag. Han är trehundra år gammal, men han uppför sig som en treåring.
+e Ordtjuven har lämnat en lapp: Ni tar mig aldrig! Men han har stavat fel på vartenda ord.
+e Savannbusen hoppar fram med en hel hög ord! Svara rätt, så tappar han dem ett efter ett.
+e Savannbusen gömde sig i en buske och skäms. Och nu luktar det hav! Australien kommer närmare.
+e Det finns något stort i vattnet. Det är Ordtjuvens badanka! Den är stor som en båt.
+e En delfin vill leka. Den kastar tillbaka ord som Ordtjuven har tappat i havet.
+e Polly har redan börjat baka en välkomsttårta. Utan ord i receptet blev den lite konstig.
+e Ordtjuvens ballong har fått ett hål. Nu flyger den i sicksack och låter som en ledsen trumpet.
+e Din kompis ritar en karta i sanden. Här är vi, och där är Australien!
+e Ordtjuven försöker simma ifrån oss, men han är långsammare än en sköldpadda.
+e Klockan tickar! Polly har väntat länge nu. Men vi är snart framme.
+e Aj! Ordtjuven trampade på en sjöborre. Nu hoppar han på ett ben och tappar ord överallt.
+e Kapten Bläck dyker upp ur havet med åtta armar fulla av ord! Svara rätt, så släpper han taget.
+e Kapten Bläck simmade hem och sprutade bläck av ilska. Och titta: Australien! Vi är äntligen här!
+e En känguru hälsar på engelska: G'day mate! Det betyder hej kompis. Ordtjuven hoppade förbi här alldeles nyss.
+e Ordtjuven har gömt sig i en skolväska. Men väskan pruttar, så alla vet var han är.
+e På lekplatsen åker Ordtjuven rutschkana. Han har fastnat på mitten!
+e Ordtjuven ropar: Sluta jaga mig! Men vi ger oss inte förrän Polly har fått tillbaka sina ord.
+e Nu är det bara några dagar kvar. Polly räknar dem: måndag, tisdag, onsdag.
+e Nu syns havet igen. Gold Coast ligger alldeles nära!
+e En koala berättar en hemlighet: Ordtjuven kan inte ett enda ord engelska. Det är därför han stjäl dem!
+e Ordtjuven har slut på bananer, slut på ballong och slut på gömställen. Nu finns det bara ett stopp kvar.
+e Här är han: Ordtjuven själv! Han håller de sista orden hårt. Svara rätt på allt, så får Polly tillbaka sina ord!
 k 3|Three in a row!|Tre rätt i rad!
 k 5|Five in a row! You are on fire!|Fem rätt i rad! Du är i toppform!
 k 10|Ten in a row! Unstoppable!|Tio rätt i rad! Ingen kan stoppa dig!
 k 15|Fifteen in a row! You are a legend!|Femton rätt i rad! Du är en legend!
 k 20|Twenty in a row! Incredible!|Tjugo rätt i rad! Helt otroligt!
 
-W Bondgården|🐮
+W Europa|🏰
 L Hej!
 w hello|hej|👋
 w goodbye|hej då
@@ -258,7 +377,7 @@ s I am here.|Jag är här.
 s The animals are on the farm.|Djuren är på bondgården.
 s We are in the house.|Vi är i huset.
 
-L Bondgårdens stora prov
+L Stora provet i Istanbul
 w want|vill ha
 w please|snälla (tack)
 w thank you|tack
@@ -278,7 +397,7 @@ s That is good.|Det där är bra.
 s This food is bad.|Den här maten är dålig.
 s I want water, please.|Jag vill ha vatten, tack.
 
-W Skogen|🌲
+W Mot Indien|🐪
 L Skogens djur
 w bear|björn|🐻
 w fox|räv|🦊
@@ -459,7 +578,7 @@ s It's cold at night.|Det är kallt på natten.
 s The fox runs at night.|Räven springer på natten.
 s Good morning, are you hungry?|God morgon, är du hungrig?
 
-L Skogens stora prov
+L Stora provet i Delhi
 w his|hans
 w their|deras
 w our|vår/vårt
@@ -479,7 +598,7 @@ s Their house is in the forest.|Deras hus är i skogen.
 s Look, a little fox!|Titta, en liten räv!
 s Listen to the bird.|Lyssna på fågeln.
 
-W Savannen|🦁
+W Genom Asien|🐼
 L Savannens djur
 w lion|lejon|🦁
 w elephant|elefant|🐘
@@ -660,7 +779,7 @@ s Can you say it slowly, please?|Kan du säga det långsamt, tack?
 s I know that animal.|Jag känner till det där djuret.
 s I love my family.|Jag älskar min familj.
 
-L Savannens stora prov
+L Stora provet i Singapore
 w but|men
 w or|eller
 w too|också
@@ -680,7 +799,7 @@ s Me too!|Jag också!
 s I play every day.|Jag leker varje dag.
 s Is it a boy or a girl?|Är det en pojke eller en flicka?
 
-W Havet|🐬
+W Över haven|⛵
 L Havets djur
 w sea|hav|🌊
 w beach|strand|🏖️
@@ -861,7 +980,7 @@ s It hurts here.|Det gör ont här.
 s She is sick today.|Hon är sjuk idag.
 s Do you feel better?|Mår du bättre?
 
-L Havets stora prov
+L Stora provet i Darwin
 w something|något
 w nothing|ingenting
 w someone|någon
