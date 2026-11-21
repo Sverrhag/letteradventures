@@ -662,7 +662,7 @@ function game(id) {
       if (spawn <= 0) {
         // Never two birds in a row, so that there is always something to jump over or a moment to land.
         const r = Math.random(), kind = golden() ? 'banana' : r < .3 && lastKind !== 'bird' ? 'bird' : r < .45 ? 'star' : 'ground', el = document.createElement('div'); lastKind = kind;
-        el.className = 'cactus'; el.textContent = kind === 'bird' ? pick(['🦅', '🐝', '🦇']) : kind === 'star' ? '⭐' : kind === 'banana' ? '🍌' : pick(['🌵', '🌵', '🪨', '🐊', '🦂']);
+        el.className = 'cactus'; el.textContent = kind === 'bird' ? pick(['🦅', '🐝', '🦇']) : kind === 'star' ? '⭐' : kind === 'banana' ? '🍌' : pick(['🌵', '🌵', '🌵', '🐊', '🦂']);
         if (kind !== 'ground') el.style.bottom = kind === 'bird' ? '33%' : '36%'; if (kind === 'bird') el.classList.add('wing');
         field.append(el); obs.push({ x: 105, el, kind }); spawn = (1.25 - hard * .45) * (.8 + Math.random() * .5);
       }
@@ -671,8 +671,8 @@ function game(id) {
         if (!o.hit && o.x < 17 && o.x > 5) {
           if (o.kind === 'star' || o.kind === 'banana') { if (y > .18) { o.hit = true; o.el.textContent = '✨'; hit(o.kind === 'banana' ? 5 : 2, roo); } }
           else if (o.kind === 'bird' ? y > .16 : y < .2) {
-            // What stands on the ground costs no life with the poo hat (it gives points) or the flower, as the shop says; the birds still do.
-            if (o.kind === 'ground' && (P.poop || P.safe)) { o.hit = true; o.el.textContent = P.poop ? '💩' : '🌸'; oops(roo); }
+            // A cactus costs no life with the poo hat (it gives points) or the flower, as the shop says. The animals still bite, and the birds still hit: standing still all the time must not be a way to win.
+            if (o.el.textContent === '🌵' && (P.poop || P.safe)) { o.hit = true; o.el.textContent = P.poop ? '💩' : '🌸'; oops(roo); }
             else { hurt(o); if (over) return false; } } }
         if (o.x < -10) { o.el.remove(); if (!o.hit && (o.kind === 'ground' || o.kind === 'bird')) hit(1, roo); return false; } return true; });
     }, 16));
