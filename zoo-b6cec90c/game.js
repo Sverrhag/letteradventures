@@ -670,7 +670,10 @@ function game(id) {
       obs = obs.filter(o => { if (over) return false; o.x -= speed * dt; o.el.style.left = o.x + '%';
         if (!o.hit && o.x < 17 && o.x > 5) {
           if (o.kind === 'star' || o.kind === 'banana') { if (y > .18) { o.hit = true; o.el.textContent = '✨'; hit(o.kind === 'banana' ? 5 : 2, roo); } }
-          else if (o.kind === 'bird' ? y > .16 : y < .2) { hurt(o); if (over) return false; } }
+          else if (o.kind === 'bird' ? y > .16 : y < .2) {
+            // What stands on the ground costs no life with the poo hat (it gives points) or the flower, as the shop says; the birds still do.
+            if (o.kind === 'ground' && (P.poop || P.safe)) { o.hit = true; o.el.textContent = P.poop ? '💩' : '🌸'; oops(roo); }
+            else { hurt(o); if (over) return false; } } }
         if (o.x < -10) { o.el.remove(); if (!o.hit && (o.kind === 'ground' || o.kind === 'bird')) hit(1, roo); return false; } return true; });
     }, 16));
   }
