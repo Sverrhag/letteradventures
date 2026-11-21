@@ -100,7 +100,7 @@ u shop|Välkommen till affären! Allt du köper här hjälper dig i pausspelen.
 u shop|Affären är öppen! Här finns prylar som gör dig bättre i pausspelen.
 u bought|Bra köp! Nu är den din för alltid.
 u bought|Oj, vad fin! Den passar dig perfekt.
-x life|Hjälmen ger dig ett extra liv i Känguruhopp.
+x life|Hjälmen ger dig ett extra liv i alla pausspel som har liv.
 x slow|Med solglasögonen tittar djuren upp längre i Pricka djuren.
 x time|Med hörlurarna får du tio sekunder längre i alla pausspel.
 x feather|Med fjäderhatten faller djuren långsammare i Djurregn.
@@ -110,6 +110,15 @@ x jump2|Med fjärilsvingarna kan du hoppa en gång till i luften i Känguruhopp.
 x head|Med trollkarlshatten börjar du varje pausspel med tio poäng.
 x double|Raketen ger dig dubbla poäng i alla pausspel!
 x poop|Med bajshatten ger bajs och kaktusar pluspoäng. Tryck på allt!
+x magnet|Med magneten fångar korgen frukt från längre håll i Fruktfångaren.
+x peek|Med kristallkulan får du tjuvkika på alla kort först i Djurmemory.
+x owl|Ugglan hjälper dig. I Härma djuren blinkar djuren långsammare.
+x time2|Väckarklockan ger dig tio sekunder till i alla pausspel.
+x combo|Med eldhatten får du bonuspoäng redan vid var tredje träff i rad.
+x life2|Hjärtat ger dig ett extra liv i alla pausspel som har liv.
+x gem|Med diamanten får du dubbelt så många mynt från alla pausspel!
+x dino|Dinosaurien ger dig tredubbla poäng i alla pausspel. Rawr!
+x start|Regnbågen ger dig tjugofem poäng direkt när du börjar ett pausspel.
 x ufo|Ufot hjälper dig. Var tionde sekund fångar det allt på skärmen!
 u world0|Det var en gång en papegoja som hette Polly. Hon bodde i Gold Coast i Australien och kunde alla engelska ord i hela världen. Men en natt kom den tokiga Ordtjuven och snodde vartenda ord! Han flög iväg i sin pruttande luftballong och tappade orden längs hela vägen till Lund. Nu behöver Polly din hjälp. Samla orden, res till Australien och ge dem tillbaka!
 u world1|Du har rest genom hela Europa! Nu fortsätter resan mot Indien. Vill du resa genom öknen eller över bergen?
@@ -254,6 +263,9 @@ u fact|Lyssna på det här tokiga!
 u whack|Tryck på djuren som tittar upp. Men akta dig för bajset!
 u rain|Fånga djuren som faller. Rör inte kaktusen!
 u roo|Tryck för att hoppa över kaktusarna och ta stjärnorna. Men hoppa inte när fåglarna kommer!
+u memory|Vänd två kort i taget och hitta paren!
+u catch|Dra korgen fram och tillbaka och fånga frukten. Tappa ingen! Och akta dig för kaktusar och bajs.
+u simon|Titta noga på vilka djur som blinkar. Tryck sedan på dem i samma ordning!
 u notix|Biljetterna är slut. Klara en etapp till, så får du en ny.
 u diploma|Grattis! Du har rest hela vägen från Lund till Gold Coast, och du har lärt dig engelska på vägen. Nu är du redo för Australien!
 u ending|Ordtjuven började gråta. Jag ville bara lära mig engelska, snyftade han. Då lärde du honom alla ord du hade samlat. Polly fick tillbaka sin röst, och alla åt tårta tillsammans. Snipp, snapp, snut, så var sagan slut!

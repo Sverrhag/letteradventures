@@ -35,9 +35,11 @@ const SILLY = ['Banan-tastiskt!', 'Du är smartare än en bläckfisk med glasög
 const PET_SAYS = ['Kittla mig inte!', 'Hihi!', 'Jag är en potatis!', 'Oj, jag pruttade!', 'Wiiiii!', 'Har du sett min hatt?', 'Boing boing!', 'Jag kan flyga! Nästan.', 'G\'day mate!', 'Too easy!'];
 const PARADE = ['🐔💨', '🦆🦆🦆', '🐷🛹', '🦘🦘', '🐒🍌', '🐘🎺', '🦖', '🐧🛷', '🚀🐮'];
 // What the shop sells: [picture, price, name, what it does in the break games (the key of its voice line), the same in words].
-const SHOP = [['🪖', 60, 'Hjälmen', 'life', 'Ett extra liv i Känguruhopp'], ['🕶️', 80, 'Solglasögonen', 'slow', 'Djuren tittar upp längre i Pricka djuren'], ['🎧', 100, 'Hörlurarna', 'time', 'Tio sekunder längre i alla spel'],
+const SHOP = [['🪖', 60, 'Hjälmen', 'life', 'Ett extra liv i spel med liv'], ['🕶️', 80, 'Solglasögonen', 'slow', 'Djuren tittar upp längre i Pricka djuren'], ['🎧', 100, 'Hörlurarna', 'time', 'Tio sekunder längre i alla spel'],
   ['👒', 120, 'Fjäderhatten', 'feather', 'Djuren faller långsammare i Djurregn'], ['🍌', 150, 'Bananhatten', 'banana', 'Gyllene bananer värda fem poäng'], ['🌸', 150, 'Lyckoblomman', 'safe', 'Bajs och kaktusar ger inga minuspoäng'],
-  ['🦋', 200, 'Fjärilsvingarna', 'jump2', 'Dubbelhopp i Känguruhopp'], ['🎩', 250, 'Trollkarlshatten', 'head', 'Börja varje spel med tio poäng'], ['🚀', 300, 'Raketen', 'double', 'Dubbla poäng i alla spel'], ['💩', 400, 'Bajshatten', 'poop', 'Bajs och kaktusar ger pluspoäng!'], ['🛸', 500, 'Ufot', 'ufo', 'Fångar allt på skärmen var tionde sekund']];
+  ['🦋', 200, 'Fjärilsvingarna', 'jump2', 'Dubbelhopp i Känguruhopp'], ['🎩', 250, 'Trollkarlshatten', 'head', 'Börja varje spel med tio poäng'], ['🚀', 300, 'Raketen', 'double', 'Dubbla poäng i alla spel'], ['💩', 400, 'Bajshatten', 'poop', 'Bajs och kaktusar ger pluspoäng!'], ['🛸', 500, 'Ufot', 'ufo', 'Fångar allt på skärmen var tionde sekund'],
+  ['🧲', 350, 'Magneten', 'magnet', 'Korgen fångar från längre håll i Fruktfångaren'], ['🔮', 400, 'Kristallkulan', 'peek', 'Tjuvkika på alla kort i Djurmemory'], ['🦉', 450, 'Ugglan', 'owl', 'Djuren blinkar långsammare i Härma djuren'], ['⏰', 600, 'Väckarklockan', 'time2', 'Tio sekunder till i alla spel'],
+  ['🔥', 700, 'Eldhatten', 'combo', 'Bonuspoäng vid var tredje träff i rad'], ['💖', 900, 'Hjärtat', 'life2', 'Ett extra liv i spel med liv'], ['💎', 1200, 'Diamanten', 'gem', 'Dubbelt så många mynt från alla spel'], ['🦖', 1500, 'Dinosaurien', 'dino', 'Tredubbla poäng i alla spel'], ['🌈', 2000, 'Regnbågen', 'start', 'Börja varje spel med 25 poäng']];
 const BOSS = [['🦹', 'Morotstjuven'], ['🧌', 'Skogstrollet'], ['👹', 'Savannbusen'], ['🦑', 'Kapten Bläck'], ['🧙‍♂️', 'Ordtjuven']];
 const CARRY = ['🐶', '🐱', '🐰', '🦊', '🐻', '🐼', '🐨', '🐸', '🐵', '🐷', '🐮', '🦁', '🐧', '🦉'];
 const ASK = { hear: 'Vilket ord hör du?', pairs: 'Para ihop orden', intro: ['Nytt ord', 'Ny mening'], pickSv: 'Vad betyder ordet?', pickEn: 'Vilket ord är det på engelska?', spell: 'Skriv ordet på engelska', mean: 'Vad betyder meningen?', build: 'Bygg meningen på engelska', dict: 'Lyssna och bygg meningen' };
@@ -602,7 +604,8 @@ function rhyme(key) {
 }
 
 // ---- Break games: one go for every finished stage ----
-const GAMES = [['whack', '🐹', 'Pricka djuren', 'Tryck på djuren som tittar upp. Akta bajset!'], ['rain', '🌧️', 'Djurregn', 'Fånga djuren som faller. Rör inte kaktusen!'], ['roo', '🦘', 'Känguruhopp', 'Hoppa över kaktusarna och ta stjärnorna. Men stå kvar på marken när fåglarna kommer!']];
+const GAMES = [['whack', '🐹', 'Pricka djuren', 'Tryck på djuren som tittar upp. Akta bajset!'], ['rain', '🌧️', 'Djurregn', 'Fånga djuren som faller. Rör inte kaktusen!'], ['roo', '🦘', 'Känguruhopp', 'Hoppa över kaktusarna och ta stjärnorna. Men stå kvar på marken när fåglarna kommer!'],
+  ['memory', '🃏', 'Djurmemory', 'Vänd två kort i taget och hitta paren.'], ['catch', '🧺', 'Fruktfångaren', 'Dra korgen och fånga frukten. Tappa ingen, och akta kaktusar och bajs!'], ['simon', '🎶', 'Härma djuren', 'Titta vilka djur som blinkar och tryck i samma ordning.']];
 function mini() {
   show('mini', `<div class="top"><button class="chip" id="bX">← Kartan</button><h1>🎮 Pausspel</h1><span class="chip">🎟️ ${S.tix} kvar</span></div>
     <div class="center">${S.tix ? '<p>Välj ett spel. Varje spel kostar en biljett.</p>' : '<p><b>Biljetterna är slut!</b> Klara en etapp till så får du en ny.</p>'}
@@ -616,19 +619,21 @@ function game(id) {
   const P = Object.fromEntries(SHOP.map(x => [x[3], S.own.includes(x[0])])), mine = SHOP.filter(x => S.own.includes(x[0])).map(x => x[0]).join('');
   show('game', `<div class="top"><h1>${g[1]} ${g[2]}</h1><span class="chip" id="gP">${mine || 'Inga prylar än'}</span><span class="chip" id="gT">⏱️</span><span class="chip" id="gS">⭐ 0</span></div><div id="field"></div>`);
   chain(() => tell(id), () => sayNamed('luck'));
-  const field = $('#field'), timers = []; let score = P.head ? 10 : 0, left = 40 + (P.time ? 10 : 0), over = false, combo = 0, lives = id === 'roo' ? 3 + (P.life ? 1 : 0) : 0;
+  const field = $('#field'), timers = []; let score = (P.head ? 10 : 0) + (P.start ? 25 : 0), left = 40 + (P.time ? 10 : 0) + (P.time2 ? 10 : 0), over = false, combo = 0, lives = ['roo', 'catch', 'simon'].includes(id) ? 3 + (P.life ? 1 : 0) + (P.life2 ? 1 : 0) : 0;
   const hud = () => { if ($('#gS')) { $('#gS').textContent = `⭐ ${score}${combo >= 5 ? ` 🔥${combo}` : ''}${lives ? ' · ' + '❤️'.repeat(lives) : ''}`; $('#gT').textContent = '⏱️ ' + left; } };
   const float = (el, text) => { const r = el.getBoundingClientRect(), f = document.createElement('div'); f.className = 'pts'; f.textContent = text; f.style.left = r.left + r.width / 2 + 'px'; f.style.top = r.top + 'px'; document.body.append(f); setTimeout(() => f.remove(), 800); };
-  // Points: doubled by the rocket, and every fifth hit in a row gives two more.
-  const hit = (n, el) => { n *= P.double ? 2 : 1; combo++; if (combo % 5 === 0) n += 2; score += n; SFX.pop(); if (el) float(el, '+' + n); hud(); };
+  // Points: doubled by the rocket, three times with the dinosaur, and every fifth hit in a row (every third with the fire hat) gives two more.
+  const hit = (n, el) => { n *= P.dino ? 3 : P.double ? 2 : 1; combo++; if (combo % (P.combo ? 3 : 5) === 0) n += 2; score += n; SFX.pop(); if (el) float(el, '+' + n); hud(); };
   // Something that should not be touched: with the poo hat it gives points, with the flower nothing happens.
   const oops = el => { if (P.poop) return hit(3, el); combo = 0; if (P.safe) { SFX.boing(); if (el) float(el, '🌸'); } else { score = Math.max(0, score - 2); SFX.prutt(); if (el) float(el, '−2'); } hud(); };
   const end = () => { if (over) return; over = true; stopGame = null; timers.forEach(clearInterval);
-    const rec = score > (S.hi[id] || 0), coins = Math.min(40, Math.floor(score / 4)); if (rec) S.hi[id] = score; S.coins += coins; save(); SFX.fanfare(); rain(rec ? ['🏅', '⭐', '🪙'] : ['🪙'], 14);
+    const rec = score > (S.hi[id] || 0), coins = Math.min(40, Math.floor(score / 4)) * (P.gem ? 2 : 1); if (rec) S.hi[id] = score; S.coins += coins; save(); SFX.fanfare(); rain(rec ? ['🏅', '⭐', '🪙'] : ['🪙'], 14);
     show('gameover', `<div class="center"><div class="pic">${g[1]}</div><h1>${score} poäng!${rec ? ' Nytt rekord! 🏅' : ''}</h1><div class="card"><b>Du tjänade 🪙 ${coins} mynt</b><br><small>Nu har du 🪙 ${S.coins}. I affären finns saker som gör dig ännu bättre!</small></div>
       <p>${S.tix ? `<button class="btn big" id="bM">🎮 Spela igen (${S.tix} kvar)</button> ` : ''}<button class="btn big ghost" id="bS">🛍️ Affären</button> <button class="btn big ghost" id="bK">Tillbaka till äventyret ➜</button></p></div>`);
     if ($('#bM')) $('#bM').onclick = mini; $('#bS').onclick = () => shop(true); $('#bK').onclick = () => S.run ? play() : map(); };
   stopGame = () => { over = true; timers.forEach(clearInterval); };
+  // A life lost, in the games that have lives.
+  const lose = () => { combo = 0; lives--; SFX.prutt(); hud(); if (lives <= 0) end(); };
   timers.push(setInterval(() => { left--; hud(); if (left <= 0) end(); }, 1000));
   const golden = () => P.banana && Math.random() < .12;
   let sweep = () => {};
@@ -648,6 +653,47 @@ function game(id) {
     sweep = () => field.querySelectorAll('.fall:not([data-bad])').forEach(pop);
     timers.push(setInterval(() => { const b = document.createElement('button'), bad = Math.random() < .18; b.className = 'fall'; if (bad) b.dataset.bad = 1; b.textContent = bad ? '🌵' : golden() ? '🍌' : pick(ANIMALS); b.style.left = rnd(88) + '%'; b.style.animationDuration = 2 + Math.random() * 2 + left / 25 + (P.feather ? 1.5 : 0) + 's';
       b.onpointerdown = () => pop(b); b.onanimationend = () => { if (!bad) { combo = 0; hud(); } b.remove(); }; field.append(b); }, 480));
+  } else if (id === 'memory') {
+    // Pairs: two cards are turned at a time. A board that is cleared gives five points and a new board.
+    let up = [], lock = false, pairs = 0, cards = [];
+    const face = (b, on) => { b.firstChild.textContent = on ? b.dataset.c : '❓'; b.classList.toggle('up', on); };
+    const pair = (a, c) => { a.classList.add('done'); c.classList.add('done'); hit(a.dataset.c === '🍌' ? 5 : 3, c); if (++pairs === 6) setTimeout(() => { if (!over) { hit(5, field); deal(); } }, 650); };
+    const deal = () => { const ems = shuffle(ANIMALS).slice(0, 6); if (P.banana) ems[0] = '🍌';
+      field.innerHTML = `<div class="holes">${shuffle([...ems, ...ems]).map(c => `<button class="hole mem" data-c="${c}"><span>❓</span></button>`).join('')}</div>`; up = []; lock = false; pairs = 0; cards = [...field.querySelectorAll('.mem')];
+      // The crystal ball: all the cards are shown for a moment first.
+      if (P.peek) { lock = true; cards.forEach(b => face(b, true)); const mine = cards; setTimeout(() => { if (over || cards !== mine) return; mine.forEach(b => b.classList.contains('done') || face(b, false)); lock = false; }, 2500); }
+      cards.forEach(b => b.onpointerdown = () => { if (lock || over || b.classList.contains('up')) return; face(b, true); SFX.pop(); up.push(b); if (up.length < 2) return;
+        const [a, c] = up; up = [];
+        if (a.dataset.c === c.dataset.c) pair(a, c); else { lock = true; combo = 0; hud(); setTimeout(() => { face(a, false); face(c, false); lock = false; }, 750); } }); };
+    sweep = () => { if (lock) return; const a = cards.find(b => !b.classList.contains('done')); if (!a) return; const c = cards.find(b => b !== a && b.dataset.c === a.dataset.c); up.forEach(b => face(b, false)); up = []; face(a, true); face(c, true); pair(a, c); };
+    deal();
+  } else if (id === 'catch') {
+    // The basket follows the finger. Fruit that falls to the ground costs a life; a cactus or a poo in the basket costs points.
+    field.innerHTML = `<div id="ground"></div><div id="basket">🧺</div>`; field.style.touchAction = 'none';
+    const bk = $('#basket'), T0 = left, reach = P.magnet ? 16 : 9; let bx = 50, px = 50, items = [], t0 = performance.now(), spawn = .8;
+    const move = e => { const r = field.getBoundingClientRect(); bx = Math.max(5, Math.min(95, (e.clientX - r.left) / r.width * 100)); bk.style.left = bx + '%'; };
+    field.onpointerdown = field.onpointermove = move;
+    sweep = () => items.forEach(o => { if (!o.bad && !o.hit) { o.hit = true; o.el.remove(); hit(1, bk); } });
+    timers.push(setInterval(() => { const t = performance.now(), dt = Math.min(.05, (t - t0) / 1000), hard = Math.min(1, (T0 - left) / 35); t0 = t;
+      spawn -= dt;
+      if (spawn <= 0) { const bad = Math.random() < .2, el = document.createElement('div'), x = px = Math.max(6, Math.min(94, px - 40 + rnd(81))); el.className = 'drop2'; /* never far from the one before: there must be time to get there */ el.textContent = bad ? pick(['🌵', '💩']) : golden() ? '🍌' : pick(['🍎', '🍐', '🍊', '🍓', '🍉', '🍇', '🥝', '🍒']); el.style.left = x + '%';
+        field.append(el); items.push({ x, y: -12, el, bad, v: 34 + hard * 34 + Math.random() * 12 }); spawn = (1.15 - hard * .45) * (.75 + Math.random() * .5); }
+      items = items.filter(o => { if (over || o.hit) return false; o.y += o.v * dt; o.el.style.top = o.y + '%';
+        if (o.y > 66 && o.y < 84 && Math.abs(o.x - bx) < reach) { const t = o.el.textContent; o.el.remove(); o.bad ? oops(bk) : hit(t === '🍌' ? 5 : 1, bk); return false; }
+        if (o.y > 92) { o.el.remove(); if (!o.bad) { float(bk, '💔'); lose(); } return false; } return true; });
+    }, 16));
+  } else if (id === 'simon') {
+    // The animals light up in a row that grows by one each time, and are to be pressed in the same order. A wrong one costs a life.
+    const F = [330, 392, 494, 587], gap = P.owl ? 950 : 620;
+    field.innerHTML = `<div class="simon">${['🐶', '🐱', '🐸', '🐷'].map((a, i) => `<button class="pad" data-i="${i}">${a}</button>`).join('')}</div><div id="sT"></div>`;
+    const pads = [...field.querySelectorAll('.pad')], says = t => { if ($('#sT')) $('#sT').textContent = t; }; let seq = [], at = 0, showing = true;
+    const flash = (i, ms = 320) => { pads[i].classList.add('lit'); tone(F[i], F[i], .28, 'triangle'); setTimeout(() => pads[i].classList.remove('lit'), ms); };
+    const round = again => { if (!again) seq.push(rnd(4)); at = 0; showing = true; says('👀 Titta!'); seq.forEach((s, k) => setTimeout(() => { if (!over) flash(s, gap * .6); }, 800 + k * gap)); setTimeout(() => { if (!over) { showing = false; says('👉 Din tur!'); } }, 800 + seq.length * gap); };
+    pads.forEach((b, i) => b.onpointerdown = () => { if (showing || over) return; flash(i);
+      if (i === seq[at]) { if (++at === seq.length) { showing = true; hit(seq.length, b); says('✔ Rätt!'); setTimeout(() => { if (!over) round(); }, 800); } }
+      else { showing = true; float(b, '✘'); says('Oj! Titta en gång till.'); lose(); if (!over) setTimeout(() => { if (!over) round(true); }, 1000); } });
+    sweep = () => hit(2, field);
+    round();
   } else {
     // Jump over what stands on the ground, stay down when a bird comes, and jump for the stars.
     // Jumping all the time does not work: a bird flies at the height of a jump. It gets faster all the while.
