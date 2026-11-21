@@ -167,6 +167,8 @@ table { border-collapse:collapse; margin:0 auto; font-size:.8em; } td, th { padd
 .simon { position:absolute; inset:0; display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:2vmin; padding:2vmin 2vmin 11vmin; } .pad { font-size:17vmin; line-height:1; border-radius:.3em; opacity:.6; transition:transform .1s, opacity .1s; }
 .pad:nth-child(1) { background:#ff8a80; } .pad:nth-child(2) { background:#82b1ff; } .pad:nth-child(3) { background:#b9f6ca; } .pad:nth-child(4) { background:#ffe57f; } .pad.lit { opacity:1; transform:scale(1.05); box-shadow:0 0 0 .08em #fff, 0 0 .5em #fff; }
 #sT { position:absolute; left:0; right:0; bottom:2vmin; text-align:center; font-size:5vmin; font-weight:800; }
+#pet .hat.h1 { left:-.12em; top:.5em; font-size:.46em; transform:rotate(-18deg); } #pet .hat.h2 { left:auto; right:-.12em; top:.5em; font-size:.46em; transform:rotate(18deg); }
+.holes.four { grid-template-rows:repeat(4, 1fr); } .holes.four .hole { font-size:9vmin; } .simon { grid-template-columns:1fr 1fr 1fr !important; } .pad:nth-child(5) { background:#ea80fc; } .pad:nth-child(6) { background:#ffab91; }
 #ground { position:absolute; left:0; right:0; bottom:0; height:12%; background:#c98b4a; }
 /* Narrow screens: a phone held upright. */
 @media (max-width:700px) { .opts { grid-template-columns:1fr 1fr; } .opts.one { grid-template-columns:1fr; } .opt { font-size:1.1em; padding:.6em .4em; } .pairs { grid-template-columns:1fr 1fr; } .tile { font-size:1.15em; } .tile.l { font-size:1.35em; min-width:2em; }
@@ -185,6 +187,6 @@ table { border-collapse:collapse; margin:0 auto; font-size:.8em; } td, th { padd
 <script src="land.js?v=0f649ed84ie"></script>
 <script src="journey.js?v=94db7c4b13qi"></script>
 <script src="data.js?v=5f4da3db15nu"></script>
-<script src="game.js?v=b1f5bfb41r54"></script>
+<script src="game.js?v=3aeae6fa1rqh"></script>
 </body>
 </html>

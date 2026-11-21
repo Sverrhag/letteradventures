@@ -48,10 +48,13 @@ const CONF = [['is', 'are', 'am', 'be'], ['a', 'an', 'the'], ['he', 'she', 'it',
 
 // ---- What is kept ----
 const KEY = 'zoo1';
-const DEF = { name: null, done: {}, tix: 0, coins: 0, own: [], told: {}, route: {}, gold: {}, stat: {}, run: null, hi: {}, rhyme: {}, set: { voice: 'a', pal: 0, pet: '🦘', hat: '', snd: 'pling', silly: true, sv: true } };
+const DEF = { name: null, done: {}, tix: 0, coins: 0, own: [], told: {}, route: {}, gold: {}, stat: {}, run: null, hi: {}, rhyme: {}, set: { voice: 'a', pal: 0, pet: '🦘', hat: '', wear: [], snd: 'pling', silly: true, sv: true } };
 let S = (() => { try { const s = JSON.parse(localStorage.getItem(KEY)); return s && typeof s === 'object' ? Object.assign({}, DEF, s, { set: Object.assign({}, DEF.set, s.set) }) : structuredClone(DEF); } catch { return structuredClone(DEF); } })();
 if (S.run && (!S.run.st || !S.run.v)) S.run = null;
-S.own = [...S.own]; S.told = Object.assign({}, S.told); S.route = Object.assign({}, S.route); S.gold = Object.assign({}, S.gold); S.rhyme = Object.assign({}, S.rhyme);
+S.own = [...S.own]; S.told = Object.assign({}, S.told); S.route = Object.assign({}, S.route); S.gold = Object.assign({}, S.gold);
+// What the friend wears: up to three things. Before, it was one (set.hat), which is taken over.
+S.set.wear = Array.isArray(S.set.wear) && S.set.wear !== DEF.set.wear ? S.set.wear.slice(0, 3) : S.set.hat ? [S.set.hat] : [];
+const wear = h => { const w = S.set.wear, i = w.indexOf(h); if (i >= 0) w.splice(i, 1); else { w.push(h); if (w.length > 3) w.shift(); } save(); }; S.rhyme = Object.assign({}, S.rhyme);
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch {} };
 const stars = () => Object.values(S.done).reduce((a, b) => a + b, 0);
 const open = li => li === 0 || S.done[li - 1] > 0;
@@ -161,7 +164,7 @@ function petTrick() {
   if (k === 'prutt') { SFX.prutt(); bubble('💨 ' + pick(PET_SAYS)); p.classList.add('hop'); setTimeout(() => p.classList.remove('hop'), 600); return; }
   SFX.boing(); p.classList.add(k); bubble(pick(PET_SAYS)); setTimeout(() => p.classList.remove(k), k === 'hop' ? 600 : 1500);
 }
-const petHtml = () => `<button id="pet" aria-label="Kompis">${S.set.pet}${S.set.hat ? `<span class="hat">${S.set.hat}</span>` : ''}</button>`;
+const petHtml = () => `<button id="pet" aria-label="Kompis">${S.set.pet}${S.set.wear.map((h, i) => `<span class="hat h${i}">${h}</span>`).join('')}</button>`;
 
 // ---- Screens ----
 let screen = '', stopGame = null, touched = false, mapTold = false;
@@ -436,15 +439,15 @@ function album() {
 // The shop: every thing bought with coins is a hat to wear and gives an advantage in the break games, for good.
 function shop(hello) {
   show('shop', `<div class="top"><button class="chip" id="bX">← Kartan</button><h1>🛍️ Affären</h1><span class="chip">🪙 ${S.coins} mynt</span></div>
-    <div class="scroll"><div class="center" style="overflow:visible"><div class="try">${petHtml()}</div><p>Allt du köper hjälper dig i pausspelen, för alltid. Du kan också ha det som hatt!</p>
-    <div class="grid">${SHOP.map(([h, c, name, , what]) => { const mine = S.own.includes(h), on = S.set.hat === h; return `<button class="card ware ${mine ? 'mine' : S.coins >= c ? '' : 'dear'} ${on ? 'on' : ''}" data-h="${h}" data-c="${c}"><b>${h}</b><span class="nm">${name}</span><span class="wt">${what}</span><small>${on ? '✔ Köpt · har på sig' : mine ? '✔ Köpt · sätt på' : `🪙 ${c}`}</small></button>`; }).join('')}</div>
+    <div class="scroll"><div class="center" style="overflow:visible"><div class="try">${petHtml()}</div><p>Allt du köper hjälper dig i pausspelen, för alltid. Du kan ha på dig tre saker samtidigt: tryck på dem!</p>
+    <div class="grid">${SHOP.map(([h, c, name, , what]) => { const mine = S.own.includes(h), on = S.set.wear.includes(h); return `<button class="card ware ${mine ? 'mine' : S.coins >= c ? '' : 'dear'} ${on ? 'on' : ''}" data-h="${h}" data-c="${c}"><b>${h}</b><span class="nm">${name}</span><span class="wt">${what}</span><small>${on ? '✔ Köpt · har på sig' : mine ? '✔ Köpt · sätt på' : `🪙 ${c}`}</small></button>`; }).join('')}</div>
     <p>Du får mynt för rätt svar, i paketen efter varje etapp och när du spelar pausspel.</p></div></div>`);
   $('#bX').onclick = () => map(); $('#pet').onclick = petTrick;
   if (hello) chain(() => tell('shop'));
   on('[data-h]', el => { const h = el.dataset.h, c = +el.dataset.c, item = SHOP.find(x => x[0] === h);
-    if (S.own.includes(h)) { S.set.hat = S.set.hat === h ? '' : h; save(); SFX.pop(); return shop(); }
+    if (S.own.includes(h)) { wear(h); SFX.pop(); return shop(); }
     if (S.coins < c) { SFX.bad(); el.classList.add('no'); setTimeout(() => el.classList.remove('no'), 500); bubble(`Du behöver ${c - S.coins} mynt till!`, 2600); chain(() => tell('poor')); return; }
-    S.coins -= c; S.own.push(h); S.set.hat = h; save(); shop(); SFX.fanfare(); rain([h, '🪙'], 16); $('#pet').classList.add('spin'); chain(() => tell('bought'), () => S.set.sv ? say('s', D.perk[item[3]]) : 0); });
+    S.coins -= c; S.own.push(h); if (!S.set.wear.includes(h)) wear(h); save(); shop(); SFX.fanfare(); rain([h, '🪙'], 16); $('#pet').classList.add('spin'); chain(() => tell('bought'), () => S.set.sv ? say('s', D.perk[item[3]]) : 0); });
 }
 
 function settings() {
@@ -452,7 +455,7 @@ function settings() {
   show('settings', `<div class="top"><button class="chip" id="bX">← Kartan</button><h1>⚙️ Gör spelet till ditt</h1></div><div class="scroll"><div class="set card">
     ${row('Röst', VOICES.map(([v, t]) => `<button data-k="voice" data-v="${v}" class="${S.set.voice === v ? 'on' : ''}">${t}</button>`).join(''))}
     ${row('Kompis', PETS.flat().map(p => `<button class="em ${S.set.pet === p ? 'on' : ''}" data-k="pet" data-v="${p}" ${have.includes(p) ? '' : 'disabled'}>${have.includes(p) ? p : '🔒'}</button>`).join(''))}
-    ${row('Hatt', [...HATS, ...S.own].map(h => `<button class="em ${S.set.hat === h ? 'on' : ''}" data-k="hat" data-v="${h}">${h || '🚫'}</button>`).join(''))}
+    ${row('Ha på sig<br>(högst tre)', [...HATS, ...S.own].map(h => `<button class="em ${h ? S.set.wear.includes(h) ? 'on' : '' : S.set.wear.length ? '' : 'on'}" data-wear="${h}">${h || '🚫'}</button>`).join(''))}
     ${row('Färg', PALS.map((c, i) => `<button data-k="pal" data-v="${i}" class="${S.set.pal === i ? 'on' : ''}" style="background:${c};color:#fff">${S.set.pal === i ? '✔' : '&nbsp;'}</button>`).join(''))}
     ${row('Ljud vid rätt svar', SOUNDS.map(([v, t]) => `<button data-k="snd" data-v="${v}" class="${S.set.snd === v ? 'on' : ''}">${t}</button>`).join(''))}
     ${row('Tokigheter', onoff('silly'))}${row('Svensk röst', onoff('sv'))}
@@ -460,6 +463,7 @@ function settings() {
     ${row('Tokknappen', `<button id="bSilly">🤪 Tryck inte här!</button>`)}
     ${row('Vuxna', `<button id="bAd">🔐 Håll in i 3 sekunder</button>`)}</div><div id="adult"></div></div><div class="foot">${petHtml()}<span></span></div>`);
   $('#bX').onclick = () => map(); $('#pet').onclick = petTrick;
+  on('[data-wear]', el => { if (el.dataset.wear) wear(el.dataset.wear); else { S.set.wear = []; save(); } SFX.pop(); settings(); });
   on('[data-k]', el => { const k = el.dataset.k, v = el.dataset.v; S.set[k] = k === 'pal' ? +v : v === 'true' ? true : v === 'false' ? false : v; save();
     settings(); if (k === 'voice') sayEn('Hello!'); else if (k === 'snd') SFX[S.set.snd](); else SFX.pop(); });
   $('#bName').onclick = () => { S.name = null; save(); start(); };
@@ -605,7 +609,7 @@ function rhyme(key) {
 
 // ---- Break games: one go for every finished stage ----
 const GAMES = [['whack', '🐹', 'Pricka djuren', 'Tryck på djuren som tittar upp. Akta bajset!'], ['rain', '🌧️', 'Djurregn', 'Fånga djuren som faller. Rör inte kaktusen!'], ['roo', '🦘', 'Känguruhopp', 'Hoppa över kaktusarna och ta stjärnorna. Men stå kvar på marken när fåglarna kommer!'],
-  ['memory', '🃏', 'Djurmemory', 'Vänd två kort i taget och hitta paren.'], ['catch', '🧺', 'Fruktfångaren', 'Dra korgen och fånga frukten. Tappa ingen, och akta kaktusar och bajs!'], ['simon', '🎶', 'Härma djuren', 'Titta vilka djur som blinkar och tryck i samma ordning.']];
+  ['memory', '🃏', 'Djurmemory', 'Vänd två kort i taget och hitta paren. Fel par kostar en poäng!'], ['catch', '🧺', 'Fruktfångaren', 'Dra korgen och fånga frukten. Tappa ingen, och akta kaktusar och bajs!'], ['simon', '🎶', 'Härma djuren', 'Titta vilka djur som blinkar och tryck i samma ordning.']];
 function mini() {
   show('mini', `<div class="top"><button class="chip" id="bX">← Kartan</button><h1>🎮 Pausspel</h1><span class="chip">🎟️ ${S.tix} kvar</span></div>
     <div class="center">${S.tix ? '<p>Välj ett spel. Varje spel kostar en biljett.</p>' : '<p><b>Biljetterna är slut!</b> Klara en etapp till så får du en ny.</p>'}
@@ -646,49 +650,49 @@ function game(id) {
     const whack = h => { const t = h.textContent; if (!t) return; h.textContent = ''; t === '💩' ? oops(h) : hit(t === '🍌' ? 5 : 1, h); };
     holes.forEach(h => h.onpointerdown = () => whack(h));
     sweep = () => holes.forEach(h => { if (h.textContent && h.textContent !== '💩') whack(h); });
-    timers.push(setInterval(() => { const h = pick(holes); if (h.textContent) return; const what = Math.random() < .15 ? '💩' : golden() ? '🍌' : pick(ANIMALS); h.innerHTML = `<span>${what}</span>`;
-      setTimeout(() => { if (h.textContent === what) { h.textContent = ''; if (what !== '💩') { combo = 0; hud(); } } }, 700 + left * 12 + (P.slow ? 500 : 0)); }, 420));
+    timers.push(setInterval(() => { const h = pick(holes); if (h.textContent) return; const what = Math.random() < .24 ? '💩' : golden() ? '🍌' : pick(ANIMALS); h.innerHTML = `<span>${what}</span>`;
+      setTimeout(() => { if (h.textContent === what) { h.textContent = ''; if (what !== '💩') { combo = 0; hud(); } } }, 480 + left * 7 + (P.slow ? 400 : 0)); }, 360));
   } else if (id === 'rain') {
     const pop = b => { if (!b.isConnected) return; const bad = b.dataset.bad, t = b.textContent; float(b, ''); b.remove(); bad ? oops(field) : hit(t === '🍌' ? 5 : 1, field); };
     sweep = () => field.querySelectorAll('.fall:not([data-bad])').forEach(pop);
-    timers.push(setInterval(() => { const b = document.createElement('button'), bad = Math.random() < .18; b.className = 'fall'; if (bad) b.dataset.bad = 1; b.textContent = bad ? '🌵' : golden() ? '🍌' : pick(ANIMALS); b.style.left = rnd(88) + '%'; b.style.animationDuration = 2 + Math.random() * 2 + left / 25 + (P.feather ? 1.5 : 0) + 's';
-      b.onpointerdown = () => pop(b); b.onanimationend = () => { if (!bad) { combo = 0; hud(); } b.remove(); }; field.append(b); }, 480));
+    timers.push(setInterval(() => { const b = document.createElement('button'), bad = Math.random() < .27; b.className = 'fall'; if (bad) b.dataset.bad = 1; b.textContent = bad ? '🌵' : golden() ? '🍌' : pick(ANIMALS); b.style.left = rnd(88) + '%'; b.style.animationDuration = 1.3 + Math.random() * 1.3 + left / 32 + (P.feather ? 1.2 : 0) + 's';
+      b.onpointerdown = () => pop(b); b.onanimationend = () => { if (!bad) { combo = 0; hud(); } b.remove(); }; field.append(b); }, 380));
   } else if (id === 'memory') {
     // Pairs: two cards are turned at a time. A board that is cleared gives five points and a new board.
     let up = [], lock = false, pairs = 0, cards = [];
     const face = (b, on) => { b.firstChild.textContent = on ? b.dataset.c : '❓'; b.classList.toggle('up', on); };
-    const pair = (a, c) => { a.classList.add('done'); c.classList.add('done'); hit(a.dataset.c === '🍌' ? 5 : 3, c); if (++pairs === 6) setTimeout(() => { if (!over) { hit(5, field); deal(); } }, 650); };
-    const deal = () => { const ems = shuffle(ANIMALS).slice(0, 6); if (P.banana) ems[0] = '🍌';
-      field.innerHTML = `<div class="holes">${shuffle([...ems, ...ems]).map(c => `<button class="hole mem" data-c="${c}"><span>❓</span></button>`).join('')}</div>`; up = []; lock = false; pairs = 0; cards = [...field.querySelectorAll('.mem')];
+    const pair = (a, c) => { a.classList.add('done'); c.classList.add('done'); hit(a.dataset.c === '🍌' ? 5 : 3, c); if (++pairs === 8) setTimeout(() => { if (!over) { hit(5, field); deal(); } }, 650); };
+    const deal = () => { const ems = shuffle(ANIMALS).slice(0, 8); if (P.banana) ems[0] = '🍌';
+      field.innerHTML = `<div class="holes four">${shuffle([...ems, ...ems]).map(c => `<button class="hole mem" data-c="${c}"><span>❓</span></button>`).join('')}</div>`; up = []; lock = false; pairs = 0; cards = [...field.querySelectorAll('.mem')];
       // The crystal ball: all the cards are shown for a moment first.
-      if (P.peek) { lock = true; cards.forEach(b => face(b, true)); const mine = cards; setTimeout(() => { if (over || cards !== mine) return; mine.forEach(b => b.classList.contains('done') || face(b, false)); lock = false; }, 2500); }
+      if (P.peek) { lock = true; cards.forEach(b => face(b, true)); const mine = cards; setTimeout(() => { if (over || cards !== mine) return; mine.forEach(b => b.classList.contains('done') || face(b, false)); lock = false; }, 2000); }
       cards.forEach(b => b.onpointerdown = () => { if (lock || over || b.classList.contains('up')) return; face(b, true); SFX.pop(); up.push(b); if (up.length < 2) return;
         const [a, c] = up; up = [];
-        if (a.dataset.c === c.dataset.c) pair(a, c); else { lock = true; combo = 0; hud(); setTimeout(() => { face(a, false); face(c, false); lock = false; }, 750); } }); };
+        if (a.dataset.c === c.dataset.c) pair(a, c); else { lock = true; combo = 0; if (!P.safe && !P.poop) { score = Math.max(0, score - 1); float(c, '−1'); } SFX.bad(); hud(); setTimeout(() => { face(a, false); face(c, false); lock = false; }, 600); } }); };
     sweep = () => { if (lock) return; const a = cards.find(b => !b.classList.contains('done')); if (!a) return; const c = cards.find(b => b !== a && b.dataset.c === a.dataset.c); up.forEach(b => face(b, false)); up = []; face(a, true); face(c, true); pair(a, c); };
     deal();
   } else if (id === 'catch') {
     // The basket follows the finger. Fruit that falls to the ground costs a life; a cactus or a poo in the basket costs points.
     field.innerHTML = `<div id="ground"></div><div id="basket">🧺</div>`; field.style.touchAction = 'none';
-    const bk = $('#basket'), T0 = left, reach = P.magnet ? 16 : 9; let bx = 50, px = 50, items = [], t0 = performance.now(), spawn = .8;
+    const bk = $('#basket'), T0 = left, reach = P.magnet ? 14 : 7.5; let bx = 50, px = 50, items = [], t0 = performance.now(), spawn = .8;
     const move = e => { const r = field.getBoundingClientRect(); bx = Math.max(5, Math.min(95, (e.clientX - r.left) / r.width * 100)); bk.style.left = bx + '%'; };
     field.onpointerdown = field.onpointermove = move;
     sweep = () => items.forEach(o => { if (!o.bad && !o.hit) { o.hit = true; o.el.remove(); hit(1, bk); } });
     timers.push(setInterval(() => { const t = performance.now(), dt = Math.min(.05, (t - t0) / 1000), hard = Math.min(1, (T0 - left) / 35); t0 = t;
       spawn -= dt;
-      if (spawn <= 0) { const bad = Math.random() < .2, el = document.createElement('div'), x = px = Math.max(6, Math.min(94, px - 40 + rnd(81))); el.className = 'drop2'; /* never far from the one before: there must be time to get there */ el.textContent = bad ? pick(['🌵', '💩']) : golden() ? '🍌' : pick(['🍎', '🍐', '🍊', '🍓', '🍉', '🍇', '🥝', '🍒']); el.style.left = x + '%';
-        field.append(el); items.push({ x, y: -12, el, bad, v: 34 + hard * 34 + Math.random() * 12 }); spawn = (1.15 - hard * .45) * (.75 + Math.random() * .5); }
+      if (spawn <= 0) { const bad = Math.random() < .28, el = document.createElement('div'), x = px = Math.max(6, Math.min(94, px - 40 + rnd(81))); el.className = 'drop2'; /* never far from the one before: there must be time to get there */ el.textContent = bad ? pick(['🌵', '💩']) : golden() ? '🍌' : pick(['🍎', '🍐', '🍊', '🍓', '🍉', '🍇', '🥝', '🍒']); el.style.left = x + '%';
+        field.append(el); items.push({ x, y: -12, el, bad, v: 44 + hard * 40 + Math.random() * 14 }); spawn = (.9 - hard * .4) * (.75 + Math.random() * .5); }
       items = items.filter(o => { if (over || o.hit) return false; o.y += o.v * dt; o.el.style.top = o.y + '%';
         if (o.y > 66 && o.y < 84 && Math.abs(o.x - bx) < reach) { const t = o.el.textContent; o.el.remove(); o.bad ? oops(bk) : hit(t === '🍌' ? 5 : 1, bk); return false; }
         if (o.y > 92) { o.el.remove(); if (!o.bad) { float(bk, '💔'); lose(); } return false; } return true; });
     }, 16));
   } else if (id === 'simon') {
     // The animals light up in a row that grows by one each time, and are to be pressed in the same order. A wrong one costs a life.
-    const F = [330, 392, 494, 587], gap = P.owl ? 950 : 620;
-    field.innerHTML = `<div class="simon">${['🐶', '🐱', '🐸', '🐷'].map((a, i) => `<button class="pad" data-i="${i}">${a}</button>`).join('')}</div><div id="sT"></div>`;
+    const F = [330, 392, 494, 587, 659, 784], gap = P.owl ? 800 : 480;
+    field.innerHTML = `<div class="simon">${['🐶', '🐱', '🐸', '🐷', '🐵', '🐧'].map((a, i) => `<button class="pad" data-i="${i}">${a}</button>`).join('')}</div><div id="sT"></div>`;
     const pads = [...field.querySelectorAll('.pad')], says = t => { if ($('#sT')) $('#sT').textContent = t; }; let seq = [], at = 0, showing = true;
     const flash = (i, ms = 320) => { pads[i].classList.add('lit'); tone(F[i], F[i], .28, 'triangle'); setTimeout(() => pads[i].classList.remove('lit'), ms); };
-    const round = again => { if (!again) seq.push(rnd(4)); at = 0; showing = true; says('👀 Titta!'); seq.forEach((s, k) => setTimeout(() => { if (!over) flash(s, gap * .6); }, 800 + k * gap)); setTimeout(() => { if (!over) { showing = false; says('👉 Din tur!'); } }, 800 + seq.length * gap); };
+    const round = again => { if (!again) do seq.push(rnd(6)); while (seq.length < 3); at = 0; showing = true; says('👀 Titta!'); seq.forEach((s, k) => setTimeout(() => { if (!over) flash(s, gap * .6); }, 800 + k * gap)); setTimeout(() => { if (!over) { showing = false; says('👉 Din tur!'); } }, 800 + seq.length * gap); };
     pads.forEach((b, i) => b.onpointerdown = () => { if (showing || over) return; flash(i);
       if (i === seq[at]) { if (++at === seq.length) { showing = true; hit(seq.length, b); says('✔ Rätt!'); setTimeout(() => { if (!over) round(); }, 800); } }
       else { showing = true; float(b, '✘'); says('Oj! Titta en gång till.'); lose(); if (!over) setTimeout(() => { if (!over) round(true); }, 1000); } });
@@ -707,12 +711,12 @@ function game(id) {
       spawn -= dt;
       if (spawn <= 0) {
         // Never two birds in a row, so that there is always something to jump over or a moment to land.
-        const r = Math.random(), kind = golden() ? 'banana' : r < .3 && lastKind !== 'bird' ? 'bird' : r < .45 ? 'star' : 'ground', el = document.createElement('div'); lastKind = kind;
+        const r = Math.random(), kind = golden() ? 'banana' : r < .36 && lastKind !== 'bird' ? 'bird' : r < .45 ? 'star' : 'ground', el = document.createElement('div'); lastKind = kind;
         el.className = 'cactus'; el.textContent = kind === 'bird' ? pick(['🦅', '🐝', '🦇']) : kind === 'star' ? '⭐' : kind === 'banana' ? '🍌' : pick(['🌵', '🌵', '🌵', '🐊', '🦂']);
         if (kind !== 'ground') el.style.bottom = kind === 'bird' ? '33%' : '36%'; if (kind === 'bird') el.classList.add('wing');
-        field.append(el); obs.push({ x: 105, el, kind }); spawn = (1.25 - hard * .45) * (.8 + Math.random() * .5);
+        field.append(el); obs.push({ x: 105, el, kind }); spawn = (1.05 - hard * .42) * (.8 + Math.random() * .5);
       }
-      const speed = 62 + hard * 55;
+      const speed = 76 + hard * 66;
       obs = obs.filter(o => { if (over) return false; o.x -= speed * dt; o.el.style.left = o.x + '%';
         if (!o.hit && o.x < 17 && o.x > 5) {
           if (o.kind === 'star' || o.kind === 'banana') { if (y > .18) { o.hit = true; o.el.textContent = '✨'; hit(o.kind === 'banana' ? 5 : 2, roo); } }
