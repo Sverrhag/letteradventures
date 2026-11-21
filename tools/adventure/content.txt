@@ -12,6 +12,10 @@
 #   e swedish                     a chapter of the tale, told before each level, in order
 #   n key|swedish                 the start of something said to the player by name: the name is joined on after it
 #   x key|swedish                 what a thing from the shop does in the break games, said when it is bought
+#   C key|picture|title|kind|more   a chant of the bonus game; kind is pair (he + is) or seq (things in an order);
+#                                  more: wrong words to choose among as well, with spaces between
+#   c head|tail|swedish|said       a line of a pair chant; said is what the voice says, if not "head tail"
+#   c english|swedish              a line of a seq chant
 # tools/adventure/build.mjs checks that every sentence only uses words that have been taught.
 
 p Well done!|Bra jobbat!
@@ -112,6 +116,124 @@ u world1|Du har rest genom hela Europa! Nu fortsätter resan mot Indien. Vill du
 u world2|Du är framme i Indien, och Australien kommer närmare! Nu ska du genom Asien. Väljer du djungeln eller Kina?
 u world3|Nu är det bara hav och öar kvar till Australien! Vill du resa förbi vulkanerna eller genom regnskogen?
 u world4|Du är i Australien! Nu är det inte långt kvar till Gold Coast. Vill du resa genom öknen eller längs kusten?
+u rhyme|Välkommen till ramsorna! Här lär du dig knepiga engelska ord med ramsor. Välj en ramsa!
+u rhyme|Dags för ramsor! Kan man ramsan, så kommer orden av sig själv. Vilken vill du ta?
+u rListen|Lyssna på ramsan. Säg gärna efter!
+u rListen|Först får du höra hela ramsan. Häng med och säg efter!
+u rListen|Här kommer ramsan. Lyssna noga!
+u rFill|Vilket ord fattas? Tryck på rätt ord.
+u rFill|Fyll i ordet som fattas.
+u rFill|Vad ska det stå där?
+u rSort|Vilka hör ihop med det här ordet? Tryck på alla!
+u rSort|Hitta alla som ska ha det här ordet.
+u rBack|Vilket ord hör ihop med det här?
+u rBack|Vem hör det här ordet till?
+u rFast|Nu kommer ramsan huller om buller! Kan du den ändå?
+u rFast|Nu blandar vi ramsan. Vilket ord ska det vara?
+u rMean|Hur säger man det på engelska?
+u rMean|Vad heter det på engelska? Tryck på rätt.
+u rOrder|Tryck på orden i rätt ordning.
+u rOrder|Sätt ramsan i rätt ordning, från början till slut.
+u rNext|Vad kommer sedan?
+u rNext|Vilket ord kommer efter?
+u rDone|Du kan hela ramsan! Nu säger vi den tillsammans.
+u rDone|Hurra, ramsan sitter! Säg den en gång till med rösten.
+u rDone|Vilken ramsmästare! Lyssna och säg med.
+C be|🐝|Är-ramsan|pair|be
+c I|am|jag är
+c you|are|du är
+c he|is|han är
+c she|is|hon är
+c it|is|det är
+c we|are|vi är
+c they|are|de är
+C have|🎒|Har-ramsan|pair|is
+c I|have|jag har
+c you|have|du har
+c he|has|han har
+c she|has|hon har
+c it|has|det har
+c we|have|vi har
+c they|have|de har
+C like|❤️|Gillar-ramsan|pair|is
+c I|like|jag gillar
+c you|like|du gillar
+c he|likes|han gillar
+c she|likes|hon gillar
+c it|likes|det gillar
+c we|like|vi gillar
+c they|like|de gillar
+C dont|🙅|Inte-ramsan|pair|
+c I|don't like|jag gillar inte
+c you|don't like|du gillar inte
+c he|doesn't like|han gillar inte
+c she|doesn't like|hon gillar inte
+c it|doesn't like|det gillar inte
+c we|don't like|vi gillar inte
+c they|don't like|de gillar inte
+C short|✂️|Korta ramsan|pair|
+c I am|I'm|jag är|I'm
+c you are|you're|du är|you're
+c he is|he's|han är|he's
+c she is|she's|hon är|she's
+c it is|it's|det är|it's
+c we are|we're|vi är|we're
+c they are|they're|de är|they're
+C was|🕰️|Var-ramsan|pair|is
+c I|was|jag var
+c you|were|du var
+c he|was|han var
+c she|was|hon var
+c it|was|det var
+c we|were|vi var
+c they|were|de var
+C my|🧸|Min-ramsan|pair|
+c I|my|min|my
+c you|your|din|your
+c he|his|hans|his
+c she|her|hennes|her
+c it|its|dess|its
+c we|our|vår|our
+c they|their|deras|their
+C me|🎁|Mig-ramsan|pair|
+c I|me|mig|me
+c you|you|dig|you
+c he|him|honom|him
+c she|her|henne|her
+c we|us|oss|us
+c they|them|dem|them
+C days|📅|Veckans dagar|seq|
+c Monday|måndag
+c Tuesday|tisdag
+c Wednesday|onsdag
+c Thursday|torsdag
+c Friday|fredag
+c Saturday|lördag
+c Sunday|söndag
+C months|🗓️|Årets månader|seq|
+c January|januari
+c February|februari
+c March|mars
+c April|april
+c May|maj
+c June|juni
+c July|juli
+c August|augusti
+c September|september
+c October|oktober
+c November|november
+c December|december
+C teens|🔢|Elva till tjugo|seq|
+c eleven|elva
+c twelve|tolv
+c thirteen|tretton
+c fourteen|fjorton
+c fifteen|femton
+c sixteen|sexton
+c seventeen|sjutton
+c eighteen|arton
+c nineteen|nitton
+c twenty|tjugo
 u wrong|Inte riktigt. Lyssna på rätt svar.
 u wrong|Nästan! Så här ska det vara.
 u wrong|Oj, det blev fel. Lyssna nu.

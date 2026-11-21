@@ -46,10 +46,10 @@ const CONF = [['is', 'are', 'am', 'be'], ['a', 'an', 'the'], ['he', 'she', 'it',
 
 // ---- What is kept ----
 const KEY = 'zoo1';
-const DEF = { name: null, done: {}, tix: 0, coins: 0, own: [], told: {}, route: {}, gold: {}, stat: {}, run: null, hi: {}, set: { voice: 'a', pal: 0, pet: '🦘', hat: '', snd: 'pling', silly: true, sv: true } };
+const DEF = { name: null, done: {}, tix: 0, coins: 0, own: [], told: {}, route: {}, gold: {}, stat: {}, run: null, hi: {}, rhyme: {}, set: { voice: 'a', pal: 0, pet: '🦘', hat: '', snd: 'pling', silly: true, sv: true } };
 let S = (() => { try { const s = JSON.parse(localStorage.getItem(KEY)); return s && typeof s === 'object' ? Object.assign({}, DEF, s, { set: Object.assign({}, DEF.set, s.set) }) : structuredClone(DEF); } catch { return structuredClone(DEF); } })();
 if (S.run && (!S.run.st || !S.run.v)) S.run = null;
-S.own = [...S.own]; S.told = Object.assign({}, S.told); S.route = Object.assign({}, S.route); S.gold = Object.assign({}, S.gold);
+S.own = [...S.own]; S.told = Object.assign({}, S.told); S.route = Object.assign({}, S.route); S.gold = Object.assign({}, S.gold); S.rhyme = Object.assign({}, S.rhyme);
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch {} };
 const stars = () => Object.values(S.done).reduce((a, b) => a + b, 0);
 const open = li => li === 0 || S.done[li - 1] > 0;
@@ -222,11 +222,11 @@ function map(view) {
   // Where the traveller is: between two stops, a quarter of the way further for every stage done.
   if (!allDone) { const a = fromOf(nx), b = stopOf(nx), t = (S.run && S.run.li === nx ? S.run.s : 0) / 4, here = { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t }; if (inside(here)) html += `<span class="me2" style="${at(here)}">${S.set.pet}</span>`; }
   const pick1 = !allDone && !routeOf(Math.floor(nx / 10));
-  html += `<button class="btn big cta" id="bGo">${allDone ? '🏆 Visa diplomet' : pick1 ? '🔀 Välj väg' : `Fortsätt resan mot ${esc(stopOf(nx).n)} ➜`}</button><span class="chip left">${allDone ? 'Framme i Gold Coast! 🏁' : `🏁 ${stopOf(nx).st ? leftKm(nx) : ''} km kvar`}</span>`;
+  html += `<button class="btn big cta" id="bGo">${allDone ? '🏆 Visa diplomet' : pick1 ? '🔀 Välj väg' : `Fortsätt resan mot ${esc(stopOf(nx).n)} ➜`}</button><button class="rhy" id="bRhyme">🎵 Ramsor${D.rhymes.some(r => !S.rhyme[r.key]) ? '<i>✨</i>' : ''}</button><span class="chip left">${allDone ? 'Framme i Gold Coast! 🏁' : `🏁 ${stopOf(nx).st ? leftKm(nx) : ''} km kvar`}</span>`;
   box.innerHTML = html;
   on('[data-li]', el => { const li = +el.dataset.li; if (!open(li)) { SFX.bad(); return; } go(li); });
   $('#bGo').onclick = () => allDone ? diploma() : go(nx);
-  $('#bMini').onclick = mini; $('#bAlbum').onclick = album; $('#bSet').onclick = settings; $('#bShop').onclick = () => shop(true);
+  $('#bMini').onclick = mini; $('#bAlbum').onclick = album; $('#bSet').onclick = settings; $('#bShop').onclick = () => shop(true); $('#bRhyme').onclick = () => { SFX.pop(); rhymes(true); };
   if (touched && !mapTold) { mapTold = true; chain(() => Promise.race([nameLoading, new Promise(r => setTimeout(r, 1500))]).then(() => sayNamed('hi')), () => tell('map')); }
 }
 // How far it is left, as the voice last said it.
@@ -468,11 +468,137 @@ function settings() {
 // For the grown-up: what has been done, and what has been hardest.
 function adult() {
   const hard = Object.entries(S.stat).filter(([, n]) => n > 0).sort((a, b) => b[1] - a[1]).slice(0, 25).map(([k, n]) => { const m = /^(\w)(\d+)\.(\d+)$/.exec(k), it = item({ t: m[1], li: +m[2], i: +m[3] }); return `<tr><td>${esc(it[0])}</td><td>${esc(it[1])}</td><td>${n}</td></tr>`; }).join('');
-  $('#adult').innerHTML = `<div class="card" style="margin:1em auto;max-width:52em"><p><b>${Object.keys(S.done).length} av 50 nivåer klara</b> · ${stars()} stjärnor av 150 · pausspel kvar: ${S.tix}</p>
+  $('#adult').innerHTML = `<div class="card" style="margin:1em auto;max-width:52em"><p><b>${Object.keys(S.done).length} av 50 nivåer klara</b> · ${stars()} stjärnor av 150 · pausspel kvar: ${S.tix} · ramsor: ${Object.keys(S.rhyme).length} av ${D.rhymes.length} klara</p>
     <table><tr><th>Svårast just nu</th><th></th><th>Fel</th></tr>${hard || '<tr><td colspan="3">Inga fel sparade.</td></tr>'}</table>
     <p class="pick" style="justify-content:center"><button id="aNext">Lås upp nästa nivå</button><button id="aReset">Nollställ allt (tryck två gånger)</button></p></div>`;
   $('#aNext').onclick = () => { const n = nextLevel(); if (!S.done[n]) { S.done[n] = 1; if (S.run && S.run.li === n) S.run = null; save(); } adult(); };
   let armed = false; $('#aReset').onclick = ev => { if (!armed) { armed = true; ev.target.textContent = 'Säker? Tryck igen för att radera allt'; return; } const name = S.name; S = structuredClone(DEF); S.name = name; save(); map(); };
+}
+
+// ---- Chants: the bonus game ----
+// "I am, you are, he is ...": things that are easier to know by heart than to work out. A chant is heard,
+// filled in line by line, sorted, asked for out of order and by its meaning. What is kept: S.rhyme[key] =
+// { s: most stars, n: times done }. Right answers give coins, a finished chant a parcel, as in the journey.
+const RSC = ['farm', 'forest', 'savanna', 'sea', 'outback', 'city', 'desert', 'mountain', 'jungle'];
+function rhymes(hello) {
+  const tot = D.rhymes.reduce((n, r) => n + ((S.rhyme[r.key] || {}).s || 0), 0);
+  show('rhymes', `<div class="top"><button class="chip" id="bX">← Kartan</button><h1>🎵 Ramsor</h1><span class="chip">⭐ ${tot}/${D.rhymes.length * 3}</span><span class="chip">🪙 ${S.coins}</span></div>
+    <div class="scroll"><div class="center" style="overflow:visible"><p>Kan du ramsan utantill, så kommer orden av sig själv! Du får mynt för varje rätt svar och ett paket för varje ramsa.</p>
+    <div class="grid">${D.rhymes.map(r => { const m = S.rhyme[r.key]; return `<button class="card ware ${m ? 'mine' : ''}" data-r="${r.key}"><b>${r.em}</b><span class="nm">${esc(r.title)}</span><span class="wt">${esc(r.lines.slice(0, 3).map(l => l[3]).join(', '))} …</span><small>${m ? (m.s === 3 ? '👑 ' : '') + '⭐'.repeat(m.s) + '☆'.repeat(3 - m.s) : '✨ Ny!'}</small></button>`; }).join('')}</div></div></div>`);
+  $('#bX').onclick = () => map();
+  if (hello) chain(() => tell('rhyme'));
+  on('[data-r]', el => { SFX.pop(); rhyme(el.dataset.r); });
+}
+let rhymeRun = 0;
+function rhyme(key) {
+  const r = D.rhymes.find(x => x.key === key), Ls = r.lines, seq = r.kind === 'seq', my = ++rhymeRun, first = !S.rhyme[key], sc = RSC[D.rhymes.indexOf(r) % RSC.length];
+  const said = l => l[3], whole = l => seq || said(l) === `${l[0]} ${l[1]}`, disp = l => whole(l) ? said(l) : `${l[0]} → ${l[1]}`;
+  const tails = [...new Set(Ls.map(l => l[1]))], shared = !seq && tails.length < Ls.length, some = (a, n) => shuffle(a).slice(0, n), all = k => Ls.map((l, i) => ({ k, i }));
+  // The whole chant in one go; a chant without such a recording is said line by line.
+  const sayAll = async () => { if (r.all) return sayEn(r.all); const id = chainId; for (const l of Ls) { if (id !== chainId) return; await sayEn(said(l)); } };
+  const svOf = l => () => S.set.sv ? say('s', `betyder ${svSaid(l[2])}.`) : Promise.resolve();
+  // What is asked, in order. A wrong answer brings its question back a little later.
+  const Q = [{ k: 'listen' }];
+  if (seq) Q.push({ k: 'order' }, ...some(all('next').slice(0, -1), 6), ...some(all('mean'), 6));
+  else Q.push(...all('fill').map(q => ({ ...q, board: 1 })), ...(shared ? shuffle(tails).map(t => ({ k: 'sort', t })) : shuffle(all('back'))), ...shuffle(all('fill')), ...some(all('mean'), 5));
+  let p = 0, miss = 0, row = 0, toldK = {}, trail = 0;
+  Ls.forEach(l => fetch(`audio/${S.set.voice}/${clipId(said(l))}.mp3?r=${REC}`).catch(() => {}));
+  const others = (i, f, n = 3) => { const mine = f(Ls[i]); return some([...new Set(Ls.map(f))].filter(x => x !== mine), n); };
+
+  function step() {
+    if (my !== rhymeRun) return;
+    if (p >= Q.length) return done();
+    const q = Q[p], l = q.i != null ? Ls[q.i] : null, at = p / Q.length * 92;
+    show('rhyme', `<div class="top"><button class="chip" id="bX">✕</button><div class="trail"><span class="goal">🎤</span><span class="rn" id="rn" style="left:${trail}%"><span>${S.set.pet}</span></span></div><span class="chip" id="cn">🪙 ${S.coins}</span><span class="chip">${r.em} ${esc(r.title)}</span></div>
+      <div class="stage" id="stage"></div><div class="foot">${petHtml()}<div id="act"></div></div>`, sc);
+    setTimeout(() => { const n = $('#rn'); if (n && at !== trail) { n.style.left = at + '%'; n.classList.add('hop'); } trail = at; }, 40);
+    $('#bX').onclick = () => { rhymeRun++; rhymes(); }; $('#pet').onclick = petTrick;
+    const stage = $('#stage'), act = $('#act'), alive = () => screen === 'rhyme' && my === rhymeRun && Q[p] === q;
+    const next = () => { if (alive()) { p++; step(); } };
+    // The voice says what to do the first time a kind of question comes, and now and then after that.
+    const tk = { fill: q.board ? 'rFill' : 'rFast', sort: 'rSort', back: 'rBack', mean: 'rMean', order: 'rOrder', next: 'rNext' }[q.k];
+    const lead = () => { if (!tk) return Promise.resolve(); const n = toldK[tk] = (toldK[tk] || 0) + 1; return n === 1 || n % 4 === 0 ? tell(tk) : Promise.resolve(); };
+    const coin = n => { S.coins += n; save(); const c = $('#cn'); c.textContent = '🪙 ' + S.coins; c.insertAdjacentHTML('beforeend', `<span class="plus">+${n}</span>`); };
+    const fb = (ok, head, line) => { stage.insertAdjacentHTML('beforeend', `<div class="fb ${ok ? 'ok' : 'bad'}"><span class="ic">${ok ? '✔' : '✘'}</span><span><span class="h">${head}</span><b>${esc(disp(line))}</b><small>= ${esc(line[2])}</small></span></div>`); stage.lastElementChild.scrollIntoView({ block: 'nearest' }); };
+    function right(line, after = []) {
+      row++; SFX[S.set.snd](); $('#pet').classList.add('hop'); $('#rn').classList.add('loop'); coin(row >= 5 ? 2 : 1);
+      const streak = D.streak[row], pr = streak || pick(D.praise), named = !streak && hasName() && Math.random() < .4;
+      if (streak && S.set.silly) rain(['⭐', '🔥', '🎵'], 12);
+      fb(true, `${streak ? '🔥 ' : ''}${named ? `Bra, ${esc(S.name)}!` : `${esc(pr[0])} <i>· ${esc(pr[1])}</i>`}`, line);
+      if (S.set.silly && Math.random() < .15) bubble(pick(SILLY), 2600);
+      act.innerHTML = `<button class="btn big" id="bN">Fortsätt ➜</button>`; $('#bN').onclick = next;
+      chain(...(after.length ? after : [() => sayEn(said(line))]), ...(streak ? [() => sayEn(streak[0])] : named ? [() => sayNamed('good')] : Math.random() < .35 ? [() => sayEn(pr[0])] : [])).then(ok => ok && setTimeout(next, 450));
+    }
+    function wrong(line) {
+      miss++; row = 0; SFX.bad(); $('#pet').classList.add('shake');
+      if (!q.again) Q.splice(Math.min(Q.length, p + 3), 0, { ...q, board: 0, again: 1 });
+      fb(false, `${hasName() ? `Nästan, ${esc(S.name)}! ` : 'Inte riktigt. '}Så här ska det vara:`, line);
+      act.innerHTML = `<button class="btn big" id="bN">Fortsätt ➜</button>`; $('#bN').onclick = next;
+      chain(() => Math.random() < .6 ? sayNamed('oops').then(ok => ok || tell('wrong')) : tell('wrong'), () => sayEn(said(line)), svOf(line));
+    }
+    // A question with one right answer among some.
+    function choose(html, opts, good, line) {
+      stage.innerHTML = html + `<div class="opts ${opts.length === 3 ? 'three' : ''}">${opts.map(o => `<button class="opt" data-o="${esc(o)}">${esc(o)}</button>`).join('')}</div>`;
+      chain(lead);
+      on('.opt', el => { if (stage.querySelector('.fb')) return; const ok = el.dataset.o === good; app.querySelectorAll('.opt').forEach(b => { b.disabled = true; if (b.dataset.o === good) b.classList.add('ok'); }); if (!ok) el.classList.add('bad'); const g = $('.gap'); if (g) { g.textContent = good; g.classList.add('full'); } ok ? right(line) : wrong(line); });
+    }
+    const ask = t => `<div class="ask">${q.again ? '🔁 En gång till · ' : ''}${t}</div>`;
+    const board = upto => `<div class="chant sm">${Ls.map((x, i) => `<span class="ln ${i < upto ? '' : i === upto ? 'on' : 'hid'}">${i < upto ? esc(disp(x)) : i === upto ? esc(x[0] || '?') + ' …' : '…'}</span>`).join('')}</div>`;
+
+    if (q.k === 'listen') {
+      stage.innerHTML = ask('Lyssna på ramsan') + `<div class="chant">${Ls.map((x, i) => `<button class="ln" data-i="${i}"><b>${esc(disp(x))}</b><small>${esc(x[2])}</small></button>`).join('')}</div>`;
+      act.innerHTML = `<button class="btn ghost" id="bA">🔊 En gång till</button> <button class="btn big" id="bN">Jag är redo ➜</button>`;
+      const mark = i => app.querySelectorAll('.ln').forEach((e, j) => e.classList.toggle('on', i === j));
+      // The first time, every line is followed by what it means.
+      const run = sv => chain(() => tell('rListen'), ...Ls.flatMap((x, i) => [() => { mark(i); return sayEn(said(x)); }, ...(sv ? [svOf(x)] : []), () => new Promise(res => setTimeout(res, 150))]), () => mark(-1));
+      on('.ln', el => { const i = +el.dataset.i; mark(i); chain(() => sayEn(said(Ls[i])), svOf(Ls[i])); });
+      $('#bA').onclick = () => run(false); $('#bN').onclick = () => { SFX.pop(); next(); };
+      run(first);
+    } else if (q.k === 'fill') {
+      const opts = tails.length + r.more.length <= 4 ? shuffle([...tails, ...r.more]) : shuffle([l[1], ...others(q.i, x => x[1])]);
+      choose(ask(q.board ? 'Fyll i ramsan' : 'Blandat! Vilket ord?') + (q.board ? board(q.i) : '') + `<div class="prompt">${esc(l[0])}${whole(l) ? ' ' : ' → '}<span class="gap">?</span></div><div class="sub">${esc(l[2])}</div>`, opts, l[1], l);
+    } else if (q.k === 'back') {
+      choose(ask('Vilket hör ihop?') + `<div class="prompt"><span class="gap">?</span> → ${esc(l[1])}</div>`, shuffle([l[0], ...others(q.i, x => x[0])]), l[0], l);
+    } else if (q.k === 'mean') {
+      choose(ask('På engelska?') + `<div class="pic" style="font-size:2.2em">🇸🇪 ➜ 🇦🇺</div><div class="prompt">${esc(l[2])}</div>`, shuffle([said(l), ...others(q.i, said)]), said(l), l);
+    } else if (q.k === 'next') {
+      const nx = Ls[q.i + 1];
+      choose(ask('Vad kommer sedan?') + `<div class="prompt">${esc(l[1])}, <span class="gap">?</span></div>`, shuffle([nx[1], ...some(Ls.filter((x, i) => i !== q.i && i !== q.i + 1).map(x => x[1]), 3)]), nx[1], nx);
+    } else if (q.k === 'sort') {
+      // All the heads that go with one tail: "he, she, it" for "is".
+      const want = new Set(Ls.filter(x => x[1] === q.t).map(x => x[0])); let bad = false;
+      stage.innerHTML = ask('Vilka hör ihop med ordet?') + `<div class="prompt">… <span class="gap full">${esc(q.t)}</span></div><div class="sub">Tryck på alla som ska ha <b>${esc(q.t)}</b> (${want.size} st)</div><div class="opts many">${shuffle(Ls).map(x => `<button class="opt" data-o="${esc(x[0])}">${esc(x[0])}</button>`).join('')}</div>`;
+      chain(lead);
+      on('.opt', el => { if (el.classList.contains('ok') || !want.size) return;
+        if (want.has(el.dataset.o)) { want.delete(el.dataset.o); el.classList.add('ok'); SFX.pop(); el.textContent += ' ' + q.t;
+          if (!want.size) { const mine = Ls.filter(x => x[1] === q.t); app.querySelectorAll('.opt').forEach(b => b.disabled = true); right(mine[0], mine.map(x => () => sayEn(said(x)))); stage.querySelector('.fb b').textContent = mine.map(disp).join(', '); stage.querySelector('.fb small').textContent = ''; } }
+        else { el.classList.add('no'); setTimeout(() => el.classList.remove('no'), 450); SFX.bad(); row = 0; if (!bad) { bad = true; miss++; if (!q.again) Q.splice(Math.min(Q.length, p + 3), 0, { ...q, again: 1 }); } } });
+    } else if (q.k === 'order') {
+      let n = 0; const slips = new Set();
+      stage.innerHTML = ask('Rätt ordning') + `<div class="chant sm" id="built"></div><div class="opts many">${shuffle(Ls.map((x, i) => i)).map(i => `<button class="opt" data-i="${i}">${esc(Ls[i][1])}</button>`).join('')}</div>`;
+      chain(lead);
+      on('.opt', el => { const i = +el.dataset.i; if (el.classList.contains('gone')) return;
+        if (i === n) { n++; el.classList.add('gone'); $('#built').insertAdjacentHTML('beforeend', `<span class="ln">${esc(Ls[i][1])}</span>`); SFX.pop(); $('#rn').classList.add('hop');
+          if (n === Ls.length) { right(Ls[i], [sayAll]); stage.querySelector('.fb b').textContent = 'Hela ramsan!'; stage.querySelector('.fb small').textContent = ''; } else chain(() => sayEn(said(Ls[i]))); }
+        else { el.classList.add('no'); setTimeout(() => el.classList.remove('no'), 450); SFX.bad(); row = 0; if (!slips.has(n)) { slips.add(n); if (slips.size % 2 === 1) miss++; } } });
+    }
+  }
+
+  function done() {
+    const stars = miss === 0 ? 3 : miss <= 2 ? 2 : 1, old = S.rhyme[key], perfect = stars === 3, ticket = !old || (perfect && old.s < 3);
+    S.rhyme[key] = { s: Math.max(stars, old ? old.s : 0), n: (old ? old.n : 0) + 1 }; if (ticket) S.tix++; save();
+    show('rdone', `<div class="center"><div class="stars">${[1, 2, 3].map(i => `<span class="${i > stars ? 'off' : ''}" style="animation-delay:${i * .25}s">⭐</span>`).join('')}</div>
+      <h1>${r.em} ${S.name ? `${esc(S.name)}, du` : 'Du'} kan ${esc(r.title)}!${perfect ? ' 🌟 Alla rätt!' : ''}</h1>
+      <div class="chant">${Ls.map(x => `<span class="ln"><b>${esc(disp(x))}</b><small>${esc(x[2])}</small></span>`).join('')}</div>
+      <button class="chest ${perfect ? 'gold' : ''}" id="bG">🎁</button><div class="card" id="cF" style="max-width:36em" hidden><b id="cW"></b></div>
+      <p><button class="btn big" id="bN">Fler ramsor ➜</button> <button class="btn big ghost" id="bA">🔁 En gång till</button> ${S.tix ? `<button class="btn big ghost" id="bM">🎮 Pausspel (${S.tix})</button> ` : ''}<button class="btn ghost" id="bK">Kartan</button></p></div>`, sc);
+    SFX.fanfare(); rain(['⭐', '🎵', '🎉', r.em], 20); if (S.set.silly) setTimeout(parade, 800);
+    chain(() => sayNamed('good'), () => tell('rDone'), sayAll, () => tell('chest'));
+    $('#bG').onclick = () => { const n = perfect ? 20 + rnd(16) : 5 + rnd(11); S.coins += n; save(); $('#bG').classList.add('open'); $('#bG').textContent = '🪙'; $('#bG').disabled = true;
+      $('#cW').textContent = `Du fick ${n} mynt!${ticket ? ' Och ett pausspel! 🎮' : ''}`; $('#cF').hidden = false; SFX.fanfare(); rain(['🪙', '⭐'], 18); chain(() => sayNamed('gift'), () => sayEn(pick(D.praise)[0])); };
+    $('#bN').onclick = () => rhymes(); $('#bA').onclick = () => rhyme(key); if ($('#bM')) $('#bM').onclick = mini; $('#bK').onclick = () => map();
+  }
+  step();
 }
 
 // ---- Break games: one go for every finished stage ----

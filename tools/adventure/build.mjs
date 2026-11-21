@@ -18,8 +18,8 @@ export const clipId = s => { let h = 0x811c9dc5; for (let i = 0; i < s.length; i
 export const svSaid = s => s.replace(/\s*\([^)]*\)/g, '').replace(/\//g, ', ').trim();
 const tokens = s => s.toLowerCase().replace(/[.,!?]/g, '').split(/\s+/).filter(Boolean);
 
-const data = { praise: [], praiseSv: [], streak: {}, inst: {}, ui: {}, named: {}, perk: {}, facts: [], saga: [], worlds: [], levels: [] }, known = new Set(), problems = [];
-let level = null;
+const data = { praise: [], praiseSv: [], streak: {}, inst: {}, ui: {}, named: {}, perk: {}, facts: [], saga: [], rhymes: [], worlds: [], levels: [] }, known = new Set(), problems = [];
+let level = null, chant = null;
 const knows = t => known.has(t) || [t.replace(/s$/, ''), t.replace(/es$/, ''), t.replace(/ing$/, ''), t.replace(/ing$/, 'e')].some(b => b !== t && known.has(b));
 for (const raw of readFileSync(join(here, 'content.txt'), 'utf8').split(/\r?\n/)) {
   const line = raw.trim();
@@ -34,6 +34,8 @@ for (const raw of readFileSync(join(here, 'content.txt'), 'utf8').split(/\r?\n/)
   else if (kind === 'x') data.perk[cells[0]] = cells[1];
   else if (kind === 'n') (data.named[cells[0]] = data.named[cells[0]] || []).push(cells[1]);
   else if (kind === 'e') data.saga.push(line.slice(2).trim());
+  else if (kind === 'C') data.rhymes.push(chant = { key: cells[0], em: cells[1], title: cells[2], kind: cells[3], more: (cells[4] || '').split(' ').filter(Boolean), lines: [] });
+  else if (kind === 'c') chant.lines.push(chant.kind === 'seq' ? ['', cells[0], cells[1], cells[0]] : [cells[0], cells[1], cells[2], cells[3] || `${cells[0]} ${cells[1]}`]);
   else if (kind === 'W') data.worlds.push({ name: cells[0], em: cells[1] });
   else if (kind === 'L') data.levels.push(level = { w: data.worlds.length - 1, title: cells[0], words: [], sents: [] });
   else if (kind === 'w') { level.words.push(cells); tokens(cells[0]).forEach(t => known.add(t)); }
@@ -45,6 +47,9 @@ for (const [i, l] of data.levels.entries()) {
   if (l.sents.some(s => l.sents.filter(o => o[0] === s[0] || o[1] === s[1]).length > 1)) problems.push(`level ${i + 1}: a sentence is there twice`);
   if (l.words.some(w => l.words.filter(o => o[1] === w[1]).length > 1)) problems.push(`level ${i + 1}: two words with the same Swedish`);
 }
+// A chant is also said in one go: its lines with commas between.
+for (const r of data.rhymes) { r.all = r.lines.every(l => /^\S+'\S+$/.test(l[3])) ? '' : r.lines.map(l => l[3]).join(', ') + '.'; /* short forms in a row are slurred by the voice: the game says them line by line */ if (!['pair', 'seq'].includes(r.kind) || r.lines.length < 4 || r.lines.some(l => !l[1] || !l[2])) problems.push(`chant ${r.key}: incomplete`); }
+if (new Set(data.rhymes.map(r => r.key)).size !== data.rhymes.length) problems.push('two chants with one key');
 if (data.saga.length !== data.levels.length) problems.push('the tale needs one chapter for each level');
 if (problems.length) { console.error(problems.join('\n')); process.exit(1); }
 
@@ -58,6 +63,7 @@ for (const l of data.levels) {
   for (const [en, sv] of l.words) { add('en', en, true); add('sv', `betyder ${svSaid(sv)}.`, false); add('sv', `Ordet är ${svSaid(sv)}.`, false); }
   for (const [en, sv] of l.sents) { add('en', en, false); add('sv', sv, false); }
 }
+for (const r of data.rhymes) { if (r.all) add('en', r.all, false); for (const l of r.lines) { add('en', l[3], true); add('sv', `betyder ${svSaid(l[2])}.`, false); } }
 // ---- The journey: places.txt ----
 const J = { start: null, parts: [] };
 let route = null;
