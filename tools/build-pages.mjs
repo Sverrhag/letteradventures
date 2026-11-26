@@ -89,6 +89,9 @@ ${pages.map(([l, game]) => `  <url>\n    <loc>${url(l, game)}</loc>\n${alt(game)
   <url>
     <loc>${SITE}/privacy.html</loc>
   </url>
+  <url>
+    <loc>${SITE}/zoo-b6cec90c/</loc>
+  </url>
 </urlset>
 `);
 console.log(`built ${pages.length} pages and sitemap.xml`);
